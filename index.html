@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <title>Bungie API Test App</title>
+</head>
+<body>
+    <div class="container m-3 p-3 mx-auto bg-light rounded">
+        <button class="btn btn-primary login" style="float: right">Login</button>
+        <button class="btn btn-danger logout d-none" style="float: right">Logout</button>
+        <h1 class="text-center display-3 my-2">Destiny-API</h1>
+        <hr>
+        <h2>Current Bungie Rewards:</h2>
+        <ul class="rewards"></ul>
+
+        <h2>Vendors:</h2>
+        <ul class="vendors">
+        </ul>
+        <div class="not-logged-in-error alert alert-warning">Could not be loaded, requires authorization</div>
+
+        <h2>Search for an item:</h2>
+        <form class="getItem">
+            <div class="input-group">
+                <input type="text" placeholder="Enter item name.." class="form-control">
+                <button class="btn btn-primary">Get item info</button>
+            </div>
+            <div class="itemInfo"></div>
+        </form>
+    </div>
+    <script src="bundle.js"></script>
+</body>
+</html>
