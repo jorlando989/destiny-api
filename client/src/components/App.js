@@ -3,11 +3,12 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import background from '../imgs/destiny2travelerbackground.png';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import Container from 'react-bootstrap/Container';
 
 import Header from './Header';
 import Landing from './Landing';
 import Dashboard from './Dashboard';
-const Vendors = () => <h2>Vendors</h2>;
+import Vendors from './vendors/Vendors';
 
 class App extends Component {
     componentDidMount() {
@@ -18,16 +19,21 @@ class App extends Component {
     render() {
         return (
             <div style={{backgroundImage: `url(${background})`, height: '100%', backgroundSize: 'cover', backgroundRepeat: 'repeat'}}>
-                <div className='container' style={{backgroundColor: 'white', paddingBottom: '20px'}}>
-                    <BrowserRouter>
-                        <div>
-                            <Header />
-                            <Route exact path="/" component={Landing}/>
-                            <Route exact path="/dashboard" component={Dashboard}/>
-                            <Route exact path="/vendors" component={Vendors}/>
-                        </div>
-                    </BrowserRouter>
-                </div>
+                <Container>
+                    <div style={{backgroundColor: 'white', paddingBottom: '20px'}}>
+                        <BrowserRouter>
+                            <div>
+                                <Header/>
+                                <div style={{paddingLeft: '5px'}}>
+                                    <Route exact path="/" component={Landing}/>
+                                    <Route exact path="/dashboard" component={Dashboard}/>
+                                    <Route exact path="/vendors" component={Vendors}/>
+                                </div>
+                                
+                            </div>
+                        </BrowserRouter>
+                    </div>
+                </Container>
             </div>
         );
     }

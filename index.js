@@ -13,6 +13,8 @@ localStorage = new LocalStorage('./scratch');
 app.use(express.json());
 
 require('./routes/authRoutes')(app);
+require('./routes/characterRoutes')(app);
+require('./routes/vendorRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   //ensure Express serves up production assets

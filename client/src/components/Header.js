@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 class Header extends Component {
     renderContent() {
-        console.log('auth:', this.props.auth);
         switch (this.props.auth) {
             case null:
                 return;
             case false:
                 return <li><a href="/auth/bungie">Login</a></li>;
+                // <Nav.Link href="#home">Home</Nav.Link>
             default:
                 return [
-                    <li key="1"><a href="/api/logout">Logout</a></li>
+                    <Nav.Link href="/vendors" key="vendors">Vendors</Nav.Link>,
+                    <NavDropdown title="Activities" key="activities">
+                        <NavDropdown.Item href="">Daily Activities</NavDropdown.Item>
+                        <NavDropdown.Item href="">Weekly Activities</NavDropdown.Item>
+                    </NavDropdown>,
+                    <Nav.Link href="/api/logout" key="logout">Logout</Nav.Link>
                 ];
         };
     }
@@ -20,14 +28,19 @@ class Header extends Component {
     render() {
         return (
             <nav>
-                <div className="nav-wrapper">
-                    <Link className="brand-logo left" to={this.props.auth ? "/dashboard" : "/" }>
-                        Destiny-API
-                    </Link>
-                    <ul className="right">
-                        {this.renderContent()}
-                    </ul>
-                </div>
+                <Navbar bg="light" expand="lg">
+                    <Container>
+                        <Navbar.Brand href={this.props.auth ? "/dashboard" : "/" }>
+                            Destiny-API
+                        </Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            {this.renderContent()}
+                        </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
             </nav>
         );
     }

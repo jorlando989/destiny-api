@@ -1,4 +1,3 @@
-// import fetch from 'node-fetch';
 const keys = require('../config/keys');
 const mongoose = require('mongoose');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -26,22 +25,43 @@ module.exports = app => {
             }).toString()
         })
         const accessToken = await resp.json();
-    
+
+        //get membership profile
+        const allProfilesResp = await fetch(
+            `https://www.bungie.net/Platform/Destiny2/2/Profile/${accessToken.membership_id}/LinkedProfiles/?getAllMemberships=true`,
+            {
+                headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': accessToken
+            }
+        });
+        const profiles = await allProfilesResp.json();
+
         //save user if new
         const existingUser = await User.findOne({membershipID: accessToken.membership_id});
         if (!existingUser) {
-            const newUser = await new User({
+            await new User({
                 accessToken: accessToken,
-                membershipType: '2',      //figure out how to actually get this
-                membershipID: accessToken.membership_id
+                membershipID: accessToken.membership_id,
+                profiles: profiles.Response.profiles.map(
+                    ({dateLastPlayed, membershipType, membershipId, displayName, bungieGlobalDisplayName, bungieGlobalDisplayNameCode}) => {
+                        return {
+                            dateLastPlayed,
+                            membershipType,
+                            membershipId,
+                            displayName,
+                            bungieGlobalDisplayName,
+                            bungieGlobalDisplayNameCode
+                        };
+                    }
+                )
             }).save((err, user) => {
                 if (err) return console.error(err);
                 console.log(user.accessToken + " saved to users collection.");
             });
         }
         //save user in local storage
-        localStorage.setItem('currentUser', accessToken);
-    
+        localStorage.setItem('currentUser', JSON.stringify(accessToken));
         res.redirect(keys.loginRedirectURL);
     });
 
@@ -49,19 +69,6 @@ module.exports = app => {
         //get current user if one is logged in
         res.send(localStorage.getItem('currentUser'));
     });
-
-    app.get('/api/getUserProfileData', async (req, res) => {
-        //get users profile info
-        const query = `https://www.bungie.net/Platform/User/GetBungieNetUserById/${req.membership_id}/`;
-        const response = await fetch(query, {
-            headers: {
-                'X-API-Key': keys.apiKey,
-                'Authorization': accessToken
-            }
-        })
-        const userProfileData = await response.json();
-        res.send(userProfileData);
-    })
 
     app.get('/api/logout', (req, res) => {
         localStorage.clear();
