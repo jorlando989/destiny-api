@@ -40,4 +40,31 @@ Button:hover {
     font-weight: bolder;
 }
 
+.vendorIcon {
+    height: 30px;
+    margin-right: 5px;
+}
+
+.vendorHeader .accordion-button {
+    background-color: #297373 !important;
+    color: white !important;
+}
+
+.footer {
+    background-color: #f8f9fa;
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.vendorBucket img {
+    height: 50px !important;
+}
+
+.groupTitle {
+    text-align: center;
+}
+
 /* 85ffc7, 297373, ff8552, e6e6e6, 39393a */

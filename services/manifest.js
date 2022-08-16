@@ -2,48 +2,74 @@ const keys = require('../config/keys');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 class Manifest {
-    constructor() {
-        this.manifest = this.getManifestURLs();
-    }
-
-    async getManifestURLs() {
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-        const query = "https://www.bungie.net/Platform/Destiny2/Manifest/";
-        const response = await fetch(query, {
-            headers: {
-                'X-API-Key': keys.apiKey,
-                'Authorization': currentUser.access_token
-            }
-        });
-        const manifest = await response.json();
-        return manifest;
+    constructor(access_token) {
+        this.access_token = access_token;
     }
 
     async getClassInfo(classHash) {
-        const manifest = await this.manifest;
-        const jsonResponse = await fetch(`https://www.bungie.net${manifest.Response.jsonWorldComponentContentPaths.en.DestinyClassDefinition}`);
-        const classInfo = await jsonResponse.json();
-
-        const classes = Object.values(classInfo);
-        for (var i = 0; i < classes.length; i++) {
-            if (classHash === classes[i].hash) {
-                return classes[i].displayProperties.name;
+        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyClassDefinition/${classHash}/`, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': "Bearer " + this.access_token
             }
-        }
+        });
+        const classInfo = await resp.json();
+        return classInfo.Response;
     }
 
     async getRaceInfo(raceHash) {
-        const manifest = await this.manifest;
-        const jsonResponse = await fetch(`https://www.bungie.net${manifest.Response.jsonWorldComponentContentPaths.en.DestinyRaceDefinition}`);
-        const raceInfo = await jsonResponse.json();
-
-        const races = Object.values(raceInfo);
-        for (var i = 0; i < races.length; i++) {
-            if (raceHash === races[i].hash) {
-                return races[i].displayProperties.name;
+        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyRaceDefinition/${raceHash}/`, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': "Bearer " + this.access_token
             }
-        }
+        });
+        const raceInfo = await resp.json();
+        return raceInfo.Response;
+    }
+
+    async getVendorGroupInfo(vendorGroupHash) {
+        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyVendorGroupDefinition/${vendorGroupHash}/`, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': "Bearer " + this.access_token
+            }
+        });
+        const vendorGroupInfo = await resp.json();
+        return vendorGroupInfo.Response;
+    }
+
+    async getVendorInfo(vendorHash) {
+        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyVendorDefinition/${vendorHash}/`, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': "Bearer " + this.access_token
+            }
+        });
+        const vendorInfo = await resp.json();
+        return vendorInfo.Response;
+    }
+
+    async getLocationInfo(locationHash) {
+        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyDestinationDefinition/${locationHash}/`, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': "Bearer " + this.access_token
+            }
+        });
+        const destinationInfo = await resp.json();
+        return destinationInfo.Response;
+    }
+
+    async getItemInfo(itemHash) {
+        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/${itemHash}/`, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': "Bearer " + this.access_token
+            }
+        });
+        const itemInfo = await resp.json();
+        return itemInfo.Response;
     }
 }
 

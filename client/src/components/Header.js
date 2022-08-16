@@ -12,7 +12,7 @@ class Header extends Component {
                 return;
             case false:
                 return <li><a href="/auth/bungie">Login</a></li>;
-                // <Nav.Link href="#home">Home</Nav.Link>
+                // <Nav.Link href="/auth/bungie">Login</Nav.Link>
             default:
                 return [
                     <Nav.Link href="/vendors" key="vendors">Vendors</Nav.Link>,
@@ -35,9 +35,9 @@ class Header extends Component {
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            {this.renderContent()}
-                        </Nav>
+                            <Nav className="me-auto">
+                                {this.renderContent()}
+                            </Nav>
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>

@@ -1,0 +1,24 @@
+
+300=itemInstances == return basic info about instanced items - whether they can be equipped, their tracked status, and some info commonly needed in many places (current damage type, primary stat value, etc)
+
+301=itemObjectives == DestinyObjectiveDefinition (optional)
+
+305=itemSockets == Items can have sockets, where plugs can be inserted.
+
+306=itemTalentGrids == Items can have talent grids, though that matters a lot less frequently than it used to. Asking for this component will return all relevant info about activated Nodes and Steps on this talent grid
+
+307=itemCommonData == Items that *aren't* instanced still have important information you need to know: how much of it you have, the itemHash so you can look up their DestinyInventoryItemDefinition, whether they're locked, etc... Both instanced and non-instanced items will have these properties. You will get this automatically with Inventory components - you only need to pass this when calling GetItem on a specific item.
+
+308=itemPlugStates == Items that are "Plugs" can be inserted into sockets. This returns statuses about those plugs and why they can/can't be inserted.
+
+309=itemPlugObjectives == Sometimes, plugs have objectives on them, This data can get really large
+
+310=itemReusablePlugs == Reusable Plugs were split off as their own component, away from ItemSockets, as a result of the Plug changes in Shadowkeep that made plug data infeasibly large for the most common use cases.
+
+Request this component if and only if you need to know what plugs *could* be inserted into a socket, and need to know it before "drilling" into the details of an item in your application (for instance, if you're doing some sort of interesting sorting or aggregation based on available plugs.
+
+400=vendors == vendor info and groups
+
+402=vendorSales == what each vendor is selling
+
+600=CurrencyLookups == A "shortcut" component that will give you all of the item hashes/quantities of items that the requested character can use to determine if an action (purchasing, socket insertion) has the required currency

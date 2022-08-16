@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_VENDORS, FETCH_CHARACTERS } from './types';
+import { FETCH_USER, FETCH_VENDORS, FETCH_CHARACTERS, FETCH_SELECTED_CHAR, SELECT_CHAR } from './types';
 
 export const fetchUser = () => async dispatch => {
     const res = await axios.get('/api/current_user');
@@ -14,4 +14,14 @@ export const fetchVendors = () => async dispatch => {
 export const fetchCharacters = () => async dispatch => {
     const res = await axios.get('/api/characters');
     dispatch({ type: FETCH_CHARACTERS, payload: res.data });
+};
+
+export const selectChar = (selectedChar) => async dispatch => {
+    if(selectedChar) {
+        const res = await axios.post('/api/select_char', {selectedChar});
+        dispatch({type: SELECT_CHAR, payload: res.data});
+    } else {
+        const res = await axios.get('/api/selected_char');
+        dispatch({type: FETCH_SELECTED_CHAR, payload: res.data});
+    }
 };

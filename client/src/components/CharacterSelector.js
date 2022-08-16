@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCharacters } from '../actions';
+import { fetchCharacters, selectChar } from '../actions';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Container from 'react-bootstrap/Container';
@@ -17,16 +17,18 @@ class CharacterSelector extends Component {
 
     componentDidMount() {
         this.props.fetchCharacters();
+        // if(localStorage.getItem("selectedChar")) {
+            // console.log("local:", localStorage.getItem("selectedChar"));
+            // this.props.selectChar(localStorage.getItem("selectedChar"));
+            // this.setSelectedChar(localStorage.getItem("selectedChar"));
+        // }
     }
 
     renderCharacters() {
         return this.props.characters.map(char => {
             return (
-                <Dropdown.Item 
-                    // onClick={(char) => this.renderSelectedChar(char)}
-                    key={char.characterID} 
-                    eventKey={char.characterID}>
-                        {char.lightLevel} - {char.raceName} {char.className}
+                <Dropdown.Item key={char.characterID} eventKey={char.characterID}>
+                    {char.lightLevel} - {char.race.displayProperties.name} {char.class.displayProperties.name}
                 </Dropdown.Item>
             );
         });
@@ -34,7 +36,7 @@ class CharacterSelector extends Component {
 
     setSelectedChar(e) {
         const selectedChar = this.props.characters.find(char => e === char.characterID);
-
+        this.props.selectChar(selectedChar);
         this.setState({
             displaySelectedChar: true,
             selectedChar
@@ -47,12 +49,11 @@ class CharacterSelector extends Component {
             return (
                 <div className="emblem" style={{backgroundImage: `url('https://www.bungie.net${selectedChar.emblemFull}')`}}>
                     <div className="emblemText">
-                        <span className="lightLevel">{selectedChar.lightLevel}</span> - {selectedChar.raceName} {selectedChar.className}
+                        <span className="lightLevel">{selectedChar.lightLevel}</span> - {selectedChar.race.displayProperties.name} {selectedChar.class.displayProperties.name}
                     </div>
                 </div>
             );
         }
-        
     }
 
     render() {
@@ -79,4 +80,4 @@ function mapStateToProps({characters}) {
     return { characters };
 }
 
-export default connect(mapStateToProps, {fetchCharacters})(CharacterSelector);
+export default connect(mapStateToProps, {fetchCharacters, selectChar})(CharacterSelector);

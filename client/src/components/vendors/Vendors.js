@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { selectChar } from '../../actions';
 
 import CharacterSelector from '../CharacterSelector';
 import VendorList from './VendorList';
 
-
 class Vendors extends Component {
+    componentDidMount() {
+        this.props.selectChar();
+    }
+
     render() {
         return (
             <div>
@@ -16,4 +21,4 @@ class Vendors extends Component {
     }
 };
 
-export default Vendors;
+export default connect(null, {selectChar})(Vendors);

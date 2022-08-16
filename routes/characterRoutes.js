@@ -36,18 +36,28 @@ module.exports = app => {
             return charInfo.Response.character.data;
         }));
 
-        const manifest = new Manifest();
+        const manifest = new Manifest(currentUser.access_token);
 
         const parsedCharInfo = await Promise.all(charactersInfo.map(async char => {
             return {
                 characterID: char.characterId,
-                className: await manifest.getClassInfo(char.classHash),
-                raceName: await manifest.getRaceInfo(char.raceHash),
+                class: await manifest.getClassInfo(char.classHash),
+                race: await manifest.getRaceInfo(char.raceHash),
                 lightLevel: char.light,
                 emblemFull: char.emblemBackgroundPath,
                 emblemIcon: char.emblemPath
             }
         }));
         res.send(parsedCharInfo);
+    });
+
+    app.get('/api/selected_char', (req, res) => {
+        res.send(localStorage.getItem("selectedChar"));
+    });
+
+    app.post('/api/select_char', (req, res) => {
+        const selectedChar = req.body.selectedChar;
+        localStorage.setItem("selectedChar", JSON.stringify(selectedChar));
+        res.send(selectedChar);
     });
 }

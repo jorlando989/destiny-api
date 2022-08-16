@@ -1,32 +1,80 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { fetchVendors } from '../../actions';
+import Accordion from 'react-bootstrap/Accordion';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 class VendorList extends Component {
     componentDidMount() {
         this.props.fetchVendors();
     }
 
-    renderVendors() {
-        //get list of vendors from backend
-        return this.props.vendors.map(vendor => {
+    renderVendorItems(saleInfo) {
+        return saleInfo.map(({bucketInfo, group}) => {
+            const renderedGroup = group.map(item => {
+                const saleItemIcon = item.itemInfo.displayProperties.hasIcon ? `https://www.bungie.net${item.itemInfo.displayProperties.icon}` : null;
+                return (
+                    <img src={saleItemIcon} alt="item icon" key={item.itemInfo.displayProperties.name + item.vendorItemIndex} />
+                );
+            });
             return (
-                <div></div>
+                <ListGroup key={bucketInfo.hash} horizontal className="vendorBucket">
+                    <ListGroup.Item className="groupTitle">{bucketInfo.displayProperties.name}</ListGroup.Item>
+                    <ListGroup.Item>{renderedGroup}</ListGroup.Item>
+                </ListGroup>
             );
         });
+    }
+
+    renderGroupVendors(groupInfo) {
+        return groupInfo.map(({vendorInfo, locationInfo, saleInfo}) => {
+            const imgSrc = `https://www.bungie.net${vendorInfo.displayProperties.smallTransparentIcon}`;
+            return (
+                <Accordion.Item key={vendorInfo.vendorIdentifier} eventKey={vendorInfo.vendorIdentifier}>
+                    <Accordion.Header className="vendorHeader">
+                        <img src={imgSrc} alt="vendor icon" className="vendorIcon"></img>
+                        {vendorInfo.displayProperties.name} - <i>{locationInfo[0].displayProperties.name}</i>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                        {this.renderVendorItems(saleInfo)}
+                    </Accordion.Body>
+                </Accordion.Item>
+            );
+        });
+    }
+
+    renderVendors() {
+        if(this.props.selectChar && this.props.vendors) {
+            console.log(this.props.vendors);
+            return this.props.vendors.map(({vendorGroup, groupInfo}) => {
+                return (
+                    <Accordion.Item key={vendorGroup.hash} eventKey={vendorGroup.hash}>
+                        <Accordion.Header>{vendorGroup.categoryName}</Accordion.Header>
+                        <Accordion.Body>
+                            <Accordion defaultActiveKey={['0']} alwaysOpen>
+                                {this.renderGroupVendors(groupInfo)}
+                            </Accordion>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                );
+            });
+        }
     }
 
     render() {
         return (
             <div>
-                {/* {this.renderVendors()} */}
+                <Accordion defaultActiveKey={['0']} alwaysOpen>
+                    {/* should refresh when new character selected */}
+                    {this.renderVendors()}
+                </Accordion>
             </div>
         );
     }
 }
 
-function mapStateToProps({vendors}) {
-    return { vendors };
+function mapStateToProps({vendors, selectChar}) {
+    return { vendors, selectChar };
 }
 
 export default connect(mapStateToProps, {fetchVendors})(VendorList);

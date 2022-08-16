@@ -9,6 +9,7 @@ import Header from './Header';
 import Landing from './Landing';
 import Dashboard from './Dashboard';
 import Vendors from './vendors/Vendors';
+import Footer from './Footer';
 
 class App extends Component {
     componentDidMount() {
@@ -29,7 +30,7 @@ class App extends Component {
                                     <Route exact path="/dashboard" component={Dashboard}/>
                                     <Route exact path="/vendors" component={Vendors}/>
                                 </div>
-                                
+                                <Footer/>
                             </div>
                         </BrowserRouter>
                     </div>
