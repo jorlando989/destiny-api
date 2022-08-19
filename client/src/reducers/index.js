@@ -9,5 +9,5 @@ export default combineReducers({
     auth: authReducer,
     vendors: vendorReducer,
     characters: characterReducer,
-    selectChar: selectCharReducer
+    currChar: selectCharReducer
 });

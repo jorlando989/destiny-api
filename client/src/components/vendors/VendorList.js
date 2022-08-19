@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { fetchVendors } from '../../actions';
 import Accordion from 'react-bootstrap/Accordion';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 class VendorList extends Component {
-    componentDidMount() {
-        this.props.fetchVendors();
-    }
-
     renderVendorItems(saleInfo) {
         return saleInfo.map(({bucketInfo, group}) => {
             const renderedGroup = group.map(item => {
@@ -44,8 +39,8 @@ class VendorList extends Component {
     }
 
     renderVendors() {
-        if(this.props.selectChar && this.props.vendors) {
-            console.log(this.props.vendors);
+        console.log(this.props.currChar, this.props.vendors);
+        if(this.props.currChar && this.props.vendors) {
             return this.props.vendors.map(({vendorGroup, groupInfo}) => {
                 return (
                     <Accordion.Item key={vendorGroup.hash} eventKey={vendorGroup.hash}>
@@ -73,8 +68,8 @@ class VendorList extends Component {
     }
 }
 
-function mapStateToProps({vendors, selectChar}) {
-    return { vendors, selectChar };
+function mapStateToProps({vendors, currChar}) {
+    return { vendors, currChar };
 }
 
-export default connect(mapStateToProps, {fetchVendors})(VendorList);
+export default connect(mapStateToProps, null)(VendorList);

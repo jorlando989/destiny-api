@@ -5,7 +5,7 @@ export default function(state = null, action) {
         case SELECT_CHAR:
             return action.payload || false;
         case FETCH_SELECTED_CHAR:
-            return state;
+            return action.payload || false;
         default:
             return state;
     };

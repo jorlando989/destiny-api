@@ -1,7 +1,6 @@
 const keys = require('../config/keys');
 const mongoose = require('mongoose');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-
 const User = mongoose.model('users');
 
 module.exports = app => {    
@@ -20,11 +19,19 @@ module.exports = app => {
             },
             body: new URLSearchParams({
                 'client_id': keys.clientID,
+                'client_secret': keys.clientSecret,
                 'grant_type': "authorization_code",
                 'code': req.query.code
-            }).toString()
-        })
+            })
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return res.status(401).send({ error: 'error retrieving auth token' });
+        }
         const accessToken = await resp.json();
+        const accessTokenObj = {
+            accessToken,
+            timeRecieved: new Date().getTime()
+        };
 
         //get membership profile
         const allProfilesResp = await fetch(
@@ -35,13 +42,16 @@ module.exports = app => {
                 'Authorization': accessToken
             }
         });
+        if (allProfilesResp.status === 400 || allProfilesResp.status === 401) {
+            return res.status(401).send({ error: 'error retrieving user membership profiles' });
+        }
         const profiles = await allProfilesResp.json();
 
         //save user if new
         const existingUser = await User.findOne({membershipID: accessToken.membership_id});
         if (!existingUser) {
             await new User({
-                accessToken: accessToken,
+                accessToken: accessTokenObj,
                 membershipID: accessToken.membership_id,
                 profiles: profiles.Response.profiles.map(
                     ({dateLastPlayed, membershipType, membershipId, displayName, bungieGlobalDisplayName, bungieGlobalDisplayNameCode}) => {
@@ -61,7 +71,7 @@ module.exports = app => {
             });
         }
         //save user in local storage
-        localStorage.setItem('currentUser', JSON.stringify(accessToken));
+        localStorage.setItem('currentUser', JSON.stringify(accessTokenObj));
         res.redirect(keys.loginRedirectURL);
     });
 

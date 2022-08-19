@@ -13,6 +13,9 @@ class Manifest {
                 'Authorization': "Bearer " + this.access_token
             }
         });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving class info for ' + classHash };
+        }
         const classInfo = await resp.json();
         return classInfo.Response;
     }
@@ -24,6 +27,9 @@ class Manifest {
                 'Authorization': "Bearer " + this.access_token
             }
         });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving race info for ' + raceHash };
+        }
         const raceInfo = await resp.json();
         return raceInfo.Response;
     }
@@ -35,6 +41,9 @@ class Manifest {
                 'Authorization': "Bearer " + this.access_token
             }
         });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving vendor group info for ' + vendorGroupHash };
+        }
         const vendorGroupInfo = await resp.json();
         return vendorGroupInfo.Response;
     }
@@ -46,6 +55,9 @@ class Manifest {
                 'Authorization': "Bearer " + this.access_token
             }
         });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving vendor info for ' + vendorHash };
+        }
         const vendorInfo = await resp.json();
         return vendorInfo.Response;
     }
@@ -57,6 +69,9 @@ class Manifest {
                 'Authorization': "Bearer " + this.access_token
             }
         });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving location info for ' + locationHash };
+        }
         const destinationInfo = await resp.json();
         return destinationInfo.Response;
     }
@@ -68,6 +83,9 @@ class Manifest {
                 'Authorization': "Bearer " + this.access_token
             }
         });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving item info for ' + itemHash };
+        }
         const itemInfo = await resp.json();
         return itemInfo.Response;
     }

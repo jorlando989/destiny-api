@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { selectChar } from '../../actions';
+import { selectChar, fetchVendors } from '../../actions';
 
 import CharacterSelector from '../CharacterSelector';
 import VendorList from './VendorList';
 
 class Vendors extends Component {
     componentDidMount() {
+        //if character is set in local storage, use that as selectedChar
         this.props.selectChar();
+        this.props.fetchVendors();
     }
 
     render() {
@@ -21,4 +23,4 @@ class Vendors extends Component {
     }
 };
 
-export default connect(null, {selectChar})(Vendors);
+export default connect(null, {selectChar, fetchVendors})(Vendors);

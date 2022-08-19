@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCharacters, selectChar } from '../actions';
+import { fetchCharacters, selectChar, fetchVendors } from '../actions';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Container from 'react-bootstrap/Container';
@@ -17,11 +17,6 @@ class CharacterSelector extends Component {
 
     componentDidMount() {
         this.props.fetchCharacters();
-        // if(localStorage.getItem("selectedChar")) {
-            // console.log("local:", localStorage.getItem("selectedChar"));
-            // this.props.selectChar(localStorage.getItem("selectedChar"));
-            // this.setSelectedChar(localStorage.getItem("selectedChar"));
-        // }
     }
 
     renderCharacters() {
@@ -41,11 +36,22 @@ class CharacterSelector extends Component {
             displaySelectedChar: true,
             selectedChar
         });
+        this.props.fetchVendors();
     }
 
     renderSelectedChar(){
+        //if selectedChar saved in localstorage, render selected char
         if(this.state.displaySelectedChar){
             const selectedChar = this.state.selectedChar;
+            return (
+                <div className="emblem" style={{backgroundImage: `url('https://www.bungie.net${selectedChar.emblemFull}')`}}>
+                    <div className="emblemText">
+                        <span className="lightLevel">{selectedChar.lightLevel}</span> - {selectedChar.race.displayProperties.name} {selectedChar.class.displayProperties.name}
+                    </div>
+                </div>
+            );
+        } else if (this.props.currChar) {
+            const selectedChar = this.props.currChar;
             return (
                 <div className="emblem" style={{backgroundImage: `url('https://www.bungie.net${selectedChar.emblemFull}')`}}>
                     <div className="emblemText">
@@ -76,8 +82,8 @@ class CharacterSelector extends Component {
     }
 };
 
-function mapStateToProps({characters}) {
-    return { characters };
+function mapStateToProps({characters, currChar}) {
+    return { characters, currChar };
 }
 
-export default connect(mapStateToProps, {fetchCharacters, selectChar})(CharacterSelector);
+export default connect(mapStateToProps, {fetchCharacters, selectChar, fetchVendors})(CharacterSelector);
