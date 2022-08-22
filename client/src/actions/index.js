@@ -27,6 +27,6 @@ export const selectChar = (selectedChar) => async dispatch => {
 };
 
 export const fetchWeeklyActivities = () => async dispatch => {
-    const res = await axios.get('/api/weekly');
+    const res = await axios.get('/api/challenges');
     dispatch({ type: FETCH_WEEKLY_ACTIVITIES, payload: res.data });
 };

@@ -9,21 +9,19 @@ const Dashboard = () => {
             <h2>Dashboard</h2>
             <CardGroup>
                 <Card style={{width: '18rem'}}>
-                    <Card.Img variant="top" src="holder.js/100px180" />
                     <Card.Body>
                         <Button className="card-button" href="/vendors">View all Vendors</Button>
                     </Card.Body>
                 </Card>
                 <Card style={{width: '18rem'}}>
-                    <Card.Img variant="top" src="holder.js/100px180" />
                     <Card.Body>
                         <Button className="card-button" href="/challenges">View Weekly Challenges</Button>
                     </Card.Body>
                 </Card>
                 <Card style={{width: '18rem'}}>
-                    <Card.Img variant="top" src="holder.js/100px180" />
                     <Card.Body>
-                        <Button className="card-button" href="/daily">View Daily Activities</Button>
+                        <Button className="card-button" href="/daily">View Daily Rotations</Button>
+                        <Button className="card-button" href="/daily">View Weekly Rotations</Button>
                     </Card.Body>
                 </Card>
             </CardGroup>

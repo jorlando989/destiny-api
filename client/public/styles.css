@@ -107,4 +107,11 @@ Button:hover {
     color: black !important;
 }
 
+.loadingSpinner {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    padding-top: 10px;
+}
+
 /* 85ffc7, 297373, ff8552, e6e6e6, 39393a */

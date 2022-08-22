@@ -5,7 +5,7 @@ const checkAccessToken = require('../middlewares/checkAccessToken');
 const Manifest = require('../services/manifest');
 
 module.exports = app => {
-    app.get("/api/weekly", requireLogin, checkAccessToken, async (req, res) => {
+    app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
         const response = await fetch('https://www.bungie.net/Platform/Destiny2/Milestones/', {

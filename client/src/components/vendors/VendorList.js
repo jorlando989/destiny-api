@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import Accordion from 'react-bootstrap/Accordion';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Spinner from 'react-bootstrap/Spinner';
 
 class VendorList extends Component {
     renderVendorItems(saleInfo) {
@@ -40,7 +41,7 @@ class VendorList extends Component {
 
     renderVendors() {
         if(this.props.currChar && this.props.vendors) {
-            return this.props.vendors.map(({vendorGroup, groupInfo}) => {
+            const renderedVendors = this.props.vendors.map(({vendorGroup, groupInfo}) => {
                 return (
                     <Accordion.Item key={vendorGroup.hash} eventKey={vendorGroup.hash}>
                         <Accordion.Header>{vendorGroup.categoryName}</Accordion.Header>
@@ -52,16 +53,24 @@ class VendorList extends Component {
                     </Accordion.Item>
                 );
             });
+            return (
+                <Accordion defaultActiveKey={['0']} alwaysOpen>
+                    {renderedVendors}
+                </Accordion>
+            );
+        } else if (this.props.currChar) {
+            return (
+                <div className='loadingSpinner'>
+                    <Spinner animation="border"/>
+                </div>
+            );
         }
     }
 
     render() {
         return (
             <div>
-                <Accordion defaultActiveKey={['0']} alwaysOpen>
-                    {/* should refresh when new character selected */}
-                    {this.renderVendors()}
-                </Accordion>
+                {this.renderVendors()}
             </div>
         );
     }
