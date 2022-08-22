@@ -4,10 +4,12 @@ import authReducer from "./authReducer";
 import vendorReducer from './vendorReducer';
 import characterReducer from './characterReducer';
 import selectCharReducer from "./selectCharReducer";
+import weeklyActivitiesReducer from './weeklyActivitiesReducer';
 
 export default combineReducers({
     auth: authReducer,
     vendors: vendorReducer,
     characters: characterReducer,
-    currChar: selectCharReducer
+    currChar: selectCharReducer,
+    weeklyActivities: weeklyActivitiesReducer
 });

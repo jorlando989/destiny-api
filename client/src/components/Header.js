@@ -11,15 +11,16 @@ class Header extends Component {
             case null:
                 return;
             case false:
-                return <li><a href="/auth/bungie">Login</a></li>;
-                // <Nav.Link href="/auth/bungie">Login</Nav.Link>
+                return <Nav.Link href="/auth/bungie">Login</Nav.Link>
             default:
                 return [
                     <Nav.Link href="/vendors" key="vendors">Vendors</Nav.Link>,
-                    <NavDropdown title="Activities" key="activities">
-                        <NavDropdown.Item href="">Daily Activities</NavDropdown.Item>
-                        <NavDropdown.Item href="">Weekly Activities</NavDropdown.Item>
+                    <Nav.Link href="/challenges" key="challenges">Challenges</Nav.Link>,
+                    <NavDropdown title="Rotations" key="rotations">
+                        <NavDropdown.Item href="/daily">Daily</NavDropdown.Item>
+                        <NavDropdown.Item href="/weekly">Weekly</NavDropdown.Item>
                     </NavDropdown>,
+                    <Nav.Link href="/progress" key="progress">Progress</Nav.Link>,
                     <Nav.Link href="/api/logout" key="logout">Logout</Nav.Link>
                 ];
         };

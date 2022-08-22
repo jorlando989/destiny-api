@@ -1,3 +1,14 @@
+body {
+    background-image: url('/imgs/destiny2travelerbackground.png');
+    width: 100%;
+    background-repeat: repeat;
+    background-size: contain;
+}
+
+#root {
+    background-color: transparent;
+}
+
 .header {
     background-color: #ff8552;
 }
@@ -7,12 +18,27 @@
     color: white !important;
 }
 
+.card-body a {
+    background-color: #85ffc7 !important;
+    color: black !important;
+}
+
+.card-body a:hover {
+    color: white !important;
+    background-color: #ff8552 !important;
+}
+
 Button {
     background-color: #85ffc7 !important;
     color: black !important;
 }
 
 Button:hover {
+    color: white !important;
+    background-color: #ff8552 !important;
+}
+
+.active {
     color: white !important;
     background-color: #ff8552 !important;
 }
@@ -65,6 +91,20 @@ Button:hover {
 
 .groupTitle {
     text-align: center;
+}
+
+.challengeIcon {
+    height: 50px;
+}
+
+.milestone > .list-group-item {
+    background-color: #297373 ;
+    color: white ;
+}
+
+.rewardItem {
+    background-color: white !important;
+    color: black !important;
 }
 
 /* 85ffc7, 297373, ff8552, e6e6e6, 39393a */

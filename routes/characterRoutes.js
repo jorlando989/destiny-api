@@ -25,7 +25,7 @@ module.exports = app => {
         }
         const characters = await response.json();
 
-        const charactersInfo = await Promise.all(characters.Response.profile.data.characterIds.map(async charID => {
+        const charactersData = characters.Response.profile.data.characterIds.map(async charID => {
             const charQuery = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/Character/${charID}/?components=200`;
 
             const resp = await fetch(charQuery, {
@@ -40,11 +40,12 @@ module.exports = app => {
             
             const charInfo = await resp.json();
             return charInfo.Response.character.data;
-        }));
+        });
+        const charactersInfo = await Promise.all(charactersData);
 
         const manifest = new Manifest(currentUser.accessToken.access_token);
 
-        const parsedCharInfo = await Promise.all(charactersInfo.map(async char => {
+        const parsedCharData = await Promise.all(charactersInfo.map(async char => {
             return {
                 characterID: char.characterId,
                 class: await manifest.getClassInfo(char.classHash),
@@ -54,6 +55,7 @@ module.exports = app => {
                 emblemIcon: char.emblemPath
             }
         }));
+        const parsedCharInfo = await Promise.all(parsedCharData);
         res.send(parsedCharInfo);
     });
 

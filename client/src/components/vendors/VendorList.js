@@ -13,7 +13,7 @@ class VendorList extends Component {
                 );
             });
             return (
-                <ListGroup key={bucketInfo.hash} horizontal className="vendorBucket">
+                <ListGroup key={bucketInfo.displayCategoryHash} horizontal className="vendorBucket">
                     <ListGroup.Item className="groupTitle">{bucketInfo.displayProperties.name}</ListGroup.Item>
                     <ListGroup.Item>{renderedGroup}</ListGroup.Item>
                 </ListGroup>
@@ -39,7 +39,6 @@ class VendorList extends Component {
     }
 
     renderVendors() {
-        console.log(this.props.currChar, this.props.vendors);
         if(this.props.currChar && this.props.vendors) {
             return this.props.vendors.map(({vendorGroup, groupInfo}) => {
                 return (

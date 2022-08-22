@@ -3,15 +3,16 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 
 class Manifest {
     constructor(access_token) {
-        this.access_token = access_token;
+        this.headers = {
+            'X-API-Key': keys.apiKey,
+            'Authorization': "Bearer " + access_token
+        };
+        this.base = 'https://www.bungie.net/Platform/Destiny2/Manifest';
     }
 
     async getClassInfo(classHash) {
-        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyClassDefinition/${classHash}/`, {
-            headers: {
-                'X-API-Key': keys.apiKey,
-                'Authorization': "Bearer " + this.access_token
-            }
+        const resp = await fetch(`${this.base}/DestinyClassDefinition/${classHash}/`, {
+            headers: this.headers
         });
         if (resp.status === 400 || resp.status === 401) {
             return { error: 'error retrieving class info for ' + classHash };
@@ -21,11 +22,8 @@ class Manifest {
     }
 
     async getRaceInfo(raceHash) {
-        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyRaceDefinition/${raceHash}/`, {
-            headers: {
-                'X-API-Key': keys.apiKey,
-                'Authorization': "Bearer " + this.access_token
-            }
+        const resp = await fetch(`${this.base}/DestinyRaceDefinition/${raceHash}/`, {
+            headers: this.headers
         });
         if (resp.status === 400 || resp.status === 401) {
             return { error: 'error retrieving race info for ' + raceHash };
@@ -35,11 +33,8 @@ class Manifest {
     }
 
     async getVendorGroupInfo(vendorGroupHash) {
-        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyVendorGroupDefinition/${vendorGroupHash}/`, {
-            headers: {
-                'X-API-Key': keys.apiKey,
-                'Authorization': "Bearer " + this.access_token
-            }
+        const resp = await fetch(`${this.base}/DestinyVendorGroupDefinition/${vendorGroupHash}/`, {
+            headers: this.headers
         });
         if (resp.status === 400 || resp.status === 401) {
             return { error: 'error retrieving vendor group info for ' + vendorGroupHash };
@@ -49,11 +44,8 @@ class Manifest {
     }
 
     async getVendorInfo(vendorHash) {
-        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyVendorDefinition/${vendorHash}/`, {
-            headers: {
-                'X-API-Key': keys.apiKey,
-                'Authorization': "Bearer " + this.access_token
-            }
+        const resp = await fetch(`${this.base}/DestinyVendorDefinition/${vendorHash}/`, {
+            headers: this.headers
         });
         if (resp.status === 400 || resp.status === 401) {
             return { error: 'error retrieving vendor info for ' + vendorHash };
@@ -63,11 +55,8 @@ class Manifest {
     }
 
     async getLocationInfo(locationHash) {
-        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyDestinationDefinition/${locationHash}/`, {
-            headers: {
-                'X-API-Key': keys.apiKey,
-                'Authorization': "Bearer " + this.access_token
-            }
+        const resp = await fetch(`${this.base}/DestinyDestinationDefinition/${locationHash}/`, {
+            headers: this.headers
         });
         if (resp.status === 400 || resp.status === 401) {
             return { error: 'error retrieving location info for ' + locationHash };
@@ -77,17 +66,47 @@ class Manifest {
     }
 
     async getItemInfo(itemHash) {
-        const resp = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/${itemHash}/`, {
-            headers: {
-                'X-API-Key': keys.apiKey,
-                'Authorization': "Bearer " + this.access_token
-            }
+        const resp = await fetch(`${this.base}/DestinyInventoryItemDefinition/${itemHash}/`, {
+            headers: this.headers
         });
         if (resp.status === 400 || resp.status === 401) {
             return { error: 'error retrieving item info for ' + itemHash };
         }
         const itemInfo = await resp.json();
         return itemInfo.Response;
+    }
+
+    async getMilestoneInfo(milestoneHash) {
+        const resp = await fetch(`${this.base}/DestinyMilestoneDefinition/${milestoneHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving milestone info for ' + milestoneHash };
+        }
+        const milestoneInfo = await resp.json();
+        return milestoneInfo.Response;
+    }
+
+    async getActivityInfo(activityHash) {
+        const resp = await fetch(`${this.base}/DestinyActivityDefinition/${activityHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving activity info for ' + activityHash };
+        }
+        const activityInfo = await resp.json();
+        return activityInfo.Response;
+    }
+
+    async getObjectiveInfo(objectiveHash) {
+        const resp = await fetch(`${this.base}/DestinyObjectiveDefinition/${objectiveHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving objective info for ' + objectiveHash };
+        }
+        const objectiveInfo = await resp.json();
+        return objectiveInfo.Response;
     }
 }
 

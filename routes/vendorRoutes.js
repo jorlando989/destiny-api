@@ -6,15 +6,11 @@ const checkAccessToken = require('../middlewares/checkAccessToken');
 const Manifest = require('../services/manifest');
 const User = mongoose.model('users');
 
-module.exports = app => { 
-    //add back in checkAccessToken
+module.exports = app => {
     app.get("/api/vendors", requireLogin, checkAccessToken, async (req, res) => {
-        //not being called on dropdown selection - !!
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
         const selectedChar = JSON.parse(localStorage.getItem("selectedChar"));
-
-        console.log("api selected char", selectedChar);
 
         if(selectedChar === null) {
             res.send(null);
