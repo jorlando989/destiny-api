@@ -71,6 +71,56 @@ Button:hover {
     margin-right: 5px;
 }
 
+.vendorRanks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px 16px;
+}
+
+.vendorRankInfo {
+    display: flex;
+    flex-direction: row;
+}
+
+.pointsIcon {
+    width: 15px;
+    margin-right: 4px;
+}
+
+.rankIcon {
+    height: 52px;
+    width: 52px;
+    border-radius: 50%;
+    background-color: black;
+}
+
+.streakRow {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+
+.streakBox {
+    border: #999 1px solid;
+    box-sizing: border-box;
+    background-color: black;
+    margin-right: 4px;
+    height: 14px;
+    width: 14px;
+}
+
+.streakBoxComplete {
+    background-color: #dde338;
+    height: 8px;
+    width: 8px;
+    margin: 2px;
+}
+
+.progressBars {
+    width: 75px;
+}
+
 .vendorHeader .accordion-button {
     background-color: #297373 !important;
     color: white !important;

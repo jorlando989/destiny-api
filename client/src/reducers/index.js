@@ -5,11 +5,13 @@ import vendorReducer from './vendorReducer';
 import characterReducer from './characterReducer';
 import selectCharReducer from "./selectCharReducer";
 import weeklyActivitiesReducer from './weeklyActivitiesReducer';
+import vendorRanksReducer from "./vendorRanksReducer";
 
 export default combineReducers({
     auth: authReducer,
     vendors: vendorReducer,
     characters: characterReducer,
     currChar: selectCharReducer,
-    weeklyActivities: weeklyActivitiesReducer
+    weeklyActivities: weeklyActivitiesReducer,
+    vendorRanks: vendorRanksReducer
 });

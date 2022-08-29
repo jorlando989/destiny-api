@@ -17,10 +17,10 @@ class Header extends Component {
                     <Nav.Link href="/vendors" key="vendors">Vendors</Nav.Link>,
                     <Nav.Link href="/challenges" key="challenges">Challenges</Nav.Link>,
                     <NavDropdown title="Rotations" key="rotations">
-                        <NavDropdown.Item href="">Daily</NavDropdown.Item>
-                        <NavDropdown.Item href="">Weekly</NavDropdown.Item>
+                        <NavDropdown.Item href="/daily">Daily</NavDropdown.Item>
+                        <NavDropdown.Item href="/weekly">Weekly</NavDropdown.Item>
                     </NavDropdown>,
-                    <Nav.Link href="" key="progress">Progress</Nav.Link>,
+                    <Nav.Link href="/progress" key="progress">Progress</Nav.Link>,
                     <Nav.Link href="/api/logout" key="logout">Logout</Nav.Link>
                 ];
         };

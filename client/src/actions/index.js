@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_VENDORS, FETCH_CHARACTERS, FETCH_SELECTED_CHAR, SELECT_CHAR, FETCH_WEEKLY_ACTIVITIES } from './types';
+import { FETCH_USER, FETCH_VENDORS, FETCH_CHARACTERS, FETCH_SELECTED_CHAR, SELECT_CHAR, FETCH_WEEKLY_ACTIVITIES, FETCH_VENDOR_RANKS } from './types';
 
 export const fetchUser = () => async dispatch => {
     const res = await axios.get('/api/current_user');
@@ -29,4 +29,9 @@ export const selectChar = (selectedChar) => async dispatch => {
 export const fetchWeeklyActivities = () => async dispatch => {
     const res = await axios.get('/api/challenges');
     dispatch({ type: FETCH_WEEKLY_ACTIVITIES, payload: res.data });
+};
+
+export const fetchVendorRanks = () => async dispatch => {
+    const res = await axios.get('/api/vendor_ranks');
+    dispatch({ type: FETCH_VENDOR_RANKS, payload: res.data });
 };

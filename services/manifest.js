@@ -108,6 +108,17 @@ class Manifest {
         const objectiveInfo = await resp.json();
         return objectiveInfo.Response;
     }
+
+    async getProgressionInfo(progressionHash) {
+        const resp = await fetch(`${this.base}/DestinyProgressionDefinition/${progressionHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving progression info for ' + progressionHash };
+        }
+        const progressionInfo = await resp.json();
+        return progressionInfo.Response;
+    }
 }
 
 module.exports = Manifest;

@@ -6,6 +6,15 @@ const checkAccessToken = require('../middlewares/checkAccessToken');
 const Manifest = require('../services/manifest');
 const User = mongoose.model('users');
 
+const rankProgressionToStreakProgression = {
+    2083746873: '2203850209',     //crucible
+    1647151960: '2572719399',     //glory
+    3008065600: '2939151659',     //gambit
+    457612306: '600547406',       //vanguard
+    2755675426: '70699614',       //trials
+    527867935: '1999336308'       //strange favor (dares)
+};
+
 module.exports = app => {
     app.get("/api/vendors", requireLogin, checkAccessToken, async (req, res) => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -121,5 +130,75 @@ module.exports = app => {
         const vendorGroupResults = await Promise.all(vendorGroupsInfo);
 
         res.send(vendorGroupResults);
+    });
+
+    app.get('/api/vendor_ranks', requireLogin, checkAccessToken, async (req, res) => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
+        const selectedChar = JSON.parse(localStorage.getItem("selectedChar"));
+
+        if(selectedChar === null) {
+            res.send(null);
+            return;
+        }
+
+        //get vendor rank information
+        const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/Character/${selectedChar.characterID}/Vendors/?components=400`;
+        const response = await fetch(query, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': "Bearer " + currentUser.accessToken.access_token
+            }
+        });
+        if (response.status === 400 || response.status === 401) {
+            return res.status(401).send({ error: 'error retrieving vendors' });
+        }
+        const respData = await response.json();
+        const vendors = respData.Response.vendors.data;
+
+        //filter for vendors with progress
+        const rankVendorsData = Object.values(vendors).filter(vendor => {
+            return vendor.hasOwnProperty('progression');
+        });
+
+        //get progression for selected character
+        const query2 = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/Character/${selectedChar.characterID}/?components=202`;
+        const response2 = await fetch(query2, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': "Bearer " + currentUser.accessToken.access_token
+            }
+        });
+        if (response2.status === 400 || response2.status === 401) {
+            return res.status(401).send({ error: 'error retrieving vendors' });
+        }
+        const respData2 = await response2.json();
+        const characterProgressionData = respData2.Response.progressions.data.progressions;
+
+        //get streak info for relevant vendors
+        const rankVendors = rankVendorsData.map(vendor => {
+            if (vendor.progression.progressionHash in rankProgressionToStreakProgression) {
+                return {
+                    vendor,
+                    progressInfo: characterProgressionData[rankProgressionToStreakProgression[vendor.progression.progressionHash]]
+                }
+            } else {
+                return {vendor}
+            }
+        });
+
+        const manifest = new Manifest(currentUser.accessToken.access_token);
+        
+        const progressionData = rankVendors.map(async ({vendor, progressInfo}) => {
+            const rankInfo = await manifest.getProgressionInfo(vendor.progression.progressionHash);
+            return {
+                rankInfo,
+                vendor,
+                progressInfo
+            };
+        });
+        const progressionInfo = await Promise.all(progressionData);
+
+        res.send(progressionInfo);
     });
 }

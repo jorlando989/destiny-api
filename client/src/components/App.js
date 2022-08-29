@@ -10,7 +10,9 @@ import Dashboard from './Dashboard';
 import Vendors from './vendors/Vendors';
 import Footer from './Footer';
 import WeeklyActivities from './activities/WeeklyActivities';
-import DailyActivities from './activities/DailyActivities';
+import DailyRotations from './activities/DailyRotations';
+import WeeklyRotations from './activities/WeeklyRotations';
+import Progress from './Progress';
 
 class App extends Component {
     componentDidMount() {
@@ -30,7 +32,9 @@ class App extends Component {
                                 <Route exact path="/dashboard" component={Dashboard}/>
                                 <Route exact path="/vendors" component={Vendors}/>
                                 <Route exact path="/challenges" component={WeeklyActivities}/>
-                                <Route exact path="/daily" component={DailyActivities}/>
+                                <Route exact path="/daily" component={DailyRotations}/>
+                                <Route exact path="/weekly" component={WeeklyRotations}/>
+                                <Route exact path="/progress" component={Progress}/>
                             </div>
                             <Footer/>
                         </div>

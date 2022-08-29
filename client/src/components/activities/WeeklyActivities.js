@@ -4,6 +4,7 @@ import { fetchWeeklyActivities } from '../../actions';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import Spinner from 'react-bootstrap/Spinner';
 
 class WeeklyActivities extends Component {
     componentDidMount () {
@@ -162,6 +163,7 @@ class WeeklyActivities extends Component {
                         );
                     });
                 }
+                return null;
             });
         }
     }
@@ -194,6 +196,13 @@ class WeeklyActivities extends Component {
 
     renderMilestones() {
         // console.log(this.props.weeklyActivities);
+        if (!this.props.weeklyActivities) {
+            return (
+                <div className='loadingSpinner'>
+                    <Spinner animation="border"/>
+                </div>
+            );
+        }
         return this.props.weeklyActivities.map(({milestoneInfo, activitiesInfo, activityRewardsInfo, questRewardsInfo, challengeRewardInfo, milestoneRewards}) => {
             //dont show dungeons or raids
             if (milestoneInfo.displayProperties.name === "Weekly Dungeon Challenge"

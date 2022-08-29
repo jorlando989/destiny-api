@@ -20,8 +20,13 @@ const Dashboard = () => {
                 </Card>
                 <Card style={{width: '18rem'}}>
                     <Card.Body>
-                        <Button className="card-button" href="">View Daily Rotations</Button>
-                        <Button className="card-button" href="">View Weekly Rotations</Button>
+                        <Button className="card-button" href="/daily">View Daily Rotations</Button>
+                        <Button className="card-button" href="/weekly">View Weekly Rotations</Button>
+                    </Card.Body>
+                </Card>
+                <Card style={{width: '18rem'}}>
+                    <Card.Body>
+                        <Button className="card-button" href="/progress">View Progress</Button>
                     </Card.Body>
                 </Card>
             </CardGroup>

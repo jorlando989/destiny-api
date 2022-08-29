@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCharacters, selectChar, fetchVendors } from '../actions';
+import { fetchCharacters, selectChar, fetchVendors, fetchVendorRanks } from '../actions';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Container from 'react-bootstrap/Container';
@@ -36,7 +36,9 @@ class CharacterSelector extends Component {
             displaySelectedChar: true,
             selectedChar
         });
+        //should this have to be called here? - shouldnt it automatically refresh on whatever pages are using the props
         this.props.fetchVendors();
+        this.props.fetchVendorRanks();
     }
 
     renderSelectedChar(){
@@ -86,4 +88,4 @@ function mapStateToProps({characters, currChar}) {
     return { characters, currChar };
 }
 
-export default connect(mapStateToProps, {fetchCharacters, selectChar, fetchVendors})(CharacterSelector);
+export default connect(mapStateToProps, {fetchCharacters, selectChar, fetchVendors, fetchVendorRanks})(CharacterSelector);
