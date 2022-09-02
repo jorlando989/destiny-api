@@ -66,6 +66,23 @@ Button:hover {
     font-weight: bolder;
 }
 
+.challengeProgress {
+    width: 100%;
+    margin-top: 6px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.progress-bar {
+    background-color: #ff8552 !important;
+    color: black !important;
+}
+
+.rewardIcon {
+    height: 20px;
+    margin-right: 4px;
+}
+
 .vendorIcon {
     height: 30px;
     margin-right: 5px;
@@ -87,11 +104,18 @@ Button:hover {
     margin-right: 4px;
 }
 
+.headerIcon {
+    background-color: #39393a;
+    height: 55px;
+    width: 55px;
+    margin-right: 10px;
+}
+
 .rankIcon {
     height: 52px;
     width: 52px;
     border-radius: 50%;
-    background-color: black;
+    background-color: #39393a;
 }
 
 .streakRow {
@@ -115,6 +139,10 @@ Button:hover {
     height: 8px;
     width: 8px;
     margin: 2px;
+}
+
+.challengeBox {
+    margin-top: 6px;
 }
 
 .progressBars {
@@ -157,11 +185,42 @@ Button:hover {
     color: black !important;
 }
 
+.checkboxAndLabel {
+    margin-left: auto; 
+    margin-right: 0;
+}
+
+.fieldLabel {
+    margin-left: 5px;
+}
+
 .loadingSpinner {
     margin: auto;
     width: 50%;
     text-align: center;
     padding-top: 10px;
+}
+
+.seasonalChallenges {
+    margin-top: 5px !important;
+}
+
+.seasonalChallengeInfo {
+    margin-bottom: 5px !important; 
+    padding: 5px;
+}
+
+hr {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.tab-pane {
+    background-color: #85ffc7 !important;
+}
+
+.tab-pane > div {
+    background-color: #297373;
 }
 
 /* 85ffc7, 297373, ff8552, e6e6e6, 39393a */

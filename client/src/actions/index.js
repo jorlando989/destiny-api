@@ -1,5 +1,15 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_VENDORS, FETCH_CHARACTERS, FETCH_SELECTED_CHAR, SELECT_CHAR, FETCH_WEEKLY_ACTIVITIES, FETCH_VENDOR_RANKS } from './types';
+import { 
+    FETCH_USER, 
+    FETCH_VENDORS, 
+    FETCH_CHARACTERS, 
+    FETCH_SELECTED_CHAR, 
+    SELECT_CHAR, 
+    FETCH_WEEKLY_ACTIVITIES, 
+    FETCH_VENDOR_RANKS, 
+    FETCH_SEASONAL_CHALLENGES,
+    SET_SEASONAL_CHALLENGE_VISIBILITY
+} from './types';
 
 export const fetchUser = () => async dispatch => {
     const res = await axios.get('/api/current_user');
@@ -35,3 +45,13 @@ export const fetchVendorRanks = () => async dispatch => {
     const res = await axios.get('/api/vendor_ranks');
     dispatch({ type: FETCH_VENDOR_RANKS, payload: res.data });
 };
+
+export const fetchSeasonalChallenges = () => async dispatch => {
+    const res = await axios.get('/api/seasonal_challenges');
+    dispatch({ type: FETCH_SEASONAL_CHALLENGES, payload: res.data });
+}
+
+export const setCompletedChallengedVisibility = () => async dispatch => {
+    const res = await axios.get('/api/hide_seasonal_challenges');
+    dispatch({ type: SET_SEASONAL_CHALLENGE_VISIBILITY, payload: res.data });
+}

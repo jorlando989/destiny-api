@@ -16,6 +16,7 @@ require('./routes/authRoutes')(app);
 require('./routes/characterRoutes')(app);
 require('./routes/vendorRoutes')(app);
 require('./routes/activityRoutes')(app);
+require('./routes/recordsRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   //ensure Express serves up production assets

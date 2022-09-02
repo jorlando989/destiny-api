@@ -119,6 +119,39 @@ class Manifest {
         const progressionInfo = await resp.json();
         return progressionInfo.Response;
     }
+
+    async getPresentationNodeInfo(presentationNodeHash) {
+        const resp = await fetch(`${this.base}/DestinyPresentationNodeDefinition/${presentationNodeHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving presentation node info for ' + presentationNodeHash };
+        }
+        const presentationNodeInfo = await resp.json();
+        return presentationNodeInfo.Response;
+    }
+
+    async getRecordInfo(recordHash) {
+        const resp = await fetch(`${this.base}/DestinyRecordDefinition/${recordHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving record info for ' + recordHash };
+        }
+        const recordInfo = await resp.json();
+        return recordInfo.Response;
+    }
+
+    async getSeasonInfo(seasonHash) {
+        const resp = await fetch(`${this.base}/DestinySeasonDefinition/${seasonHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving season info for ' + seasonHash };
+        }
+        const seasonInfo = await resp.json();
+        return seasonInfo.Response;
+    }
 }
 
 module.exports = Manifest;

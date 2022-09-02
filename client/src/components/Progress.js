@@ -4,6 +4,7 @@ import CharacterSelector from './CharacterSelector';
 import { connect } from 'react-redux';
 import { fetchVendorRanks, selectChar } from '../actions';
 import VendorRanks from "./vendors/VendorRanks";
+import SeasonalChallenges from "./records/SeasonalChallenges";
 
 class Progress extends Component {
     componentDidMount() {
@@ -18,7 +19,6 @@ class Progress extends Component {
                 <h2>Progress</h2>
                 <CharacterSelector />
                 <br />
-
                 <Accordion defaultActiveKey={['0','1','2','3','4']} alwaysOpen>
                     <Accordion.Item key='0' eventKey='0'>
                         <Accordion.Header><h5>Vendor Rank Progress</h5></Accordion.Header>
@@ -29,7 +29,7 @@ class Progress extends Component {
                     <Accordion.Item key='1' eventKey='1'>
                         <Accordion.Header><h5>Seasonal Challenges</h5></Accordion.Header>
                         <Accordion.Body>
-                            
+                            <SeasonalChallenges />
                         </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item key='2' eventKey='2'>
