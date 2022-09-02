@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { fetchSeasonalChallenges, setCompletedChallengedVisibility } from '../../actions';
+import { setCompletedChallengedVisibility } from '../../actions';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
@@ -9,7 +9,6 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 
 class SeasonalChallenges extends Component {
     componentDidMount() {
-        this.props.fetchSeasonalChallenges();
         this.props.setCompletedChallengedVisibility();
     }
 
@@ -155,4 +154,4 @@ function mapStateToProps({seasonalChallenges, currChar, seasonalChallengeVisibil
     return { seasonalChallenges, currChar, seasonalChallengeVisibility };
 }
 
-export default connect(mapStateToProps, { fetchSeasonalChallenges, setCompletedChallengedVisibility })(SeasonalChallenges);
+export default connect(mapStateToProps, { setCompletedChallengedVisibility })(SeasonalChallenges);
