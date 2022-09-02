@@ -95,4 +95,10 @@ function mapStateToProps({characters, currChar}) {
     return { characters, currChar };
 }
 
-export default connect(mapStateToProps, {fetchCharacters, selectChar, fetchVendors, fetchVendorRanks, fetchSeasonalChallenges})(CharacterSelector);
+export default connect(mapStateToProps, {
+    fetchCharacters, 
+    selectChar, 
+    fetchVendors, 
+    fetchVendorRanks, 
+    fetchSeasonalChallenges
+})(CharacterSelector);

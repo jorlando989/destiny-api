@@ -9,42 +9,48 @@ body {
     background-color: transparent;
 }
 
+/* 85ffc7, 297373, ff8552, e6e6e6, 39393a */
+
 .header {
     background-color: #ff8552;
 }
 
-.card {
+.tab-pane {
+    background-color: #85ffc7 !important;
+}
+
+.tab-pane > div {
+    background-color: #297373;
+}
+
+.card-body a:hover, Button:hover, .active, .progress-bar {
+    background-color: #ff8552 !important;
+    color: black !important;
+}
+
+Button, .card-body a {
+    background-color: #85ffc7 !important;
+    color: black !important;
+}
+
+.vendorHeader .accordion-button, .card, .milestone > .list-group-item {
     background-color: #297373 !important;
     color: white !important;
 }
 
-.card-body a {
-    background-color: #85ffc7 !important;
+.rewardItem {
+    background-color: white !important;
     color: black !important;
 }
 
-.card-body a:hover {
+.seasonalChallengeInfo {
     color: white !important;
-    background-color: #ff8552 !important;
-}
-
-Button {
-    background-color: #85ffc7 !important;
-    color: black !important;
-}
-
-Button:hover {
-    color: white !important;
-    background-color: #ff8552 !important;
-}
-
-.active {
-    color: white !important;
-    background-color: #ff8552 !important;
+    margin-bottom: 5px !important; 
+    padding: 5px;
 }
 
 .emblem {
-    background:  black;
+    background: black;
     color: white;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     font-size: 2em;
@@ -71,11 +77,6 @@ Button:hover {
     margin-top: 6px;
     margin-left: 4px;
     margin-right: 4px;
-}
-
-.progress-bar {
-    background-color: #ff8552 !important;
-    color: black !important;
 }
 
 .rewardIcon {
@@ -141,17 +142,8 @@ Button:hover {
     margin: 2px;
 }
 
-.challengeBox {
-    margin-top: 6px;
-}
-
 .progressBars {
     width: 75px;
-}
-
-.vendorHeader .accordion-button {
-    background-color: #297373 !important;
-    color: white !important;
 }
 
 .footer {
@@ -163,26 +155,12 @@ Button:hover {
     color: rgba(0, 0, 0, 0.55);
 }
 
-.vendorBucket img {
+.vendorBucket img, .challengeIcon {
     height: 50px !important;
 }
 
 .groupTitle {
     text-align: center;
-}
-
-.challengeIcon {
-    height: 50px;
-}
-
-.milestone > .list-group-item {
-    background-color: #297373 ;
-    color: white ;
-}
-
-.rewardItem {
-    background-color: white !important;
-    color: black !important;
 }
 
 .checkboxAndLabel {
@@ -201,26 +179,11 @@ Button:hover {
     padding-top: 10px;
 }
 
-.seasonalChallenges {
+.seasonalChallenges, .challengeBox {
     margin-top: 5px !important;
-}
-
-.seasonalChallengeInfo {
-    margin-bottom: 5px !important; 
-    padding: 5px;
 }
 
 hr {
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
-
-.tab-pane {
-    background-color: #85ffc7 !important;
-}
-
-.tab-pane > div {
-    background-color: #297373;
-}
-
-/* 85ffc7, 297373, ff8552, e6e6e6, 39393a */

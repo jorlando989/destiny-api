@@ -104,10 +104,10 @@ module.exports = app => {
     });
 
     app.get('/api/hide_seasonal_challenges', (req, res) => {
-        if (JSON.parse(localStorage.getItem('hide_seasonal_challenges'))) {
-            localStorage.setItem('hide_seasonal_challenges', JSON.stringify(false));
-        } else {
+        if (!JSON.parse(localStorage.getItem('hide_seasonal_challenges'))) {
             localStorage.setItem('hide_seasonal_challenges', JSON.stringify(true));
+        } else {
+            localStorage.setItem('hide_seasonal_challenges', JSON.stringify(false));
         }
         res.send(JSON.parse(localStorage.getItem('hide_seasonal_challenges')));
     });
