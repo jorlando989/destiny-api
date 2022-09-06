@@ -8,7 +8,8 @@ import {
     FETCH_WEEKLY_ACTIVITIES, 
     FETCH_VENDOR_RANKS, 
     FETCH_SEASONAL_CHALLENGES,
-    SET_SEASONAL_CHALLENGE_VISIBILITY
+    SET_SEASONAL_CHALLENGE_VISIBILITY,
+    FETCH_DAILY_LOST_SECTOR
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -54,4 +55,9 @@ export const fetchSeasonalChallenges = () => async dispatch => {
 export const setCompletedChallengedVisibility = () => async dispatch => {
     const res = await axios.get('/api/hide_seasonal_challenges');
     dispatch({ type: SET_SEASONAL_CHALLENGE_VISIBILITY, payload: res.data });
+}
+
+export const fetchDailyLostSector = () => async dispatch => {
+    const res = await axios.get('/api/lost_sector');
+    dispatch({ type: FETCH_DAILY_LOST_SECTOR, payload: res.data });
 }

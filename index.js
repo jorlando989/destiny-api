@@ -2,7 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 var LocalStorage = require('node-localstorage').LocalStorage;
 const keys = require('./config/keys');
+
 require('./models/User');
+require('./models/lostSector');
+require('./models/lostSectorReward');
 
 mongoose.connect(keys.mongoURI);
 

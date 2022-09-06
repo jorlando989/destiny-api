@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Accordion from 'react-bootstrap/Accordion';
-import CharacterSelector from './CharacterSelector';
 import { connect } from 'react-redux';
 import { fetchVendorRanks, selectChar, fetchSeasonalChallenges } from '../actions';
+import Accordion from 'react-bootstrap/Accordion';
+import CharacterSelector from './CharacterSelector';
 import VendorRanks from "./vendors/VendorRanks";
 import SeasonalChallenges from "./records/SeasonalChallenges";
 
@@ -57,4 +57,8 @@ class Progress extends Component {
     }
 }
 
-export default connect(null, { selectChar, fetchVendorRanks, fetchSeasonalChallenges })(Progress);
+export default connect(null, { 
+    selectChar, 
+    fetchVendorRanks, 
+    fetchSeasonalChallenges 
+})(Progress);

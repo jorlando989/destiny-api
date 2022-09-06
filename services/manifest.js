@@ -98,6 +98,17 @@ class Manifest {
         return activityInfo.Response;
     }
 
+    async getActivityModifierInfo(activityModifierHash) {
+        const resp = await fetch(`${this.base}/DestinyActivityModifierDefinition/${activityModifierHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving activity modifier info for ' + activityModifierHash };
+        }
+        const activityModifierInfo = await resp.json();
+        return activityModifierInfo.Response;
+    }
+
     async getObjectiveInfo(objectiveHash) {
         const resp = await fetch(`${this.base}/DestinyObjectiveDefinition/${objectiveHash}/`, {
             headers: this.headers

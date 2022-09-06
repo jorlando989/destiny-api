@@ -84,18 +84,29 @@ Button, .card-body a {
     margin-right: 4px;
 }
 
+.display-in-row-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.icon-m5 {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
 .vendorIcon {
     height: 30px;
     margin-right: 5px;
 }
 
-.vendorRanks {
+.vendorRanks, .display-in-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 24px 16px;
 }
 
-.vendorRankInfo {
+.vendorRankInfo, .display-in-row {
     display: flex;
     flex-direction: row;
 }
@@ -163,7 +174,7 @@ Button, .card-body a {
     text-align: center;
 }
 
-.checkboxAndLabel {
+.checkboxAndLabel, .align-right {
     margin-left: auto; 
     margin-right: 0;
 }

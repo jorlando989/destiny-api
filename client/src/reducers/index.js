@@ -8,6 +8,7 @@ import weeklyActivitiesReducer from './weeklyActivitiesReducer';
 import vendorRanksReducer from "./vendorRanksReducer";
 import seasonalChallengesReducer from "./seasonalChallengesReducer";
 import seasonalChallengeVisibilityReducer from "./seasonalChallengeVisibilityReducer";
+import lostSectorReducer from "./lostSectorReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -17,5 +18,6 @@ export default combineReducers({
     weeklyActivities: weeklyActivitiesReducer,
     vendorRanks: vendorRanksReducer,
     seasonalChallenges: seasonalChallengesReducer,
-    seasonalChallengeVisibility: seasonalChallengeVisibilityReducer
+    seasonalChallengeVisibility: seasonalChallengeVisibilityReducer,
+    dailyLostSector: lostSectorReducer
 });

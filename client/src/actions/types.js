@@ -7,3 +7,4 @@ export const FETCH_WEEKLY_ACTIVITIES = 'fetch_weekly_activities';
 export const FETCH_VENDOR_RANKS = 'fetch_vendor_ranks';
 export const FETCH_SEASONAL_CHALLENGES = 'fetch_seasonal_challenges';
 export const SET_SEASONAL_CHALLENGE_VISIBILITY = 'set_seasonal_challenge_visibility';
+export const FETCH_DAILY_LOST_SECTOR = 'fetch_daily_lost_sector';

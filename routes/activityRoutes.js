@@ -1,8 +1,13 @@
 const keys = require('../config/keys');
+const mongoose = require('mongoose');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const requireLogin = require('../middlewares/requireLogin');
 const checkAccessToken = require('../middlewares/checkAccessToken');
+const s18LostSectorRotation = require('../data/lostSectorRotations');
+
 const Manifest = require('../services/manifest');
+const LostSectors = mongoose.model('lostSector');
+const LostSectorRewards = mongoose.model('lostSectorReward');
 
 module.exports = app => {
     app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
@@ -157,5 +162,64 @@ module.exports = app => {
         });
 
         res.send(filteredActivityInfo);
+    });
+    
+    app.get('/api/lost_sector', requireLogin, checkAccessToken, async (req, res) => {
+        //get todays lost sector name
+        const currLostSector = await LostSectors.findOne({isActive: true});
+        const currReward = await LostSectorRewards.findOne({isActive: true});
+
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const manifest = new Manifest(currentUser.accessToken.access_token);
+
+        //get info for lost sector
+        const currLostSectorHashes = s18LostSectorRotation[currLostSector.name];
+        const masterInfo = await manifest.getActivityInfo(currLostSectorHashes.master);
+        const legendInfo = await manifest.getActivityInfo(currLostSectorHashes.legend);
+
+        //get modifier info 
+        const masterModifierData = masterInfo.modifiers.map(async ({activityModifierHash}) => {
+            const modifierInfo = await manifest.getActivityModifierInfo(activityModifierHash);
+            return modifierInfo;
+        });
+        const masterModifiers = await Promise.all(masterModifierData);
+
+        const legendModifierData = legendInfo.modifiers.map(async ({activityModifierHash}) => {
+            const modifierInfo = await manifest.getActivityModifierInfo(activityModifierHash);
+            return modifierInfo;
+        });
+        const legendModifiers = await Promise.all(legendModifierData);
+
+        //filter hidden modifiers
+        const filteredMasterModifiers = masterModifiers.filter(mod => {
+            return mod.displayInNavMode && mod.displayProperties.name !== '';
+        });
+        const filteredLegendModifiers = legendModifiers.filter(mod => {
+            return mod.displayInNavMode && mod.displayProperties.name !== '';
+        });
+
+        //get reward info
+        const masterRewardData = masterInfo.rewards.map(async ({rewardItems}) => {
+            const rewardInfo = await manifest.getItemInfo(rewardItems[0].itemHash);
+            return rewardInfo;
+        });
+        const masterRewards = await Promise.all(masterRewardData);
+
+        const legendRewardData = legendInfo.rewards.map(async ({rewardItems}) => {
+            const rewardInfo = await manifest.getItemInfo(rewardItems[0].itemHash);
+            return rewardInfo;
+        });
+        const legendRewards = await Promise.all(legendRewardData);
+
+        res.send({
+            currLostSector,
+            currReward,
+            masterInfo,
+            masterModifiers: filteredMasterModifiers,
+            masterRewards,
+            legendInfo,
+            legendModifiers: filteredLegendModifiers,
+            legendRewards
+        });
     });
 }
