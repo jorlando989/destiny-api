@@ -2,10 +2,27 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import {fetchDailyLostSector} from '../../actions';
 import Card from 'react-bootstrap/Card';
+import Countdown from 'react-countdown';
 
 class DailyActivities extends Component {
     componentDidMount() {
         this.props.fetchDailyLostSector();
+    }
+
+    renderCountdown() {
+        const now = new Date();
+        //reset time is either next day at 1pm or same day at 1 pm
+        let resetTime = null;
+        if (now.getHours() >= 13) {
+            //reset is tomorrow at 1pm
+            resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 13);
+        } else {
+            //reset is today at 1pm
+            resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13);
+        }
+        return (
+            <Countdown date={resetTime} />
+        );
     }
 
     renderModifiers(modifiers) {
@@ -20,7 +37,6 @@ class DailyActivities extends Component {
     }
 
     renderRewards(rewards, currReward) {
-        console.log(rewards);
         return rewards.map(reward => {
             if (reward.displayProperties.name.includes("Exotic") && !reward.displayProperties.name.includes(currReward.type)) {
                 return;
@@ -80,7 +96,7 @@ class DailyActivities extends Component {
             <div>
                 <div className='display-in-row'>
                     <h2>Daily Activities</h2>
-                    <h5 className='align-right'>Time until Reset: </h5>
+                    <h5 className='align-right'>Time until Reset: {this.renderCountdown()}</h5>
                 </div>
 
                 <h4>Lost Sector</h4>
