@@ -111,7 +111,6 @@ class SeasonalChallenges extends Component {
     }
 
     render() {
-        console.log(this.props.seasonalChallenges);
         if (this.props.seasonalChallenges.hasOwnProperty('seasonalChallengesData')) {
             const imgSrc = `https://www.bungie.net${this.props.seasonalChallenges.seasonInfo.displayProperties.icon}`;
             return (
@@ -130,7 +129,7 @@ class SeasonalChallenges extends Component {
                             </label>
                         </div>
                     </div>
-                    <Tab.Container id="left-tabs-example" defaultActiveKey="Week 1">
+                    <Tab.Container id="left-tabs-example" defaultActiveKey="Seasonal">
                         <Row className="seasonalChallenges">
                             <Col sm={3}>
                                 <Nav variant="pills" className="flex-column">

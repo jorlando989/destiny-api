@@ -13,7 +13,7 @@ module.exports = app => {
         const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
 
         //choose which profile to use -- use first by default
-        const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/?components=100`;
+        const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/?components=100,900`;
 
         const response = await fetch(query, {
             headers: {
@@ -24,9 +24,10 @@ module.exports = app => {
         if (response.status === 400 || response.status === 401) {
             return res.status(401).send({ error: 'error retrieving characters' });
         }
-        const characters = await response.json();
+        const resp = await response.json();
+        const profileRecords = resp.Response.profileRecords.data.records;
 
-        const charactersData = characters.Response.profile.data.characterIds.map(async charID => {
+        const charactersData = resp.Response.profile.data.characterIds.map(async charID => {
             const charQuery = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/Character/${charID}/?components=200`;
 
             const resp = await fetch(charQuery, {
@@ -46,14 +47,26 @@ module.exports = app => {
 
         const manifest = new Manifest(currentUser.accessToken.access_token);
 
-        const parsedCharData = await Promise.all(charactersInfo.map(async char => {
+        const parsedCharData = await Promise.all(charactersInfo.map(async charInfo => {
+            const classInfo = await manifest.getClassInfo(charInfo.classHash);
+            const race = await manifest.getRaceInfo(charInfo.raceHash);
+            const title = await manifest.getRecordInfo(charInfo.titleRecordHash);
+            let gilded = false;
+            if (title.titleInfo.hasOwnProperty('gildingTrackingRecordHash')) {
+                const recordData = profileRecords[title.titleInfo.gildingTrackingRecordHash];
+                if (recordData.objectives[0].complete) {
+                    gilded = true;
+                }
+            }
             return {
-                characterID: char.characterId,
-                class: await manifest.getClassInfo(char.classHash),
-                race: await manifest.getRaceInfo(char.raceHash),
-                lightLevel: char.light,
-                emblemFull: char.emblemBackgroundPath,
-                emblemIcon: char.emblemPath
+                characterID: charInfo.characterId,
+                class: classInfo,
+                race,
+                title,
+                gilded,
+                lightLevel: charInfo.light,
+                emblemFull: charInfo.emblemBackgroundPath,
+                emblemIcon: charInfo.emblemPath
             }
         }));
         const parsedCharInfo = await Promise.all(parsedCharData);

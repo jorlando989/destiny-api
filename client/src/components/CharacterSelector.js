@@ -48,26 +48,36 @@ class CharacterSelector extends Component {
         this.props.fetchSeasonalChallenges();
     }
 
+    renderCharEmblem(selectedChar) {
+        let titleClasses = 'titleText ';
+        let gildedClasses = 'gildedIcon'
+        if (selectedChar.gilded) {
+            titleClasses = titleClasses.concat('gilded');
+            console.log(selectedChar.gilded);
+        } else {
+            gildedClasses = gildedClasses.concat(' d-none');
+        }
+        return (
+            <div className="emblem" style={{backgroundImage: `url('https://www.bungie.net${selectedChar.emblemFull}')`}}>
+                <div className="emblemText">
+                    <div>
+                        <span className="lightLevel">{selectedChar.lightLevel}</span> - {selectedChar.race.displayProperties.name} {selectedChar.class.displayProperties.name}
+                    </div>
+                    <div className={titleClasses}>
+                        <span className={gildedClasses}></span>
+                        <i>{selectedChar.title.titleInfo.titlesByGender['Male']}</i>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     renderSelectedChar(){
         //if selectedChar saved in localstorage, render selected char
         if(this.state.displaySelectedChar){
-            const selectedChar = this.state.selectedChar;
-            return (
-                <div className="emblem" style={{backgroundImage: `url('https://www.bungie.net${selectedChar.emblemFull}')`}}>
-                    <div className="emblemText">
-                        <span className="lightLevel">{selectedChar.lightLevel}</span> - {selectedChar.race.displayProperties.name} {selectedChar.class.displayProperties.name}
-                    </div>
-                </div>
-            );
+            return this.renderCharEmblem(this.state.selectedChar);
         } else if (this.props.currChar) {
-            const selectedChar = this.props.currChar;
-            return (
-                <div className="emblem" style={{backgroundImage: `url('https://www.bungie.net${selectedChar.emblemFull}')`}}>
-                    <div className="emblemText">
-                        <span className="lightLevel">{selectedChar.lightLevel}</span> - {selectedChar.race.displayProperties.name} {selectedChar.class.displayProperties.name}
-                    </div>
-                </div>
-            );
+            return this.renderCharEmblem(this.props.currChar);
         }
     }
 

@@ -9,6 +9,11 @@ body {
     background-color: transparent;
 }
 
+@font-face {
+    font-family: DestinySymbols;
+    src: url("/fonts/Destiny_Keys.otf") format("opentype");
+}
+
 /* 85ffc7, 297373, ff8552, e6e6e6, 39393a */
 
 .header {
@@ -63,9 +68,22 @@ Button, .card-body a {
 
 .emblemText {
     left: 100px;
-    top: 30px;
+    top: 20px;
     position: absolute;
-  }
+}
+
+.titleText {
+    font-size: 20px;
+    position: absolute;
+}
+
+.gilded {
+    color: gold;
+}
+
+.gildedIcon {
+    font-family: DestinySymbols;
+}
 
 .lightLevel {
     color: gold;
