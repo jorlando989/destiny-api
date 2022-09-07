@@ -116,6 +116,10 @@ Button, .card-body a {
     margin-right: 4px;
 }
 
+.smallIcon {
+    width: 15px;
+}
+
 .headerIcon {
     background-color: #39393a;
     height: 55px;

@@ -4,6 +4,8 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 const requireLogin = require('../middlewares/requireLogin');
 const checkAccessToken = require('../middlewares/checkAccessToken');
 const s18LostSectorRotation = require('../data/lostSectorRotations');
+const DamageTypes = require('../data/damageTypes');
+const BreakerTypes = require('../data/breakerTypes');
 
 const Manifest = require('../services/manifest');
 const LostSectors = mongoose.model('lostSector');
@@ -219,7 +221,9 @@ module.exports = app => {
             masterRewards,
             legendInfo,
             legendModifiers: filteredLegendModifiers,
-            legendRewards
+            legendRewards,
+            DamageTypes,
+            BreakerTypes
         });
     });
 }
