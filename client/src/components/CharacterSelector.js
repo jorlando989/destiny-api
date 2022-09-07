@@ -50,10 +50,9 @@ class CharacterSelector extends Component {
 
     renderCharEmblem(selectedChar) {
         let titleClasses = 'titleText ';
-        let gildedClasses = 'gildedIcon'
+        let gildedClasses = 'gildedIcon';
         if (selectedChar.gilded) {
             titleClasses = titleClasses.concat('gilded');
-            console.log(selectedChar.gilded);
         } else {
             gildedClasses = gildedClasses.concat(' d-none');
         }
