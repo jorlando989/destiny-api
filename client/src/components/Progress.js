@@ -5,6 +5,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import CharacterSelector from './CharacterSelector';
 import VendorRanks from "./vendors/VendorRanks";
 import SeasonalChallenges from "./records/SeasonalChallenges";
+import SeasonalArtifact from "./records/SeasonalArtifact";
 
 class Progress extends Component {
     componentDidMount() {
@@ -20,11 +21,17 @@ class Progress extends Component {
                 <h2>Progress</h2>
                 <CharacterSelector />
                 <br />
-                <Accordion defaultActiveKey={['0','1','2','3','4']} alwaysOpen>
+                <Accordion defaultActiveKey={['0','1','2','3','4','5']} alwaysOpen>
                     <Accordion.Item key='0' eventKey='0'>
                         <Accordion.Header><h5>Vendor Rank Progress</h5></Accordion.Header>
                         <Accordion.Body>
                             <VendorRanks />
+                        </Accordion.Body>
+                    </Accordion.Item>
+                    <Accordion.Item key='5' eventKey='5'>
+                        <Accordion.Header><h5>Seasonal Rank and Artifact</h5></Accordion.Header>
+                        <Accordion.Body>
+                            <SeasonalArtifact />
                         </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item key='1' eventKey='1'>

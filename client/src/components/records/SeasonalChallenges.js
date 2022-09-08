@@ -50,10 +50,9 @@ class SeasonalChallenges extends Component {
 
     renderRewards(rewardData) {
         return rewardData.map(({rewardInfo}) => {
-            const imgSrc = `https://www.bungie.net${rewardInfo.displayProperties.icon}`;
             return (
                 <div className="vendorRankInfo" key={rewardInfo.hash}>
-                    <img src={imgSrc} className='rewardIcon'/>
+                    <img src={`https://www.bungie.net${rewardInfo.displayProperties.icon}`} className='rewardIcon'/>
                     {rewardInfo.displayProperties.name} 
                 </div>
             );
@@ -65,7 +64,6 @@ class SeasonalChallenges extends Component {
             return (
                 <Tab.Pane eventKey={week.weekCategoryInfo.displayProperties.name} key={week.weekCategoryInfo.displayProperties.name}>
                     {week.categoryData.map(({allObjectiveData, recordInfo, rewardData}) => {
-                        const imgSrc = `https://www.bungie.net${recordInfo.displayProperties.icon}`;
                         if (this.props.seasonalChallengeVisibility
                             && this.checkCompletion(allObjectiveData)) {
                             //skip completed challenges
@@ -73,7 +71,7 @@ class SeasonalChallenges extends Component {
                             return (
                                 <div className='seasonalChallengeInfo' key={recordInfo.hash}>
                                     <div className="vendorRankInfo">
-                                        <img src={imgSrc} className='vendorIcon'/>
+                                        <img src={`https://www.bungie.net${recordInfo.displayProperties.icon}`} className='vendorIcon'/>
                                         <h4>{recordInfo.displayProperties.name}</h4>
                                     </div>
                                     {recordInfo.displayProperties.description}
@@ -112,11 +110,10 @@ class SeasonalChallenges extends Component {
 
     render() {
         if (this.props.seasonalChallenges.hasOwnProperty('seasonalChallengesData')) {
-            const imgSrc = `https://www.bungie.net${this.props.seasonalChallenges.seasonInfo.displayProperties.icon}`;
             return (
                 <div>
                     <div className="vendorRankInfo">
-                        <img src={imgSrc} className="headerIcon"/>
+                        <img src={`https://www.bungie.net${this.props.seasonalChallenges.seasonInfo.displayProperties.icon}`} className="headerIcon"/>
                         <h2>{this.props.seasonalChallenges.seasonInfo.displayProperties.name}</h2>
                         <div className="checkboxAndLabel">
                             <label>

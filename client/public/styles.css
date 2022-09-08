@@ -85,6 +85,12 @@ Button, .card-body a {
     font-family: DestinySymbols;
 }
 
+.artifactIcon {
+    height: 100px;
+    margin-right: 10px;
+    border: 3px #39393a solid;
+}
+
 .lightLevel {
     color: gold;
     font-weight: bolder;
@@ -97,9 +103,23 @@ Button, .card-body a {
     margin-right: 4px;
 }
 
+.smallLabel {
+    font-size: 12px;
+    text-align: center;
+}
+
 .rewardIcon {
     height: 20px;
     margin-right: 4px;
+}
+
+.right-border {
+    border-right: 2px black solid;
+}
+
+.row-item {
+    margin-right: 10px;
+    padding-right: 10px;
 }
 
 .display-in-row-wrap {
@@ -113,9 +133,20 @@ Button, .card-body a {
     margin-bottom: 5px;
 }
 
+.img-item {
+    width: 100px;
+    margin-right: 0px;
+}
+
 .vendorIcon {
     height: 30px;
     margin-right: 5px;
+}
+
+.seasonPassGrid {
+    display: grid;
+    grid-template-columns: 100px 2fr 2fr 2fr;
+    gap: 24px 16px;
 }
 
 .vendorRanks, .display-in-grid {

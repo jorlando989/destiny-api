@@ -163,6 +163,17 @@ class Manifest {
         const seasonInfo = await resp.json();
         return seasonInfo.Response;
     }
+
+    async getSeasonPassInfo(seasonPassHash) {
+        const resp = await fetch(`${this.base}/DestinySeasonPassDefinition/${seasonPassHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving season pass info for ' + seasonPassHash };
+        }
+        const seasonPassInfo = await resp.json();
+        return seasonPassInfo.Response;
+    }
 }
 
 module.exports = Manifest;

@@ -111,4 +111,69 @@ module.exports = app => {
         }
         res.send(JSON.parse(localStorage.getItem('hide_seasonal_challenges')));
     });
+
+    app.get('/api/season_artifact', requireLogin, checkAccessToken, async (req, res) => {
+        const coreSettings = new CoreSettings();
+        await coreSettings.initialize();
+        const seasonHash = coreSettings.getCurrentSeasonHash();
+
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
+        
+        const manifest = new Manifest(currentUser.accessToken.access_token);
+        const seasonInfo = await manifest.getSeasonInfo(seasonHash);
+
+        const artifactInfo = await manifest.getItemInfo(seasonInfo.artifactItemHash);
+
+        const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/?components=104`;
+        const response = await fetch(query, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': currentUser.accessToken.access_token
+            }
+        });
+        if (response.status === 400 || response.status === 401) {
+            return res.status(401).send({ error: 'error retrieving profile progression' });
+        }
+        const profileProgression = await response.json();
+        const seasonalArtifactProgression = profileProgression.Response.profileProgression.data.seasonalArtifact;
+
+        res.send({
+            artifactInfo,
+            seasonalArtifactProgression
+        });
+    });
+
+    app.get('/api/season_pass', requireLogin, checkAccessToken, async (req, res) => {
+        const coreSettings = new CoreSettings();
+        await coreSettings.initialize();
+        const seasonHash = coreSettings.getCurrentSeasonHash();
+
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
+        
+        const manifest = new Manifest(currentUser.accessToken.access_token);
+        const seasonInfo = await manifest.getSeasonInfo(seasonHash);
+        const seasonPassInfo = await manifest.getSeasonPassInfo(seasonInfo.seasonPassHash);
+
+        const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/?components=202`;
+        const response = await fetch(query, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': currentUser.accessToken.access_token
+            }
+        });
+        if (response.status === 400 || response.status === 401) {
+            return res.status(401).send({ error: 'error retrieving character progressions' });
+        }
+        const characterProgressions = await response.json();
+        
+        const seasonPassProgression = Object.values(characterProgressions.Response.characterProgressions.data)[0].progressions[seasonInfo.seasonPassProgressionHash];
+        const prestigeSeasonPassProgression = Object.values(characterProgressions.Response.characterProgressions.data)[0].progressions[seasonPassInfo.prestigeProgressionHash];
+
+        res.send({
+            seasonPassProgression,
+            prestigeSeasonPassProgression
+        });
+    });
 }
