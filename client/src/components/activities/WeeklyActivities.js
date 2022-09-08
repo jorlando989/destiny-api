@@ -25,10 +25,9 @@ class WeeklyActivities extends Component {
 
     renderIcon(milestoneInfo) {
         if (milestoneInfo.displayProperties.hasIcon) {
-            const imgSrc = `https://www.bungie.net${milestoneInfo.displayProperties.icon}`;
             return (
                 <ListGroup.Item>
-                    <img src={imgSrc} className="challengeIcon" alt="milestoneIcon" />
+                    <img src={`https://www.bungie.net${milestoneInfo.displayProperties.icon}`} className="challengeIcon" alt="milestoneIcon" />
                 </ListGroup.Item>
             );
         }
@@ -56,7 +55,9 @@ class WeeklyActivities extends Component {
     renderActivityRewards(milestoneInfo, activityRewardsInfo) {
         if (activityRewardsInfo && activityRewardsInfo.length > 0) {
             let renderedContent = null;
-            if (milestoneInfo.friendlyName === "MILESTONE_WEEKLY_NIGHTFALL" || milestoneInfo.friendlyName === "MILESTONE_WEEKLY_NIGHTFALL_SCORE") {
+            if (milestoneInfo.friendlyName === "MILESTONE_WEEKLY_NIGHTFALL" 
+                || milestoneInfo.friendlyName === "MILESTONE_WEEKLY_NIGHTFALL_SCORE"
+            ) {
                 renderedContent = activityRewardsInfo.map(({activityInfo, activityRewards}) => {
                     const renderedActivityRewards = activityRewards.map(({rewardsListInfo}) => {
                         return rewardsListInfo.map(({rewardData}) => {
@@ -195,7 +196,6 @@ class WeeklyActivities extends Component {
     }
 
     renderMilestones() {
-        // console.log(this.props.weeklyActivities);
         if (!this.props.weeklyActivities) {
             return (
                 <div className='loadingSpinner'>
@@ -210,6 +210,7 @@ class WeeklyActivities extends Component {
                 || milestoneInfo.displayProperties.name === 'Last Wish Raid'
                 || milestoneInfo.displayProperties.name === 'Vault of Glass'
                 || milestoneInfo.displayProperties.name === 'Garden of Salvation'
+                || milestoneInfo.displayProperties.name === 'Vow of the Disciple'
             ) {
                 return null;
             }
@@ -235,11 +236,6 @@ class WeeklyActivities extends Component {
         return (
             <div>
                 <h2>Weekly Challenges</h2>
-                {/* <Form.Check
-                    type="checkbox"
-                    id={'hide-completed-checkbox'}
-                    label={'Hide Completed'}
-                /> */}
                 <ListGroup>{this.renderMilestones()}</ListGroup>
             </div>
         );

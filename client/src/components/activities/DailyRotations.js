@@ -23,7 +23,7 @@ class DailyActivities extends Component {
         return (
             <div>
                 <div className='display-in-row'>
-                    <h2>Daily Activities</h2>
+                    <h2>Daily Rotations</h2>
                     <h5 className='align-right'>Time until Reset: {this.renderCountdown()}</h5>
                 </div>
 

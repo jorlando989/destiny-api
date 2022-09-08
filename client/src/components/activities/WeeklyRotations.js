@@ -23,7 +23,7 @@ class WeeklyActivities extends Component {
         return (
             <div>
                 <div className='display-in-row'>
-                    <h2>Weekly Activities</h2>
+                    <h2>Weekly Rotations</h2>
                     <h5 className='align-right'>Time until Reset: {this.renderCountdown()}</h5>
                 </div>
 

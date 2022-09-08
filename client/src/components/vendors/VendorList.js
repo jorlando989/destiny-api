@@ -24,11 +24,10 @@ class VendorList extends Component {
 
     renderGroupVendors(groupInfo) {
         return groupInfo.map(({vendorInfo, locationInfo, saleInfo}) => {
-            const imgSrc = `https://www.bungie.net${vendorInfo.displayProperties.smallTransparentIcon}`;
             return (
                 <Accordion.Item key={vendorInfo.vendorIdentifier} eventKey={vendorInfo.vendorIdentifier}>
                     <Accordion.Header className="vendorHeader">
-                        <img src={imgSrc} alt="vendor icon" className="vendorIcon"></img>
+                        <img src={`https://www.bungie.net${vendorInfo.displayProperties.smallTransparentIcon}`} alt="vendor icon" className="vendorIcon"></img>
                         {vendorInfo.displayProperties.name} - <i>{locationInfo[0].displayProperties.name}</i>
                     </Accordion.Header>
                     <Accordion.Body>

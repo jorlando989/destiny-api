@@ -48,7 +48,6 @@ class LostSectorRotation extends Component {
 
     renderModifiers(modifiers) {
         return modifiers.map(mod => {
-            const imgSrc = `https://www.bungie.net${mod.displayProperties.icon}`;
             let renderedDescription = mod.displayProperties.description;
             if(mod.displayProperties.name === "Champion Foes") {
                 renderedDescription = this.renderBreakerIcons(renderedDescription);
@@ -69,7 +68,7 @@ class LostSectorRotation extends Component {
                             </Tooltip>
                         }
                     >
-                        <img src={imgSrc} className='vendorIcon'/>
+                        <img src={`https://www.bungie.net${mod.displayProperties.icon}`} className='vendorIcon'/>
                     </OverlayTrigger>
                 </div>
             );
@@ -81,10 +80,9 @@ class LostSectorRotation extends Component {
             if (reward.displayProperties.name.includes("Exotic") && !reward.displayProperties.name.includes(currReward.type)) {
                 return;
             }
-            const imgSrc = `https://www.bungie.net${reward.displayProperties.icon}`;
             return (
                 <div key={reward.hash}>
-                    <img src={imgSrc} className='vendorIcon' />
+                    <img src={`https://www.bungie.net${reward.displayProperties.icon}`} className='vendorIcon' />
                     {reward.displayProperties.name}
                 </div>
             );
@@ -94,12 +92,10 @@ class LostSectorRotation extends Component {
     render() {
         if (this.props.dailyLostSector) {
             const lostSector = this.props.dailyLostSector;
-            const legendSrc = `https://www.bungie.net${lostSector.legendInfo.pgcrImage}`;
-            const masterSrc = `https://www.bungie.net${lostSector.masterInfo.pgcrImage}`;
             return (
                 <div className='display-in-row'>
                     <Card style={{ width: '25rem' }}>
-                        <Card.Img variant="top" src={legendSrc} />
+                        <Card.Img variant="top" src={`https://www.bungie.net${lostSector.legendInfo.pgcrImage}`} />
                         <Card.Body>
                             <Card.Title>{lostSector.currLostSector.name} - Legend</Card.Title>
                             <div className='display-in-row-wrap'>
@@ -113,7 +109,7 @@ class LostSectorRotation extends Component {
                         </Card.Body>
                     </Card>
                     <Card style={{ width: '25rem' }}>
-                        <Card.Img variant="top" src={masterSrc} />
+                        <Card.Img variant="top" src={`https://www.bungie.net${lostSector.masterInfo.pgcrImage}`} />
                         <Card.Body>
                             <Card.Title>{lostSector.currLostSector.name} - Master</Card.Title>
                             <div className='display-in-row-wrap'>

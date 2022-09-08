@@ -8,7 +8,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 class VendorRanks extends Component {
     calculateMaxRankPoints(rankSteps) {
         let maxPoints = 0;
-        for(let i=0; i<rankSteps.length; i++) {
+        for (let i=0; i<rankSteps.length; i++) {
             maxPoints += rankSteps[i].progressTotal;
         }
         return maxPoints;
@@ -39,8 +39,7 @@ class VendorRanks extends Component {
 
     renderRankImg(rankInfo) {
         if (rankInfo.hasOwnProperty('rankIcon')) {
-            const pointsSrc = `https://www.bungie.net${rankInfo.rankIcon}`;
-            return (<img src={pointsSrc} className='pointsIcon'/>);
+            return (<img src={`https://www.bungie.net${rankInfo.rankIcon}`} className='pointsIcon'/>);
         }
     }
 
