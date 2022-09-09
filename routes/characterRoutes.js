@@ -83,4 +83,77 @@ module.exports = app => {
         console.log('selected char set in local storage');
         res.send(selectedChar);
     });
+
+    app.get('/api/bounties', requireLogin, checkAccessToken, async (req, res) => {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
+        const selectedChar = JSON.parse(localStorage.getItem("selectedChar"));
+
+        if(selectedChar === null) {
+            res.send(null);
+            return;
+        }
+
+        const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/Character/${selectedChar.characterID}/?components=201,301`;
+        const response = await fetch(query, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': 'Bearer ' + currentUser.accessToken.access_token
+            }
+        });
+        if (response.status === 400 || response.status === 401) {
+            return res.status(401).send({ error: 'error retrieving characters' });
+        }
+        const resp = await response.json();
+        const itemObjectives = resp.Response.itemComponents.objectives.data;
+        const charInventory = resp.Response.inventory.data.items;
+        const bounties = charInventory.filter(item => {
+            return item.bucketHash === 1345459588;
+        });
+
+        const manifest = new Manifest(currentUser.accessToken.access_token);
+
+        const bountiesInfo = bounties.map(async bounty => {
+            const bountyData = await manifest.getItemInfo(bounty.itemHash);
+            
+            //get progress if applicable
+            let objectivesData = null;
+            if (itemObjectives[bounty.itemInstanceId]) {
+                const objectivesInfo = itemObjectives[bounty.itemInstanceId].objectives.map(async obj => {
+                    const objInfo = await manifest.getObjectiveInfo(obj.objectiveHash);
+                    return {
+                        obj,
+                        objInfo
+                    };
+                });
+                objectivesData = await Promise.all(objectivesInfo);
+            }
+
+            return {
+                bounty,
+                bountyData,
+                objectivesData
+            };
+        });
+        const bountiesData = await Promise.all(bountiesInfo);
+
+        //sort into bounties, quests, and questItems
+        const trueBounties = bountiesData.filter(item => {
+            return item.bountyData.traitIds.includes('inventory_filtering.bounty');
+        })
+        const quests = bountiesData.filter(item => {
+            return item.bountyData.traitIds.includes('inventory_filtering.quest')
+                && item.bountyData.itemType !== 0;
+        })
+        const questItems = bountiesData.filter(item => {
+            return item.bountyData.traitIds.includes('inventory_filtering.quest')
+                && item.bountyData.itemType === 0;
+        })
+
+        res.send({
+            bounties: trueBounties,
+            quests,
+            questItems
+        });
+    });
 }

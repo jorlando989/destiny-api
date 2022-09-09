@@ -5,7 +5,8 @@ import {
     selectChar, 
     fetchVendors, 
     fetchVendorRanks, 
-    fetchSeasonalChallenges 
+    fetchSeasonalChallenges,
+    fetchBounties 
 } from '../actions';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -46,6 +47,7 @@ class CharacterSelector extends Component {
         this.props.fetchVendors();
         this.props.fetchVendorRanks();
         this.props.fetchSeasonalChallenges();
+        this.props.fetchBounties();
     }
 
     renderCharEmblem(selectedChar) {
@@ -109,5 +111,6 @@ export default connect(mapStateToProps, {
     selectChar, 
     fetchVendors, 
     fetchVendorRanks, 
-    fetchSeasonalChallenges
+    fetchSeasonalChallenges,
+    fetchBounties
 })(CharacterSelector);

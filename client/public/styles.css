@@ -108,6 +108,10 @@ Button, .card-body a {
     text-align: center;
 }
 
+.description {
+    font-size: 12px;
+}
+
 .rewardIcon {
     height: 20px;
     margin-right: 4px;
@@ -115,6 +119,10 @@ Button, .card-body a {
 
 .right-border {
     border-right: 2px black solid;
+}
+
+.medium-icon {
+    height: 60px;
 }
 
 .row-item {
@@ -143,10 +151,20 @@ Button, .card-body a {
     margin-right: 5px;
 }
 
+.mt5{
+    margin-top: 5px;
+}
+
 .seasonPassGrid {
     display: grid;
     grid-template-columns: 100px 2fr 2fr 2fr;
     gap: 24px 16px;
+}
+
+.bountyGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px 10px;
 }
 
 .vendorRanks, .display-in-grid {

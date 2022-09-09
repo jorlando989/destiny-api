@@ -11,7 +11,8 @@ import {
     SET_SEASONAL_CHALLENGE_VISIBILITY,
     FETCH_DAILY_LOST_SECTOR,
     FETCH_SEASONAL_ARTIFACT,
-    FETCH_SEASON_PASS
+    FETCH_SEASON_PASS,
+    FETCH_BOUNTIES
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -72,4 +73,9 @@ export const fetchSeasonalArtifact = () => async dispatch => {
 export const fetchSeasonPass = () => async dispatch => {
     const res = await axios.get('/api/season_pass');
     dispatch({ type: FETCH_SEASON_PASS, payload: res.data });
+}
+
+export const fetchBounties = () => async dispatch => {
+    const res = await axios.get('/api/bounties');
+    dispatch({ type: FETCH_BOUNTIES, payload: res.data });
 }
