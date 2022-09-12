@@ -6,14 +6,18 @@ const checkAccessToken = require('../middlewares/checkAccessToken');
 const s18LostSectorRotation = require('../data/lostSectorRotations');
 const DamageTypes = require('../data/damageTypes');
 const BreakerTypes = require('../data/breakerTypes');
+const Classes = require('../data/classTypes');
+const WeeklyClanEngramRewards = require('../data/weeklyClanEngramRewards');
 
 const Manifest = require('../services/manifest');
+const User = mongoose.model('users');
 const LostSectors = mongoose.model('lostSector');
 const LostSectorRewards = mongoose.model('lostSectorReward');
 
 module.exports = app => {
     app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
 
         const response = await fetch('https://www.bungie.net/Platform/Destiny2/Milestones/', {
             headers: {
@@ -26,7 +30,29 @@ module.exports = app => {
         }
         const milestones = await response.json();
 
+        const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/?components=202,200`;
+        const response2 = await fetch(query, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': 'Bearer ' + currentUser.accessToken.access_token
+            }
+        });
+        if (response2.status === 400 || response2.status === 401) {
+            return res.status(401).send({ error: 'error retrieving character progressions' });
+        }
+        const resp = await response2.json();
+        const characterProgressions = resp.Response.characterProgressions.data;
+        const characters = resp.Response.characters.data;
+
         const manifest = new Manifest(currentUser.accessToken.access_token);
+
+        //get class name for each character
+        const charProgressAndClass = Object.entries(characterProgressions).map((entry) => {
+            return {
+                class: Classes[characters[entry[0]].classType],
+                progression: entry[1].milestones
+            }
+        });
 
         const milestoneData = Object.values(milestones.Response).map(async milestone => {
             const milestoneInfo = await manifest.getMilestoneInfo(milestone.milestoneHash);
@@ -163,7 +189,20 @@ module.exports = app => {
             return 0;
         });
 
-        res.send(filteredActivityInfo);
+        res.send({
+            activities: filteredActivityInfo,
+            charProgressAndClass,
+            WeeklyClanEngramRewards
+        });
+    });
+
+    app.get('/api/hide_weekly_activities', (req, res) => {
+        if (!JSON.parse(localStorage.getItem('hide_weekly_activities'))) {
+            localStorage.setItem('hide_weekly_activities', JSON.stringify(true));
+        } else {
+            localStorage.setItem('hide_weekly_activities', JSON.stringify(false));
+        }
+        res.send(JSON.parse(localStorage.getItem('hide_weekly_activities')));
     });
     
     app.get('/api/lost_sector', requireLogin, checkAccessToken, async (req, res) => {

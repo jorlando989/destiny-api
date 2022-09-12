@@ -102,7 +102,7 @@ module.exports = app => {
             }
         });
         if (response.status === 400 || response.status === 401) {
-            return res.status(401).send({ error: 'error retrieving characters' });
+            return res.status(401).send({ error: 'error retrieving character inventory and itemObjectives' });
         }
         const resp = await response.json();
         const itemObjectives = resp.Response.itemComponents.objectives.data;

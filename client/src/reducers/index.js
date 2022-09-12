@@ -12,6 +12,7 @@ import lostSectorReducer from "./lostSectorReducer";
 import seasonalArtifactReducer from "./seasonalArtifactReducer";
 import seasonPassReducer from './seasonPassReducer';
 import bountyReducer from './bountyReducer';
+import weeklyActivityVisibilityReducer from './weeklyActivityVisibilityReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -25,5 +26,6 @@ export default combineReducers({
     dailyLostSector: lostSectorReducer,
     seasonalArtifact: seasonalArtifactReducer,
     seasonPass: seasonPassReducer,
-    bounties: bountyReducer
+    bounties: bountyReducer,
+    weeklyActivityVisibility: weeklyActivityVisibilityReducer
 });

@@ -109,6 +109,17 @@ class Manifest {
         return activityModifierInfo.Response;
     }
 
+    async getActivityModeInfo(activityModeHash) {
+        const resp = await fetch(`${this.base}/DestinyActivityModeDefinition/${activityModeHash}/`, {
+            headers: this.headers
+        });
+        if (resp.status === 400 || resp.status === 401) {
+            return { error: 'error retrieving activity mode info for ' + activityModeHash };
+        }
+        const activityModeInfo = await resp.json();
+        return activityModeInfo.Response;
+    }
+
     async getObjectiveInfo(objectiveHash) {
         const resp = await fetch(`${this.base}/DestinyObjectiveDefinition/${objectiveHash}/`, {
             headers: this.headers

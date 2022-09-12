@@ -11,3 +11,4 @@ export const FETCH_DAILY_LOST_SECTOR = 'fetch_daily_lost_sector';
 export const FETCH_SEASONAL_ARTIFACT = 'fetch_seasonal_artifact';
 export const FETCH_SEASON_PASS = 'fetch_season_pass';
 export const FETCH_BOUNTIES = 'fetch_bounties';
+export const SET_WEEKLY_ACTIVITY_VISIBILITY = 'set_weekly_activity_visibility';

@@ -28,6 +28,38 @@ class WeeklyActivities extends Component {
                 </div>
 
                 <h4>Nightfall</h4>
+                {/* let renderedContent = null;
+            if (milestoneInfo.friendlyName === "MILESTONE_WEEKLY_NIGHTFALL" 
+                || milestoneInfo.friendlyName === "MILESTONE_WEEKLY_NIGHTFALL_SCORE"
+            ) {
+                renderedContent = activityRewardsInfo.map(({activityInfo, activityRewards}) => {
+                    const renderedActivityRewards = activityRewards.map(({rewardsListInfo}) => {
+                        return rewardsListInfo.map(({rewardData}) => {
+                            const imgSrc = rewardData.displayProperties.hasIcon ? `https://www.bungie.net${rewardData.displayProperties.icon}` : null;
+                            return (
+                                <ListGroup.Item key={rewardData.hash} className='rewardItem'>
+                                    <img src={imgSrc} className="vendorIcon" alt="rewardItemIcon" />
+                                    {rewardData.displayProperties.name}
+                                </ListGroup.Item>
+                            );
+                        });
+                    });
+                    return (
+                        <Tab key={activityInfo.hash} eventKey={activityInfo.hash} title={activityInfo.displayProperties.name}>
+                            <ListGroup>
+                                {renderedActivityRewards}
+                            </ListGroup>
+                        </Tab>
+                    );
+                });
+                return (
+                    <ListGroup.Item key={milestoneInfo.hash}>
+                        <Tabs defaultActiveKey={activityRewardsInfo[0].activityInfo.hash} className="mb-3" justify>
+                            {renderedContent}
+                        </Tabs>
+                    </ListGroup.Item>
+                );
+            } */}
                 <h4>Weekly Raid</h4>
                 <h4>Weekly Dungeon</h4>
                 <h4>Crucible Playlist</h4>

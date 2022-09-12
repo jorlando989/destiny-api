@@ -66,8 +66,7 @@ class Progress extends Component {
                 <h2>Progress</h2>
                 <CharacterSelector />
                 <br />
-                {/* <Accordion defaultActiveKey={['0','1','2','3','4','5']} alwaysOpen> */}
-                <Accordion defaultActiveKey={['2','3','4']} alwaysOpen>
+                <Accordion defaultActiveKey={['0','5']} alwaysOpen>
                     <Accordion.Item key='0' eventKey='0'>
                         <Accordion.Header><h5>Vendor Rank Progress</h5></Accordion.Header>
                         <Accordion.Body>

@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { fetchWeeklyActivities } from '../../actions';
+import { fetchWeeklyActivities, setCompletedWeeklyActivityVisibility } from '../../actions';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import Spinner from 'react-bootstrap/Spinner';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 class WeeklyActivities extends Component {
     componentDidMount () {
         this.props.fetchWeeklyActivities();
+        this.props.setCompletedWeeklyActivityVisibility();
     }
 
     renderMilestoneName(milestoneInfo, activitiesInfo) {
@@ -42,10 +47,10 @@ class WeeklyActivities extends Component {
                     }
                     const imgSrc = item.itemInfo.displayProperties.hasIcon ? `https://www.bungie.net${item.itemInfo.displayProperties.icon}` : null;
                     return (
-                        <ListGroup.Item key={item.itemInfo.hash} className='rewardItem'>
+                        <div key={item.itemInfo.hash}>
                             <img src={imgSrc} className="vendorIcon" alt="rewardItemIcon" />
                             {item.itemInfo.displayProperties.name}
-                        </ListGroup.Item>
+                        </div>
                     );
                 });
             });
@@ -116,18 +121,36 @@ class WeeklyActivities extends Component {
         }
     }
 
-    renderChallengeRewards(challengeRewardInfo) {
+    renderChallengeRewards(milestoneInfo, challengeRewardInfo) {
         if (challengeRewardInfo && challengeRewardInfo.length > 0) {
             let allRenderedContent = null;
+            console.log('milestone', milestoneInfo);
+            //check if raid is weekly featured raid
+            if (milestoneInfo.displayProperties.name === 'Last Wish Raid'
+                || milestoneInfo.displayProperties.name === 'Deep Stone Crypt'
+                || milestoneInfo.displayProperties.name === 'Garden of Salvation'
+                || milestoneInfo.displayProperties.name === 'Vault of Glass'
+                || milestoneInfo.displayProperties.name === 'Vow of the Disciple') 
+            {
+                if (this.props.weeklyActivities.charProgressAndClass[0].progression[milestoneInfo.hash].activities[0].challenges.length === 0) {
+                    //not pinnacle
+                    return (
+                        <div key={milestoneInfo.hash}>
+                            <img src='https://www.bungie.net/common/destiny2_content/icons/ca25b277ec22eddd9f4e9881dd153390.png' className="vendorIcon" alt="rewardItemIcon" />
+                            Legendary Gear
+                        </div>
+                    );
+                }
+            }
             allRenderedContent = challengeRewardInfo.map(({challengesInfo}) => {
                 return challengesInfo.map(challenge => {
                     return challenge.dummyRewardsInfo.map(({dummyInfo}) => {
                         const imgSrc = dummyInfo.displayProperties.hasIcon ? `https://www.bungie.net${dummyInfo.displayProperties.icon}` : null;
                         return (
-                            <ListGroup.Item key={dummyInfo.hash} className="rewardItem">
+                            <div key={dummyInfo.hash}>
                                 <img src={imgSrc} className="vendorIcon" alt="rewardItemIcon" />
                                 {dummyInfo.displayProperties.name}
-                            </ListGroup.Item>
+                            </div>
                         );
                     });
                 })
@@ -147,20 +170,21 @@ class WeeklyActivities extends Component {
                     return rewardEntriesInfo.map(({entry, entryInfo}) => {
                         const imgSrc = entryInfo[0].displayProperties.hasIcon ? `https://www.bungie.net${entryInfo[0].displayProperties.icon}` : null;
                         return (
-                            <ListGroup.Item className='rewardItem' key={entry.rewardEntryHash}>
+                            <ListGroup.Item key={entry.rewardEntryHash}>
                                 {entry.displayProperties.name}: <img src={imgSrc} className="vendorIcon" alt="rewardItemIcon" />
                                 {entryInfo[0].displayProperties.name}
                             </ListGroup.Item>
                         );
                     });
                 } else if (reward.categoryIdentifier !== 'milestone_clan_past_week') {
+                    console.log(rewardEntriesInfo);
                     return rewardEntriesInfo.map(({entry, entryInfo}) => {
                         const imgSrc = entryInfo[0].displayProperties.hasIcon ? `https://www.bungie.net${entryInfo[0].displayProperties.icon}` : null;
                         return (
-                            <ListGroup.Item className='rewardItem' key={entry.rewardEntryHash}>
+                            <div key={entry.rewardEntryHash}>
                                 <img src={imgSrc} className="vendorIcon" alt="rewardItemIcon" />
                                 {entryInfo[0].displayProperties.name}
-                            </ListGroup.Item>
+                            </div>
                         );
                     });
                 }
@@ -169,74 +193,210 @@ class WeeklyActivities extends Component {
         }
     }
 
-    renderCorrectRewards(milestoneRewards, challengeRewardInfo, questRewardsInfo) {
+    renderCorrectRewards(milestoneInfo, milestoneRewards, challengeRewardInfo, questRewardsInfo) {
         if (milestoneRewards) {
             return (
-                <ListGroup.Item key='milestoneRewards'>
-                    <ListGroup>
-                        {this.renderMilestoneRewards(milestoneRewards)}
-                    </ListGroup>
-                </ListGroup.Item>
+                <div key='milestoneRewards'>
+                    {this.renderMilestoneRewards(milestoneRewards)}
+                </div>
             );
         } else if (challengeRewardInfo) {
             return (
-                <ListGroup.Item key='challengeRewards'>
-                    {this.renderChallengeRewards(challengeRewardInfo)}
-                </ListGroup.Item>
+                <div key='challengeRewards'>
+                    {this.renderChallengeRewards(milestoneInfo, challengeRewardInfo)}
+                </div>
             );
         } else if (questRewardsInfo && questRewardsInfo.length > 0) {
             return (
-                <ListGroup.Item key='questRewards'>
-                    <ListGroup>
-                        {this.renderQuestRewards(questRewardsInfo)}
-                    </ListGroup>
-                </ListGroup.Item>
+                <div key='questRewards'>
+                    {this.renderQuestRewards(questRewardsInfo)}
+                </div>
+            );
+        } else {
+            return (
+                <div className='display-in-row'>
+                    <img className="vendorIcon" src='https://www.bungie.net/common/destiny2_content/icons/962055a3f8c73eff98f140f6fac79392.png' alt='reward engram icon'/>
+                    Powerful Gear (Tier 1)
+                </div>
             );
         }
     }
 
-    renderMilestones() {
-        if (!this.props.weeklyActivities) {
+    renderHeader() {
+        if (this.props.weeklyActivities.hasOwnProperty('charProgressAndClass')) {
             return (
-                <div className='loadingSpinner'>
-                    <Spinner animation="border"/>
-                </div>
+                <Row className='milestoneHeader'>
+                    <Col xs={6}>Activity</Col>
+                    {this.props.weeklyActivities.charProgressAndClass.map(char => {
+                        return <Col>{char.class}</Col>
+                    })}
+                </Row>
             );
         }
-        return this.props.weeklyActivities.map(({milestoneInfo, activitiesInfo, activityRewardsInfo, questRewardsInfo, challengeRewardInfo, milestoneRewards}) => {
-            //dont show dungeons or raids
-            if (milestoneInfo.displayProperties.name === "Weekly Dungeon Challenge"
-                || milestoneInfo.displayProperties.name === 'Deep Stone Crypt'
-                || milestoneInfo.displayProperties.name === 'Last Wish Raid'
-                || milestoneInfo.displayProperties.name === 'Vault of Glass'
-                || milestoneInfo.displayProperties.name === 'Garden of Salvation'
-                || milestoneInfo.displayProperties.name === 'Vow of the Disciple'
-            ) {
-                return null;
-            }
+    }
+
+    renderCompletionStatus(milestoneHash, milestoneInfo) {
+        if (milestoneInfo.displayProperties.name === 'Weekly Clan Engrams') {
             return (
-                <ListGroup.Item key={milestoneInfo.hash}>
-                    <ListGroup horizontal className="milestone">
-                        {this.renderIcon(milestoneInfo)}
-                        <ListGroup.Item>
-                            <h5>{this.renderMilestoneName(milestoneInfo, activitiesInfo)}</h5>
-                            {milestoneInfo.displayProperties.description}
-                            <ListGroup horizontal className="milestone">
-                                {this.renderActivityRewards(milestoneInfo, activityRewardsInfo)}
-                            </ListGroup>
-                        </ListGroup.Item>
-                        {this.renderCorrectRewards(milestoneRewards, challengeRewardInfo, questRewardsInfo)}
-                    </ListGroup>
-                </ListGroup.Item>
+                <Col>
+                    <div className='display-in-row'>
+                        {this.props.weeklyActivities.charProgressAndClass[0].progression[milestoneHash].rewards[0].entries.map(reward => {
+                            if (reward.earned) {
+                                return (
+                                    <div className='display-in-row mr5'>
+                                        {this.props.weeklyActivities.WeeklyClanEngramRewards[reward.rewardEntryHash]}
+                                        <div className='streakBox ml5'>
+                                            <div className='streakBoxComplete'></div>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return (<div className='streakBox'></div>);
+                        })}
+                    </div>
+                </Col>
             );
-        });
+        }
+        return this.props.weeklyActivities.charProgressAndClass.map(char => {
+            if (char.progression[milestoneHash]) {
+                //check for activities
+                if (char.progression[milestoneHash].activities) {
+                    const charActivities = char.progression[milestoneHash].activities;
+                    if (charActivities[0].phases) {
+                        return (
+                            <Col className='display-in-row'>
+                            {charActivities[0].phases.map(phase => {
+                                if (phase.complete) {
+                                    return (
+                                        <div className='streakBox'>
+                                            <div className='streakBoxComplete'></div>
+                                        </div>
+                                    );
+                                }
+                                return (<div className='streakBox'></div>);
+                            })}
+                            </Col>
+                        );
+                    } else if (charActivities[0].challenges) {
+                        if (charActivities[0].challenges[0].objective.complete) {
+                            return (<Col>
+                                <div className='streakBox'>
+                                    <div className='streakBoxComplete'></div>
+                                </div>
+                            </Col>);
+                        } else {
+                            return (<Col>
+                                <div className='streakBox'></div>
+                                <span className="smallLabel">
+                                    {charActivities[0].challenges[0].objective.progress}/{charActivities[0].challenges[0].objective.completionValue}
+                                </span>
+                            </Col>);
+                        }
+                    }
+
+                } else if (char.progression[milestoneHash].availableQuests) {
+                    const availQuests = char.progression[milestoneHash].availableQuests[0];
+                    if (availQuests.status.completed) {
+                        return (<Col>
+                            <div className='streakBox'>
+                                <div className='streakBoxComplete'></div>
+                            </div>
+                        </Col>);
+                    } 
+                    return (<Col>
+                        <div className='streakBox'></div>
+                        <span className='smallLabel'>
+                            {availQuests.status.stepObjectives[0].progress}/{availQuests.status.stepObjectives[0].completionValue}
+                        </span>
+                    </Col>);
+                }
+            } 
+            return (<Col>
+                <div className='streakBox'>
+                    <div className='streakBoxComplete'></div>
+                </div>
+            </Col> );
+        })
+    }
+
+    checkIfDungeonIsPinnacle(milestoneHash) {
+        const characters = this.props.weeklyActivities.charProgressAndClass;
+        for(let i=0; i<characters.length; i++) {
+            if (characters[i].progression[milestoneHash]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    renderMilestones() {
+        if (this.props.weeklyActivities.hasOwnProperty('activities')) {
+            return this.props.weeklyActivities.activities.map(({milestoneInfo, activitiesInfo, activityRewardsInfo, questRewardsInfo, challengeRewardInfo, milestoneRewards}) => {
+                //skip xur
+                if (milestoneInfo.displayProperties.name === 'Xûr' 
+                    || milestoneInfo.displayProperties.name === 'Dawning Duty'
+                    || milestoneInfo.displayProperties.name === 'Clan Rewards'
+                    || milestoneInfo.displayProperties.name === 'For the Light… Against the Light'
+                    || milestoneInfo.displayProperties.name === 'Trials of Osiris (Weekly)'
+                    || milestoneInfo.displayProperties.name === 'Master Class') {
+                    return null;
+                }
+                if (milestoneInfo.displayProperties.name === 'Weekly Dungeon Challenge' 
+                    && !this.checkIfDungeonIsPinnacle(milestoneInfo.hash)) {
+                    return null;
+                }
+                return (
+                    <Row key={milestoneInfo.hash} className='milestoneBody'>
+                        <Col xs={6}>
+                            <div className='display-in-row milestone'>
+                                {this.renderIcon(milestoneInfo)}
+                                <ListGroup.Item>
+                                    <OverlayTrigger
+                                        key={milestoneInfo.hash}
+                                        placement="top"
+                                        overlay={
+                                            <Tooltip id='milestone description'>
+                                                {milestoneInfo.displayProperties.description}
+                                            </Tooltip>
+                                        }
+                                    >
+                                        <h5>{this.renderMilestoneName(milestoneInfo, activitiesInfo)}</h5>
+                                    </OverlayTrigger>
+                                    {this.renderCorrectRewards(milestoneInfo, milestoneRewards, challengeRewardInfo, questRewardsInfo)}
+                                </ListGroup.Item>
+                            </div>
+                        </Col>
+                        {this.renderCompletionStatus(milestoneInfo.hash, milestoneInfo)}
+                    </Row>
+                );
+            });
+        }
+    }
+
+    handleChange = (e) => {
+        this.props.setCompletedWeeklyActivityVisibility();
     }
 
     render () {
         return (
             <div>
-                <h2>Weekly Challenges</h2>
-                <ListGroup>{this.renderMilestones()}</ListGroup>
+                <div className="display-in-row">
+                    <h2>Weekly Challenges</h2>
+                    <div className="checkboxAndLabel">
+                        <label>
+                            <input 
+                                type="checkbox"
+                                checked={this.props.seasonalChallengeVisibility} 
+                                onChange={this.handleChange}
+                            />
+                            <span className="fieldLabel">Hide Completed</span>
+                        </label>
+                    </div>
+                </div>
+                <Container className='milestoneTable'>
+                    {this.renderHeader()}
+                    {this.renderMilestones()}
+                </Container>
             </div>
         );
     }
@@ -246,4 +406,4 @@ function mapStateToProps({weeklyActivities}) {
     return { weeklyActivities };
 }
 
-export default connect(mapStateToProps, {fetchWeeklyActivities})(WeeklyActivities);
+export default connect(mapStateToProps, {fetchWeeklyActivities, setCompletedWeeklyActivityVisibility})(WeeklyActivities);

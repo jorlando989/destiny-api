@@ -151,14 +151,43 @@ Button, .card-body a {
     margin-right: 5px;
 }
 
-.mt5{
+.mt5 {
     margin-top: 5px;
+}
+
+.mr5 {
+    margin-right: 5px;
+}
+
+.ml5 {
+    margin-left: 5px;
+}
+
+.milestoneTable {
+    background-color: #297373;
+    color: white;
+}
+
+.milestoneHeader {
+    font-size: 25px;
+}
+
+.milestoneBody {
+    border-bottom: 3px #39393a solid;
+    padding-bottom: 5px;
+    padding-top: 5px;
 }
 
 .seasonPassGrid {
     display: grid;
     grid-template-columns: 100px 2fr 2fr 2fr;
     gap: 24px 16px;
+}
+
+.completionGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px 10px;
 }
 
 .bountyGrid {
