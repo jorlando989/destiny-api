@@ -14,6 +14,8 @@ class WeeklyActivities extends Component {
     componentDidMount () {
         this.props.fetchWeeklyActivities();
         this.props.setCompletedWeeklyActivityVisibility();
+        this.props.setCompletedWeeklyActivityVisibility('none');
+        this.handleChange = this.handleChange.bind(this);
     }
 
     renderMilestoneName(milestoneInfo, activitiesInfo) {
@@ -124,7 +126,6 @@ class WeeklyActivities extends Component {
     renderChallengeRewards(milestoneInfo, challengeRewardInfo) {
         if (challengeRewardInfo && challengeRewardInfo.length > 0) {
             let allRenderedContent = null;
-            console.log('milestone', milestoneInfo);
             //check if raid is weekly featured raid
             if (milestoneInfo.displayProperties.name === 'Last Wish Raid'
                 || milestoneInfo.displayProperties.name === 'Deep Stone Crypt'
@@ -177,7 +178,6 @@ class WeeklyActivities extends Component {
                         );
                     });
                 } else if (reward.categoryIdentifier !== 'milestone_clan_past_week') {
-                    console.log(rewardEntriesInfo);
                     return rewardEntriesInfo.map(({entry, entryInfo}) => {
                         const imgSrc = entryInfo[0].displayProperties.hasIcon ? `https://www.bungie.net${entryInfo[0].displayProperties.icon}` : null;
                         return (
@@ -228,9 +228,49 @@ class WeeklyActivities extends Component {
                 <Row className='milestoneHeader'>
                     <Col xs={6}>Activity</Col>
                     {this.props.weeklyActivities.charProgressAndClass.map(char => {
-                        return <Col>{char.class}</Col>
+                        return (<Col>{char.class}</Col>);
                     })}
                 </Row>
+            );
+        }
+    }
+
+    renderRadioButtons() {
+        if (this.props.weeklyActivities.hasOwnProperty('charProgressAndClass')) {
+            return (
+                <div className="display-in-row">
+                    {this.props.weeklyActivities.charProgressAndClass.map(char => {
+                        return (
+                            <div className="radioButton">
+                                <input 
+                                    type="radio" 
+                                    name='hideChallenges' 
+                                    value={char.class} 
+                                    onChange={this.handleChange}
+                                    checked={this.props.weeklyActivityVisibility === char.class}
+                                /> {char.class}
+                            </div>
+                        );
+                    })}
+                    <div className="radioButton">
+                        <input 
+                            type="radio" 
+                            name='hideChallenges' 
+                            value='all'
+                            onChange={this.handleChange}
+                            checked={this.props.weeklyActivityVisibility === 'all'}
+                        /> All
+                    </div>
+                    <div className="radioButton">
+                        <input 
+                            type="radio" 
+                            name='hideChallenges' 
+                            value='none'
+                            onChange={this.handleChange}
+                            checked={this.props.weeklyActivityVisibility === 'none'} 
+                        /> None
+                    </div>
+                </div>
             );
         }
     }
@@ -310,7 +350,7 @@ class WeeklyActivities extends Component {
                         </span>
                     </Col>);
                 }
-            } 
+            }
             return (<Col>
                 <div className='streakBox'>
                     <div className='streakBoxComplete'></div>
@@ -320,6 +360,7 @@ class WeeklyActivities extends Component {
     }
 
     checkIfDungeonIsPinnacle(milestoneHash) {
+        //grasp currently broken
         const characters = this.props.weeklyActivities.charProgressAndClass;
         for(let i=0; i<characters.length; i++) {
             if (characters[i].progression[milestoneHash]) {
@@ -329,10 +370,56 @@ class WeeklyActivities extends Component {
         return false;
     }
 
+    isComplete(activityInfo) {
+        if (!activityInfo) return true;
+        //check for activities
+        if (activityInfo.activities) {
+            const charActivities = activityInfo.activities;
+            if (charActivities[0].phases) {
+                let allPhasesComplete = true;
+                charActivities[0].phases.map(phase => {
+                    if (!phase.complete) {
+                        allPhasesComplete = false;
+                    }
+                });
+                return allPhasesComplete;
+            } else if (charActivities[0].challenges) {
+                return charActivities[0].challenges[0].objective.complete;
+            }
+        } else if (activityInfo.availableQuests) {
+            const availQuests = activityInfo.availableQuests[0];
+            if (availQuests.status.completed) {
+                return true;
+            } 
+            return false;
+        }
+        return true;
+    }
+
+    checkCompletionStatus(milestoneInfo, visibilityType) {
+        const characters = this.props.weeklyActivities.charProgressAndClass;
+        if (visibilityType === 'all') {
+            let allCharacterCompleted = true;
+            for(let i=0; i<characters.length; i++) {
+                if (!this.isComplete(characters[i].progression[milestoneInfo.hash])) {
+                    allCharacterCompleted = false;
+                }
+            }
+            return allCharacterCompleted;
+        } else {
+            const currChar = characters.find(elem => elem.class === visibilityType);
+            if (currChar && !this.isComplete(currChar.progression[milestoneInfo.hash])) {
+                return false;
+            }
+            return true;
+        }
+        
+    }
+
     renderMilestones() {
         if (this.props.weeklyActivities.hasOwnProperty('activities')) {
-            return this.props.weeklyActivities.activities.map(({milestoneInfo, activitiesInfo, activityRewardsInfo, questRewardsInfo, challengeRewardInfo, milestoneRewards}) => {
-                //skip xur
+            return this.props.weeklyActivities.activities.map(({milestoneInfo, activitiesInfo, questRewardsInfo, challengeRewardInfo, milestoneRewards}) => {
+                //skip certain milestones
                 if (milestoneInfo.displayProperties.name === 'Xûr' 
                     || milestoneInfo.displayProperties.name === 'Dawning Duty'
                     || milestoneInfo.displayProperties.name === 'Clan Rewards'
@@ -341,8 +428,12 @@ class WeeklyActivities extends Component {
                     || milestoneInfo.displayProperties.name === 'Master Class') {
                     return null;
                 }
-                if (milestoneInfo.displayProperties.name === 'Weekly Dungeon Challenge' 
+                if (milestoneInfo.displayProperties.description === 'Rotating Weekly Dungeon Challenge.' 
                     && !this.checkIfDungeonIsPinnacle(milestoneInfo.hash)) {
+                    return null;
+                }
+                if (this.props.weeklyActivityVisibility !== 'none' && this.checkCompletionStatus(milestoneInfo, this.props.weeklyActivityVisibility)) {
+                    //hide completed for all characters
                     return null;
                 }
                 return (
@@ -374,7 +465,9 @@ class WeeklyActivities extends Component {
     }
 
     handleChange = (e) => {
-        this.props.setCompletedWeeklyActivityVisibility();
+        if (e.target) {
+            this.props.setCompletedWeeklyActivityVisibility(e.target.value);
+        }
     }
 
     render () {
@@ -382,15 +475,12 @@ class WeeklyActivities extends Component {
             <div>
                 <div className="display-in-row">
                     <h2>Weekly Challenges</h2>
-                    <div className="checkboxAndLabel">
-                        <label>
-                            <input 
-                                type="checkbox"
-                                checked={this.props.seasonalChallengeVisibility} 
-                                onChange={this.handleChange}
-                            />
-                            <span className="fieldLabel">Hide Completed</span>
-                        </label>
+                    <div className="checkboxAndLabel display-in-row">
+                        <span className='mr5'>Hide Completed
+                        <span className="fieldLabel">
+                            <i className="fa-regular fa-eye-slash"></i>
+                        </span>:</span>
+                        {this.renderRadioButtons()}
                     </div>
                 </div>
                 <Container className='milestoneTable'>
@@ -402,8 +492,8 @@ class WeeklyActivities extends Component {
     }
 }
 
-function mapStateToProps({weeklyActivities}) {
-    return { weeklyActivities };
+function mapStateToProps({weeklyActivities, weeklyActivityVisibility}) {
+    return { weeklyActivities, weeklyActivityVisibility };
 }
 
 export default connect(mapStateToProps, {fetchWeeklyActivities, setCompletedWeeklyActivityVisibility})(WeeklyActivities);

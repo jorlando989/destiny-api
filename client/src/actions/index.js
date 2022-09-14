@@ -81,7 +81,7 @@ export const fetchBounties = () => async dispatch => {
     dispatch({ type: FETCH_BOUNTIES, payload: res.data });
 }
 
-export const setCompletedWeeklyActivityVisibility = () => async dispatch => {
-    const res = await axios.get('/api/hide_weekly_activities');
+export const setCompletedWeeklyActivityVisibility = (id) => async dispatch => {
+    const res = await axios.get('/api/hide_weekly_activities', {params: {id: id}});
     dispatch({ type: SET_WEEKLY_ACTIVITY_VISIBILITY, payload: res.data });
 }

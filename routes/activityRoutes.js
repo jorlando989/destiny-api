@@ -197,12 +197,12 @@ module.exports = app => {
     });
 
     app.get('/api/hide_weekly_activities', (req, res) => {
-        if (!JSON.parse(localStorage.getItem('hide_weekly_activities'))) {
-            localStorage.setItem('hide_weekly_activities', JSON.stringify(true));
-        } else {
-            localStorage.setItem('hide_weekly_activities', JSON.stringify(false));
+        if (!localStorage.getItem('hide_weekly_activities')) {
+            //when not set yet
+            res.send(null);
         }
-        res.send(JSON.parse(localStorage.getItem('hide_weekly_activities')));
+        localStorage.setItem('hide_weekly_activities', req.query.id);
+        res.send(localStorage.getItem('hide_weekly_activities'));
     });
     
     app.get('/api/lost_sector', requireLogin, checkAccessToken, async (req, res) => {

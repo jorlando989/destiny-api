@@ -146,6 +146,10 @@ Button, .card-body a {
     margin-right: 0px;
 }
 
+.radioButton { 
+    margin-right: 5px;
+}
+
 .vendorIcon {
     height: 30px;
     margin-right: 5px;
