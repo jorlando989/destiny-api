@@ -32,6 +32,7 @@ class Header extends Component {
                 <Navbar bg="light" expand="lg">
                     <Container>
                         <Navbar.Brand href={this.props.auth ? "/dashboard" : "/" }>
+                            <img className='logoIcon' src='/imgs/destinyapilogoTransparent.png'/>
                             Destiny-API
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />

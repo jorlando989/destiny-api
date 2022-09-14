@@ -20,6 +20,11 @@ body {
     background-color: #ff8552;
 }
 
+.logoIcon {
+    height: 20px;
+    margin-right: 3px;
+}
+
 .tab-pane {
     background-color: #85ffc7 !important;
 }
