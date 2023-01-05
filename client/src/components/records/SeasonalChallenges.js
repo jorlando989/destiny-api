@@ -40,6 +40,7 @@ class SeasonalChallenges extends Component {
 
     checkCompletion(allObjectiveData) {
         //return true if all objectives in challenge completed
+        if (allObjectiveData == null) return false;
         for(let i=0; i<allObjectiveData.length; i++) {
             if (!allObjectiveData[i].objectiveProgress.complete) {
                 return false;
@@ -49,6 +50,11 @@ class SeasonalChallenges extends Component {
     }
 
     renderRewards(rewardData) {
+        if (rewardData == null) {
+            return (
+                <div></div>
+            );
+        }
         return rewardData.map(({rewardInfo}) => {
             return (
                 <div className="vendorRankInfo" key={rewardInfo.hash}>
@@ -67,6 +73,20 @@ class SeasonalChallenges extends Component {
                         if (this.props.seasonalChallengeVisibility
                             && this.checkCompletion(allObjectiveData)) {
                             //skip completed challenges
+                        } else if (allObjectiveData == null) {
+                            //check for classified challenges
+                            return (
+                                <div className='seasonalChallengeInfo' key={recordInfo.hash}>
+                                    <div className="vendorRankInfo">
+                                        <img src={`https://www.bungie.net${recordInfo.displayProperties.icon}`} className='vendorIcon'/>
+                                        <h4>{recordInfo.displayProperties.name}</h4>
+                                    </div>
+                                    {recordInfo.displayProperties.description}
+                                    <div>
+                                        {this.renderObjectives(allObjectiveData)}
+                                    </div>
+                                </div>
+                            );
                         } else {
                             return (
                                 <div className='seasonalChallengeInfo' key={recordInfo.hash}>

@@ -139,13 +139,22 @@ module.exports = app => {
 
         //sort into bounties, quests, and questItems
         const trueBounties = bountiesData.filter(item => {
-            return item.bountyData.traitIds.includes('inventory_filtering.bounty');
+            if (!item.bountyData.hasOwnProperty('traitIds')) {
+                return false;
+            }
+            return item.bountyData.hasOwnProperty('traitIds') && item.bountyData.traitIds.includes('inventory_filtering.bounty');
         })
         const quests = bountiesData.filter(item => {
+            if (!item.bountyData.hasOwnProperty('traitIds')) {
+                return false;
+            }
             return item.bountyData.traitIds.includes('inventory_filtering.quest')
                 && item.bountyData.itemType !== 0;
         })
         const questItems = bountiesData.filter(item => {
+            if (!item.bountyData.hasOwnProperty('traitIds')) {
+                return false;
+            }
             return item.bountyData.traitIds.includes('inventory_filtering.quest')
                 && item.bountyData.itemType === 0;
         })

@@ -23,7 +23,7 @@ class Progress extends Component {
             const renderObjDesc = objectivesData.length > 1;
             return objectivesData.map(({obj, objInfo}) => {
                 return (
-                    <div className="display-in-row mt5">
+                    <div className="display-in-row mt5" key={objInfo.hash}>
                         <span className='smallLabel'>{renderObjDesc ? objInfo.progressDescription : null}</span>
                         <ProgressBar 
                             now={obj.progress} 

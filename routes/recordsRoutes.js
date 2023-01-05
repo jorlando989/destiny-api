@@ -54,34 +54,44 @@ module.exports = app => {
                 const recordInfo = await manifest.getRecordInfo(record.recordHash);
 
                 //get objective info
-                const allObjectiveInfo = recordInfo.objectiveHashes.map(async objectiveHash => {
-                    const objectiveInfo = await manifest.getObjectiveInfo(objectiveHash);
-
-                    //match progress to objective
-                    for (let i=0; i<recordsData[record.recordHash].objectives.length; i++) {
-                        const currObj = recordsData[record.recordHash].objectives[i];
-                        if (currObj.objectiveHash === objectiveHash) {
-                            return {
-                                objectiveInfo,
-                                objectiveProgress: currObj
-                            };
-                        }
-                    };
-
-                    return objectiveInfo;
-                })
-                const allObjectiveData = await Promise.all(allObjectiveInfo);
-
+                let allObjectiveData = null;
+                if (!recordInfo.hasOwnProperty("objectiveHashes")) {
+                    // console.log("no objective hashes");
+                } else {
+                    const allObjectiveInfo = recordInfo.objectiveHashes.map(async objectiveHash => {
+                        const objectiveInfo = await manifest.getObjectiveInfo(objectiveHash);
+    
+                        //match progress to objective
+                        for (let i=0; i<recordsData[record.recordHash].objectives.length; i++) {
+                            const currObj = recordsData[record.recordHash].objectives[i];
+                            if (currObj.objectiveHash === objectiveHash) {
+                                return {
+                                    objectiveInfo,
+                                    objectiveProgress: currObj
+                                };
+                            }
+                        };
+    
+                        return objectiveInfo;
+                    })
+                    allObjectiveData = await Promise.all(allObjectiveInfo);
+                }
+                
                 //get rewards info
-                const allRewardInfo = recordInfo.rewardItems.map(async ({itemHash, quantity}) => {
-                    const rewardInfo = await manifest.getItemInfo(itemHash);
-                    return {
-                        rewardInfo,
-                        quantity
-                    };
-                });
-                const rewardData = await Promise.all(allRewardInfo);
-
+                let rewardData = null;
+                if (!recordInfo.hasOwnProperty("rewardItems")) {
+                    // console.log("no reward items");
+                } else {
+                    const allRewardInfo = recordInfo.rewardItems.map(async ({itemHash, quantity}) => {
+                        const rewardInfo = await manifest.getItemInfo(itemHash);
+                        return {
+                            rewardInfo,
+                            quantity
+                        };
+                    });
+                    rewardData = await Promise.all(allRewardInfo);
+                }
+                
                 return {
                     recordInfo,
                     rewardData,
