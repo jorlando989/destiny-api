@@ -228,7 +228,7 @@ class WeeklyActivities extends Component {
                 <Row className='milestoneHeader'>
                     <Col xs={6}>Activity</Col>
                     {this.props.weeklyActivities.charProgressAndClass.map(char => {
-                        return (<Col>{char.class}</Col>);
+                        return (<Col key={char.class}>{char.class}</Col>);
                     })}
                 </Row>
             );
@@ -241,7 +241,7 @@ class WeeklyActivities extends Component {
                 <div className="display-in-row">
                     {this.props.weeklyActivities.charProgressAndClass.map(char => {
                         return (
-                            <div className="radioButton">
+                            <div className="radioButton" key={char.class}>
                                 <input 
                                     type="radio" 
                                     name='hideChallenges' 
@@ -479,7 +479,7 @@ class WeeklyActivities extends Component {
                         <span className='mr5'>Hide Completed
                         <span className="fieldLabel">
                             <i className="fa-regular fa-eye-slash"></i>
-                        </span>:</span>
+                        </span> :</span>
                         {this.renderRadioButtons()}
                     </div>
                 </div>
