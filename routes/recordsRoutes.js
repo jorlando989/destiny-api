@@ -25,13 +25,13 @@ module.exports = app => {
         const seasonHash = coreSettings.getCurrentSeasonHash();
 
         const manifest = new Manifest(currentUser.accessToken.access_token);
-        const seasonalChallengesData = await manifest.getPresentationNodeInfo(seasonalChallengesHash);
-
+        
         //get season info
-        const seasonInfo = await manifest.getSeasonInfo(seasonHash);
+        const seasonInfo = manifest.getSeasonInfo(seasonHash);
 
         //get challenges
-        const weeklyInfo = await manifest.getPresentationNodeInfo(seasonalChallengesData.children.presentationNodes[0].presentationNodeHash);
+        const seasonalChallengesData = manifest.getPresentationNodeInfo(seasonalChallengesHash);
+        const weeklyInfo = manifest.getPresentationNodeInfo(seasonalChallengesData.children.presentationNodes[0].presentationNodeHash);
 
         //get progress for character
         const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/Character/${selectedChar.characterID}/?components=900`;
@@ -47,19 +47,17 @@ module.exports = app => {
         const characterRecords = await response.json();
         const recordsData = characterRecords.Response.records.data.records;
 
-        const allSeasonalChallengesData = weeklyInfo.children.presentationNodes.map(async node => {
+        const allSeasonalChallengesInfo = weeklyInfo.children.presentationNodes.map(node => {
             //get presentation node data for all challenges in each week
-            const weekCategoryInfo = await manifest.getPresentationNodeInfo(node.presentationNodeHash);
-            const weekCategoryData = weekCategoryInfo.children.records.map(async record => {
-                const recordInfo = await manifest.getRecordInfo(record.recordHash);
+            const weekCategoryInfo = manifest.getPresentationNodeInfo(node.presentationNodeHash);
+            const categoryData = weekCategoryInfo.children.records.map(record => {
+                const recordInfo = manifest.getRecordInfo(record.recordHash);
 
                 //get objective info
                 let allObjectiveData = null;
-                if (!recordInfo.hasOwnProperty("objectiveHashes")) {
-                    // console.log("no objective hashes");
-                } else {
-                    const allObjectiveInfo = recordInfo.objectiveHashes.map(async objectiveHash => {
-                        const objectiveInfo = await manifest.getObjectiveInfo(objectiveHash);
+                if (recordInfo.hasOwnProperty("objectiveHashes")) {
+                    allObjectiveData = recordInfo.objectiveHashes.map(objectiveHash => {
+                        const objectiveInfo = manifest.getObjectiveInfo(objectiveHash);
     
                         //match progress to objective
                         for (let i=0; i<recordsData[record.recordHash].objectives.length; i++) {
@@ -73,38 +71,31 @@ module.exports = app => {
                         };
     
                         return objectiveInfo;
-                    })
-                    allObjectiveData = await Promise.all(allObjectiveInfo);
+                    });
                 }
                 
                 //get rewards info
                 let rewardData = null;
-                if (!recordInfo.hasOwnProperty("rewardItems")) {
-                    // console.log("no reward items");
-                } else {
-                    const allRewardInfo = recordInfo.rewardItems.map(async ({itemHash, quantity}) => {
-                        const rewardInfo = await manifest.getItemInfo(itemHash);
+                if (recordInfo.hasOwnProperty("rewardItems")) {
+                    rewardData = recordInfo.rewardItems.map(({itemHash, quantity}) => {
+                        const rewardInfo = manifest.getItemInfo(itemHash);
                         return {
                             rewardInfo,
                             quantity
                         };
                     });
-                    rewardData = await Promise.all(allRewardInfo);
                 }
-                
                 return {
                     recordInfo,
                     rewardData,
                     allObjectiveData
                 };
-            })
-            const categoryData = await Promise.all(weekCategoryData);
+            });
             return {
                 weekCategoryInfo,
                 categoryData
             };
         });
-        const allSeasonalChallengesInfo = await Promise.all(allSeasonalChallengesData);
     
         res.send({
             seasonInfo,
@@ -131,9 +122,8 @@ module.exports = app => {
         const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
         
         const manifest = new Manifest(currentUser.accessToken.access_token);
-        const seasonInfo = await manifest.getSeasonInfo(seasonHash);
-
-        const artifactInfo = await manifest.getItemInfo(seasonInfo.artifactItemHash);
+        const seasonInfo = manifest.getSeasonInfo(seasonHash);
+        const artifactInfo = manifest.getItemInfo(seasonInfo.artifactItemHash);
 
         const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/?components=104`;
         const response = await fetch(query, {
@@ -161,10 +151,6 @@ module.exports = app => {
 
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
         const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
-        
-        const manifest = new Manifest(currentUser.accessToken.access_token);
-        const seasonInfo = await manifest.getSeasonInfo(seasonHash);
-        const seasonPassInfo = await manifest.getSeasonPassInfo(seasonInfo.seasonPassHash);
 
         const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/?components=202`;
         const response = await fetch(query, {
@@ -177,6 +163,10 @@ module.exports = app => {
             return res.status(401).send({ error: 'error retrieving character progressions' });
         }
         const characterProgressions = await response.json();
+
+        const manifest = new Manifest(currentUser.accessToken.access_token);
+        const seasonInfo = manifest.getSeasonInfo(seasonHash);
+        const seasonPassInfo = manifest.getSeasonPassInfo(seasonInfo.seasonPassHash);
         
         const seasonPassProgression = Object.values(characterProgressions.Response.characterProgressions.data)[0].progressions[seasonInfo.seasonPassProgressionHash];
         const prestigeSeasonPassProgression = Object.values(characterProgressions.Response.characterProgressions.data)[0].progressions[seasonPassInfo.prestigeProgressionHash];

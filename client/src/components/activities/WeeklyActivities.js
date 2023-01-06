@@ -20,11 +20,11 @@ class WeeklyActivities extends Component {
 
     renderMilestoneName(milestoneInfo, activitiesInfo) {
         if (milestoneInfo.displayProperties.name === "Weekly Dungeon Challenge") {
-            return milestoneInfo.displayProperties.name + " - " + activitiesInfo[0].activityInfo.displayProperties.name;
+            return milestoneInfo.displayProperties.name + " - " + activitiesInfo[0].displayProperties.name;
         } else if (milestoneInfo.displayProperties.name === "Wellspring Powerful Challenge") {  
-            return milestoneInfo.displayProperties.name + " - " + activitiesInfo[0].activityInfo.displayProperties.name;
+            return milestoneInfo.displayProperties.name + " - " + activitiesInfo[0].displayProperties.name;
         } else if (milestoneInfo.displayProperties.name === "Nightfall: The Ordeal Weekly Score" || milestoneInfo.displayProperties.name === "Nightfall: The Ordeal Weekly Completions") {
-            return milestoneInfo.displayProperties.name + " - " + activitiesInfo[0].activityInfo.displayProperties.description;
+            return milestoneInfo.displayProperties.name + " - " + activitiesInfo[0].displayProperties.description;
         } else {
             return milestoneInfo.displayProperties.name;
         }

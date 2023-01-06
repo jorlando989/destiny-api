@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const requireLogin = require('../middlewares/requireLogin');
 const checkAccessToken = require('../middlewares/checkAccessToken');
+
 const Manifest = require('../services/manifest');
 const User = mongoose.model('users');
 
@@ -45,28 +46,27 @@ module.exports = app => {
 
         const manifest = new Manifest(currentUser.accessToken.access_token);
 
-        const vendorGroupsInfo = vendorGroupHashes.groups.map(async group => {
+        const vendorGroupResults = vendorGroupHashes.groups.map(group => {
             //get info for group
-            const vendorGroup = await manifest.getVendorGroupInfo(group.vendorGroupHash);
+            const vendorGroup = manifest.getVendorGroupInfo(group.vendorGroupHash);
 
             //get info for each vendor in group
-            const groupInfo = group.vendorHashes.map(async vendor => {
-                const vendorInfo = await manifest.getVendorInfo(vendor);
+            const groupResults = group.vendorHashes.map(vendor => {
+                const vendorInfo = manifest.getVendorInfo(vendor);
 
                 //get info for vendors location
-                const locationInfo = vendorInfo.locations.map(async location => {
-                    const destination = await manifest.getLocationInfo(location.destinationHash);
+                const locationResults = vendorInfo.locations.map(location => {
+                    const destination = manifest.getLocationInfo(location.destinationHash);
                     return { 
                         displayProperties: destination.displayProperties,
                         hash: destination.hash
                      };
                 });
-                const locationResults = await Promise.all(locationInfo);
 
                 //get info for sale items and associated with correct vendor
                 const saleHashes = vendorSales[vendor];
-                const saleInfo = Object.values(saleHashes.saleItems).map(async ({itemHash, quantity, vendorItemIndex, costs}) => {
-                    const itemInfo = await manifest.getItemInfo(itemHash);
+                const saleResults = Object.values(saleHashes.saleItems).map( ({itemHash, quantity, vendorItemIndex, costs}) => {
+                    const itemInfo = manifest.getItemInfo(itemHash);
                     return {
                         quantity,
                         itemInfo,
@@ -75,7 +75,6 @@ module.exports = app => {
                         costs
                     };
                 });
-                const saleResults = await Promise.all(saleInfo);
 
                 //user vendorInfo.displayCategories to group
                 //in each list of vendor display categories, match the indexes to vendoritemindex on each item to get matching category
@@ -120,14 +119,12 @@ module.exports = app => {
                     saleInfo: groupedItemsInfo
                 };
             });
-            const groupResults = await Promise.all(groupInfo);
 
             return {
                 vendorGroup,
                 groupInfo: groupResults
             };
         });
-        const vendorGroupResults = await Promise.all(vendorGroupsInfo);
 
         res.send(vendorGroupResults);
     });
@@ -189,15 +186,14 @@ module.exports = app => {
 
         const manifest = new Manifest(currentUser.accessToken.access_token);
         
-        const progressionData = rankVendors.map(async ({vendor, progressInfo}) => {
-            const rankInfo = await manifest.getProgressionInfo(vendor.progression.progressionHash);
+        const progressionInfo = rankVendors.map(({vendor, progressInfo}) => {
+            const rankInfo = manifest.getProgressionInfo(vendor.progression.progressionHash);
             return {
                 rankInfo,
                 vendor,
                 progressInfo
             };
         });
-        const progressionInfo = await Promise.all(progressionData);
 
         res.send(progressionInfo);
     });

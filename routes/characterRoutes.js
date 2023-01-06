@@ -46,11 +46,10 @@ module.exports = app => {
         const charactersInfo = await Promise.all(charactersData);
 
         const manifest = new Manifest(currentUser.accessToken.access_token);
-
-        const parsedCharData = await Promise.all(charactersInfo.map(async charInfo => {
-            const classInfo = await manifest.getClassInfo(charInfo.classHash);
-            const race = await manifest.getRaceInfo(charInfo.raceHash);
-            const title = await manifest.getRecordInfo(charInfo.titleRecordHash);
+        const parsedCharInfo = charactersInfo.map(charInfo => {
+            const classInfo = manifest.getClassInfo(charInfo.classHash);
+            const race = manifest.getRaceInfo(charInfo.raceHash);
+            const title = manifest.getRecordInfo(charInfo.titleRecordHash);
             let gilded = false;
             if (title.titleInfo.hasOwnProperty('gildingTrackingRecordHash')) {
                 const recordData = profileRecords[title.titleInfo.gildingTrackingRecordHash];
@@ -68,8 +67,7 @@ module.exports = app => {
                 emblemFull: charInfo.emblemBackgroundPath,
                 emblemIcon: charInfo.emblemPath
             }
-        }));
-        const parsedCharInfo = await Promise.all(parsedCharData);
+        });
         res.send(parsedCharInfo);
     });
 
@@ -113,20 +111,19 @@ module.exports = app => {
 
         const manifest = new Manifest(currentUser.accessToken.access_token);
 
-        const bountiesInfo = bounties.map(async bounty => {
-            const bountyData = await manifest.getItemInfo(bounty.itemHash);
+        const bountiesData = bounties.map(bounty => {
+            const bountyData = manifest.getItemInfo(bounty.itemHash);
             
             //get progress if applicable
             let objectivesData = null;
             if (itemObjectives[bounty.itemInstanceId]) {
-                const objectivesInfo = itemObjectives[bounty.itemInstanceId].objectives.map(async obj => {
-                    const objInfo = await manifest.getObjectiveInfo(obj.objectiveHash);
+                objectivesData = itemObjectives[bounty.itemInstanceId].objectives.map(obj => {
+                    const objInfo = manifest.getObjectiveInfo(obj.objectiveHash);
                     return {
                         obj,
                         objInfo
                     };
                 });
-                objectivesData = await Promise.all(objectivesInfo);
             }
 
             return {
@@ -135,7 +132,6 @@ module.exports = app => {
                 objectivesData
             };
         });
-        const bountiesData = await Promise.all(bountiesInfo);
 
         //sort into bounties, quests, and questItems
         const trueBounties = bountiesData.filter(item => {

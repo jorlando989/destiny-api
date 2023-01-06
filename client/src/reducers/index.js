@@ -13,6 +13,7 @@ import seasonalArtifactReducer from "./seasonalArtifactReducer";
 import seasonPassReducer from './seasonPassReducer';
 import bountyReducer from './bountyReducer';
 import weeklyActivityVisibilityReducer from './weeklyActivityVisibilityReducer';
+import checkManifestReducer from './checkManifestReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -27,5 +28,6 @@ export default combineReducers({
     seasonalArtifact: seasonalArtifactReducer,
     seasonPass: seasonPassReducer,
     bounties: bountyReducer,
-    weeklyActivityVisibility: weeklyActivityVisibilityReducer
+    weeklyActivityVisibility: weeklyActivityVisibilityReducer,
+    checkManifestVersion: checkManifestReducer
 });

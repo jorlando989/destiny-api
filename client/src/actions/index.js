@@ -13,7 +13,8 @@ import {
     FETCH_SEASONAL_ARTIFACT,
     FETCH_SEASON_PASS,
     FETCH_BOUNTIES,
-    SET_WEEKLY_ACTIVITY_VISIBILITY
+    SET_WEEKLY_ACTIVITY_VISIBILITY,
+    CHECK_FOR_NEW_MANIFEST_VERSION
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -84,4 +85,9 @@ export const fetchBounties = () => async dispatch => {
 export const setCompletedWeeklyActivityVisibility = (id) => async dispatch => {
     const res = await axios.get('/api/hide_weekly_activities', {params: {id: id}});
     dispatch({ type: SET_WEEKLY_ACTIVITY_VISIBILITY, payload: res.data });
+}
+
+export const checkForNewManifestVersion = () => async dispatch => {
+    const res = await axios.get('/api/checkForManifestUpdate');
+    dispatch({ type: CHECK_FOR_NEW_MANIFEST_VERSION, payload: res.data});
 }

@@ -16,6 +16,7 @@ localStorage = new LocalStorage('./scratch');
 app.use(express.json());
 
 require('./routes/authRoutes')(app);
+require('./routes/manifestRoutes')(app);
 require('./routes/characterRoutes')(app);
 require('./routes/vendorRoutes')(app);
 require('./routes/activityRoutes')(app);

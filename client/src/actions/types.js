@@ -12,3 +12,4 @@ export const FETCH_SEASONAL_ARTIFACT = 'fetch_seasonal_artifact';
 export const FETCH_SEASON_PASS = 'fetch_season_pass';
 export const FETCH_BOUNTIES = 'fetch_bounties';
 export const SET_WEEKLY_ACTIVITY_VISIBILITY = 'set_weekly_activity_visibility';
+export const CHECK_FOR_NEW_MANIFEST_VERSION = "check_for_new_manifest_version";

@@ -1,5 +1,21 @@
 const keys = require('../config/keys');
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
+const classDefinitions = require('../data/manifestData/classDefinitions.json');
+const raceDefinitions = require('../data/manifestData/raceDefinitions.json');
+const recordDefinitions = require('../data/manifestData/recordDefinitions.json');
+const inventoryItemDefinitions = require('../data/manifestData/inventoryItemDefinitions.json');
+const objectiveDefinitions = require('../data/manifestData/objectiveDefinitions.json');
+const presentationNodeDefinitions = require('../data/manifestData/presentationNodeDefinitions.json');
+const seasonDefinitions = require('../data/manifestData/seasonDefinitions.json');
+const seasonPassDefinitions = require('../data/manifestData/seasonPassDefinitions.json');
+const vendorGroupDefinitions = require('../data/manifestData/vendorGroupDefinitions.json');
+const vendorDefinitions = require('../data/manifestData/vendorDefinitions.json');
+const destinationDefinitions = require('../data/manifestData/destinationDefinitions.json');
+const progressionDefinitions = require('../data/manifestData/progressionDefinitions.json');
+const milestoneDefinitions = require('../data/manifestData/milestoneDefinitions.json');
+const activityDefinitions = require('../data/manifestData/activityDefinitions.json');
+const activityModifierDefinitions = require('../data/manifestData/activityModifierDefinitions.json');
+const activityModeDefinitions = require('../data/manifestData/activityModeDefinitions.json');
 
 class Manifest {
     constructor(access_token) {
@@ -10,180 +26,68 @@ class Manifest {
         this.base = 'https://www.bungie.net/Platform/Destiny2/Manifest';
     }
 
-    async getClassInfo(classHash) {
-        const resp = await fetch(`${this.base}/DestinyClassDefinition/${classHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving class info for ' + classHash };
-        }
-        const classInfo = await resp.json();
-        return classInfo.Response;
+    getClassInfo(classHash) {
+        return classDefinitions[classHash];
     }
 
-    async getRaceInfo(raceHash) {
-        const resp = await fetch(`${this.base}/DestinyRaceDefinition/${raceHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving race info for ' + raceHash };
-        }
-        const raceInfo = await resp.json();
-        return raceInfo.Response;
+    getRaceInfo(raceHash) {
+        return raceDefinitions[raceHash];
     }
 
-    async getVendorGroupInfo(vendorGroupHash) {
-        const resp = await fetch(`${this.base}/DestinyVendorGroupDefinition/${vendorGroupHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving vendor group info for ' + vendorGroupHash };
-        }
-        const vendorGroupInfo = await resp.json();
-        return vendorGroupInfo.Response;
+    getVendorGroupInfo(vendorGroupHash) {
+        return vendorGroupDefinitions[vendorGroupHash];
     }
 
-    async getVendorInfo(vendorHash) {
-        const resp = await fetch(`${this.base}/DestinyVendorDefinition/${vendorHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving vendor info for ' + vendorHash };
-        }
-        const vendorInfo = await resp.json();
-        return vendorInfo.Response;
+    getVendorInfo(vendorHash) {
+        return vendorDefinitions[vendorHash];
     }
 
-    async getLocationInfo(locationHash) {
-        const resp = await fetch(`${this.base}/DestinyDestinationDefinition/${locationHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving location info for ' + locationHash };
-        }
-        const destinationInfo = await resp.json();
-        return destinationInfo.Response;
+    getLocationInfo(locationHash) {
+        return destinationDefinitions[locationHash];
     }
 
-    async getItemInfo(itemHash) {
-        const resp = await fetch(`${this.base}/DestinyInventoryItemDefinition/${itemHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving item info for ' + itemHash };
-        }
-        const itemInfo = await resp.json();
-        return itemInfo.Response;
+    getItemInfo(itemHash) {
+        return inventoryItemDefinitions[itemHash];
     }
 
-    async getMilestoneInfo(milestoneHash) {
-        const resp = await fetch(`${this.base}/DestinyMilestoneDefinition/${milestoneHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving milestone info for ' + milestoneHash };
-        }
-        const milestoneInfo = await resp.json();
-        return milestoneInfo.Response;
+    getMilestoneInfo(milestoneHash) {
+        return milestoneDefinitions[milestoneHash];
     }
 
-    async getActivityInfo(activityHash) {
-        const resp = await fetch(`${this.base}/DestinyActivityDefinition/${activityHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving activity info for ' + activityHash };
-        }
-        const activityInfo = await resp.json();
-        return activityInfo.Response;
+    getActivityInfo(activityHash) {
+        return activityDefinitions[activityHash];
     }
 
-    async getActivityModifierInfo(activityModifierHash) {
-        const resp = await fetch(`${this.base}/DestinyActivityModifierDefinition/${activityModifierHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving activity modifier info for ' + activityModifierHash };
-        }
-        const activityModifierInfo = await resp.json();
-        return activityModifierInfo.Response;
+    getActivityModifierInfo(activityModifierHash) {
+        return activityModifierDefinitions[activityModifierHash];
     }
 
-    async getActivityModeInfo(activityModeHash) {
-        const resp = await fetch(`${this.base}/DestinyActivityModeDefinition/${activityModeHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving activity mode info for ' + activityModeHash };
-        }
-        const activityModeInfo = await resp.json();
-        return activityModeInfo.Response;
+    getActivityModeInfo(activityModeHash) {
+        return activityModeDefinitions[activityModeHash];
     }
 
-    async getObjectiveInfo(objectiveHash) {
-        const resp = await fetch(`${this.base}/DestinyObjectiveDefinition/${objectiveHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving objective info for ' + objectiveHash };
-        }
-        const objectiveInfo = await resp.json();
-        return objectiveInfo.Response;
+    getObjectiveInfo(objectiveHash) {
+        return objectiveDefinitions[objectiveHash];
     }
 
-    async getProgressionInfo(progressionHash) {
-        const resp = await fetch(`${this.base}/DestinyProgressionDefinition/${progressionHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving progression info for ' + progressionHash };
-        }
-        const progressionInfo = await resp.json();
-        return progressionInfo.Response;
+    getProgressionInfo(progressionHash) {
+        return progressionDefinitions[progressionHash];
     }
 
-    async getPresentationNodeInfo(presentationNodeHash) {
-        const resp = await fetch(`${this.base}/DestinyPresentationNodeDefinition/${presentationNodeHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving presentation node info for ' + presentationNodeHash };
-        }
-        const presentationNodeInfo = await resp.json();
-        return presentationNodeInfo.Response;
+    getPresentationNodeInfo(presentationNodeHash) {
+        return presentationNodeDefinitions[presentationNodeHash];
     }
 
-    async getRecordInfo(recordHash) {
-        const resp = await fetch(`${this.base}/DestinyRecordDefinition/${recordHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving record info for ' + recordHash };
-        }
-        const recordInfo = await resp.json();
-        return recordInfo.Response;
+    getRecordInfo(recordHash) {
+        return recordDefinitions[recordHash];
     }
 
-    async getSeasonInfo(seasonHash) {
-        const resp = await fetch(`${this.base}/DestinySeasonDefinition/${seasonHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving season info for ' + seasonHash };
-        }
-        const seasonInfo = await resp.json();
-        return seasonInfo.Response;
+    getSeasonInfo(seasonHash) {
+        return seasonDefinitions[seasonHash];
     }
 
-    async getSeasonPassInfo(seasonPassHash) {
-        const resp = await fetch(`${this.base}/DestinySeasonPassDefinition/${seasonPassHash}/`, {
-            headers: this.headers
-        });
-        if (resp.status === 400 || resp.status === 401) {
-            return { error: 'error retrieving season pass info for ' + seasonPassHash };
-        }
-        const seasonPassInfo = await resp.json();
-        return seasonPassInfo.Response;
+    getSeasonPassInfo(seasonPassHash) {
+        return seasonPassDefinitions[seasonPassHash];
     }
 }
 
