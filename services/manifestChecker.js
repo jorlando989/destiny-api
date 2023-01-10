@@ -15,7 +15,7 @@ module.exports = async function checkForNewManifestVersion() {
     let currManifest = newManifest.Response.jsonWorldContentPaths.en;
 
     console.log('checking for new manifest');
-    // console.log(newVersion, currVersion);
+    console.log(newVersion, currVersion);
     if (currVersion == null || newVersion !== currVersion) {
         console.log('new version found');
         localStorage.setItem('currManifestVersion', newVersion);

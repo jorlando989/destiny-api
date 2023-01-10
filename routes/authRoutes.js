@@ -84,6 +84,7 @@ module.exports = app => {
 
     app.get('/api/logout', (req, res) => {
         localStorage.clear();
+        console.log('logged out');
         res.redirect('/');
     });
 };
