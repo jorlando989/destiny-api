@@ -8,7 +8,6 @@ module.exports = app => {
     app.get('/auth/bungie', (req, res) => {
         //request access token from bungie
         res.redirect(`https://www.bungie.net/en/OAuth/Authorize?client_id=${keys.clientID}&response_type=code`);
-        return;
     });
     
     app.get('/auth/bungie/callback',  async (req, res) => {
@@ -86,6 +85,5 @@ module.exports = app => {
     app.get('/api/logout', (req, res) => {
         localStorage.clear();
         res.redirect('/');
-        return;
     });
 };
