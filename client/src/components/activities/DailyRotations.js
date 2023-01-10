@@ -1,9 +1,16 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+
 import Countdown from 'react-countdown';
 import LostSectorRotation from "./LostSectorRotation";
 import ModsRotation from "./ModsRotation";
+import CharacterSelector from '../CharacterSelector';
+import { selectChar } from '../../actions';
 
 class DailyActivities extends Component {
+    componentDidMount() {
+        this.props.selectChar();
+    }
     renderCountdown() {
         const now = new Date();
         //reset time is either next day at 1pm or same day at 1 pm
@@ -28,6 +35,8 @@ class DailyActivities extends Component {
                     <h5 className='align-right'>Time until Reset: {this.renderCountdown()}</h5>
                 </div>
 
+                <CharacterSelector />
+
                 <h4>Lost Sector</h4>
                 <LostSectorRotation />
                 
@@ -45,4 +54,4 @@ class DailyActivities extends Component {
     }
 }
 
-export default DailyActivities;
+export default connect(null, {selectChar})(DailyActivities);

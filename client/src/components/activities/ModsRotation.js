@@ -6,6 +6,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 
 class ModsRotation extends Component {
     componentDidMount() {
+        console.log(this.props.vendor);
         if (this.props.vendor === 'Ada-1') {
             this.props.fetchVendorModsAda(this.props.vendor);
         } else if (this.props.vendor === 'Banshee') {
@@ -13,7 +14,29 @@ class ModsRotation extends Component {
         }
     }
 
-    render () {
+    renderMods(currVendorMods) {
+        if (currVendorMods) {
+            return currVendorMods.map(mod => {
+                return (
+                    <div key={mod.hash}>
+                        <OverlayTrigger
+                            key={mod.hash}
+                            placement="top"
+                            overlay={
+                                <Tooltip id='modifier description'>
+                                    <b>{mod.displayProperties.name}</b>
+                                </Tooltip>
+                            }
+                        >
+                            <img src={`https://www.bungie.net${mod.displayProperties.icon}`} alt={`${mod.displayProperties.name} mod icon`} />
+                        </OverlayTrigger>
+                    </div>
+                );
+            });
+        }
+    }
+
+    render() {
         let currVendorMods = null;
         if (this.props.vendor === 'Ada-1') {
             currVendorMods = this.props.vendorModsAda;
@@ -22,30 +45,14 @@ class ModsRotation extends Component {
         }
         return (
             <div className='display-in-row mods bg-teal'>
-                {currVendorMods.map(mod => {
-                    return (
-                        <div key={mod.hash}>
-                            <OverlayTrigger
-                                key={mod.hash}
-                                placement="top"
-                                overlay={
-                                    <Tooltip id='modifier description'>
-                                        <b>{mod.displayProperties.name}</b>
-                                    </Tooltip>
-                                }
-                            >
-                                <img src={`https://www.bungie.net${mod.displayProperties.icon}`} alt={`${mod.displayProperties.name} mod icon`} />
-                            </OverlayTrigger>
-                        </div>
-                    );
-                })}
+                {this.renderMods(currVendorMods)}
             </div>
         );
     }
 }
 
-function mapStateToProps({ vendorModsAda, vendorModsBanshee }) {
-    return { vendorModsAda, vendorModsBanshee };
+function mapStateToProps({ vendorModsAda, vendorModsBanshee, currChar }) {
+    return { vendorModsAda, vendorModsBanshee, currChar };
 }
 
 export default connect(mapStateToProps, { fetchVendorModsAda, fetchVendorModsBanshee })(ModsRotation);
