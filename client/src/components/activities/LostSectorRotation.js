@@ -82,7 +82,7 @@ class LostSectorRotation extends Component {
             }
             return (
                 <div key={reward.hash}>
-                    <img src={`https://www.bungie.net${reward.displayProperties.icon}`} className='vendorIcon' />
+                    <img src={`https://www.bungie.net${reward.displayProperties.icon}`} className='vendorIcon' alt='reward icon'/>
                     {reward.displayProperties.name}
                 </div>
             );

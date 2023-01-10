@@ -39,7 +39,7 @@ class VendorRanks extends Component {
 
     renderRankImg(rankInfo) {
         if (rankInfo.hasOwnProperty('rankIcon')) {
-            return (<img src={`https://www.bungie.net${rankInfo.rankIcon}`} className='pointsIcon'/>);
+            return (<img src={`https://www.bungie.net${rankInfo.rankIcon}`} className='pointsIcon' alt='rank points icon'/>);
         }
     }
 
