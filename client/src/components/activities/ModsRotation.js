@@ -34,7 +34,7 @@ class ModsRotation extends Component {
                                     </Tooltip>
                                 }
                             >
-                                <img src={`https://www.bungie.net${mod.displayProperties.icon}`} />
+                                <img src={`https://www.bungie.net${mod.displayProperties.icon}`} alt={`${mod.displayProperties.name} mod image`} />
                             </OverlayTrigger>
                         </div>
                     );

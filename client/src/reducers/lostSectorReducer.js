@@ -1,6 +1,6 @@
 import { FETCH_DAILY_LOST_SECTOR } from "../actions/types";
 
-export default function(state = null, action) {
+export default function fetchDailyLostSector(state = null, action) {
     switch (action.type) {
         case FETCH_DAILY_LOST_SECTOR: 
             return action.payload || false;

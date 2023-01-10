@@ -381,6 +381,7 @@ class WeeklyActivities extends Component {
                     if (!phase.complete) {
                         allPhasesComplete = false;
                     }
+                    return;
                 });
                 return allPhasesComplete;
             } else if (charActivities[0].challenges) {

@@ -16,11 +16,11 @@ class LostSectorRotation extends Component {
         const renderedDesc = splitDesc.map(part => {
             switch (part) {
                 case '[Solar]': 
-                    return (<img key='solarIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Solar'].transparentIcon}`}/>);
+                    return (<img key='solarIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Solar'].transparentIcon}`} alt='solar element icon'/>);
                 case '[Void]':
-                    return (<img key='voidIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Void'].transparentIcon}`}/>);
+                    return (<img key='voidIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Void'].transparentIcon}`} alt='void element icon'/>);
                 case '[Arc]':
-                    return (<img key='arcIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Arc'].transparentIcon}`}/>);
+                    return (<img key='arcIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Arc'].transparentIcon}`} alt='arc element icon'/>);
                 default:
                     return ' ' + part + ' ';
             }
@@ -34,11 +34,11 @@ class LostSectorRotation extends Component {
         const renderedDesc = splitDesc.map(part => {
             switch (part) {
                 case '[Shield-Piercing]': 
-                    return (<img key='shieldPiercingIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Shield-Piercing'].icon}`}/>);
+                    return (<img key='shieldPiercingIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Shield-Piercing'].icon}`} alt='anti-barrier icon'/>);
                 case '[Disruption]':
-                    return (<img key='disruptionIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Disruption'].icon}`}/>);
+                    return (<img key='disruptionIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Disruption'].icon}`} alt='overload icon'/>);
                 case '[Stagger]':
-                    return (<img key='staggerIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Stagger'].icon}`}/>);
+                    return (<img key='staggerIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Stagger'].icon}`} alt='unstoppable icon'/>);
                 default:
                     return ' ' + part + ' ';
             }
@@ -68,7 +68,7 @@ class LostSectorRotation extends Component {
                             </Tooltip>
                         }
                     >
-                        <img src={`https://www.bungie.net${mod.displayProperties.icon}`} className='vendorIcon'/>
+                        <img src={`https://www.bungie.net${mod.displayProperties.icon}`} className='vendorIcon' alt='mod icon'/>
                     </OverlayTrigger>
                 </div>
             );

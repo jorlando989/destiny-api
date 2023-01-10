@@ -44,7 +44,7 @@ class Progress extends Component {
                     {bounties.map(({bounty, bountyData, objectivesData}) =>{
                         return (
                             <div className="row-item display-in-row">
-                                <img className='medium-icon row-item' src={`https://www.bungie.net${bountyData.displayProperties.icon}`}/>
+                                <img className='medium-icon row-item' src={`https://www.bungie.net${bountyData.displayProperties.icon}`} alt='bounty icon'/>
                                 <div className="row-item">
                                     <b>{bountyData.displayProperties.name}</b>
                                     <div className="description">
