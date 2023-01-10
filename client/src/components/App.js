@@ -18,12 +18,7 @@ class App extends Component {
     componentDidMount() {
         //checks if current user signs in when app loads
         this.props.fetchUser();
-        // this.props.checkForNewManifestVersion();
     }
-
-    // componentDidUpdate(prevProps) {
-    //     this.props.checkForNewManifestVersion();
-    // }
 
     render() {
         return (

@@ -14,6 +14,8 @@ import seasonPassReducer from './seasonPassReducer';
 import bountyReducer from './bountyReducer';
 import weeklyActivityVisibilityReducer from './weeklyActivityVisibilityReducer';
 import checkManifestReducer from './checkManifestReducer';
+import vendorModsReducerAda from './vendorModsReducerAda';
+import vendorModsReducerBanshee from './vendorModsBansheeReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -29,5 +31,7 @@ export default combineReducers({
     seasonPass: seasonPassReducer,
     bounties: bountyReducer,
     weeklyActivityVisibility: weeklyActivityVisibilityReducer,
-    checkManifestVersion: checkManifestReducer
+    checkManifestVersion: checkManifestReducer,
+    vendorModsAda: vendorModsReducerAda,
+    vendorModsBanshee: vendorModsReducerBanshee
 });

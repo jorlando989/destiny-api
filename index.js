@@ -24,6 +24,9 @@ checkForNewManifestVersion().then(() => {
   require('./routes/recordsRoutes')(app);
 });
 
+//check manifest version every 5 minutes
+var manifestInterval = setInterval(() => checkForNewManifestVersion(), 60*5000);
+
 if (process.env.NODE_ENV === 'production') {
   //ensure Express serves up production assets
   app.use(express.static('client/build'));

@@ -7,9 +7,12 @@ const checkAccessToken = require('../middlewares/checkAccessToken');
 const Manifest = require('../services/manifest');
 const User = mongoose.model('users');
 
+const vendorModsHashes = require('../data/vendorModsHashes.json');
+
 const rankProgressionToStreakProgression = {
     2083746873: '2203850209',     //crucible
     1647151960: '2572719399',     //glory
+    3696598664: '',     //competitive
     3008065600: '2939151659',     //gambit
     457612306: '600547406',       //vanguard
     2755675426: '70699614',       //trials
@@ -44,7 +47,7 @@ module.exports = app => {
         const vendorCategories = respData.Response.categories.data;
         const vendorSales = respData.Response.sales.data;
 
-        const manifest = new Manifest(currentUser.accessToken.access_token);
+        const manifest = new Manifest();
 
         const vendorGroupResults = vendorGroupHashes.groups.map(group => {
             //get info for group
@@ -196,5 +199,44 @@ module.exports = app => {
         });
 
         res.send(progressionInfo);
+    });
+
+    app.get('/api/fetch_vendor_mods', requireLogin, checkAccessToken, async (req, res) => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
+        const selectedChar = JSON.parse(localStorage.getItem("selectedChar"));
+
+        if(selectedChar === null) {
+            res.send(null);
+            return;
+        }
+
+        //get vendor sales
+        const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/Character/${selectedChar.characterID}/Vendors/${vendorModsHashes[req.query.vendor].hash}/?components=402`;
+
+        const response = await fetch(query, {
+            headers: {
+                'X-API-Key': keys.apiKey,
+                'Authorization': "Bearer " + currentUser.accessToken.access_token
+            }
+        });
+        if (response.status === 400 || response.status === 401) {
+            return res.status(401).send({ error: 'error retrieving vendors' });
+        }
+        const respData = await response.json();
+        const vendorSales = respData.Response.sales.data;
+
+        const manifest = new Manifest();
+
+        const vendorSalesInfo = Object.values(vendorSales).map(item => {
+            return manifest.getItemInfo(item.itemHash);
+        });
+
+        //filter for mods 
+        const filteredVendorSalesInfo = vendorSalesInfo.filter((item) => {
+            return item.itemCategoryHashes.includes(59);
+        });
+
+        res.send(filteredVendorSalesInfo);
     });
 }

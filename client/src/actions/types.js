@@ -13,3 +13,5 @@ export const FETCH_SEASON_PASS = 'fetch_season_pass';
 export const FETCH_BOUNTIES = 'fetch_bounties';
 export const SET_WEEKLY_ACTIVITY_VISIBILITY = 'set_weekly_activity_visibility';
 export const CHECK_FOR_NEW_MANIFEST_VERSION = "check_for_new_manifest_version";
+export const FETCH_VENDOR_MODS_ADA = 'fetch_vendor_mods_ada';
+export const FETCH_VENDOR_MODS_BANSHEE = 'fetch_vendor_mods_banshee';

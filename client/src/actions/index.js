@@ -14,7 +14,9 @@ import {
     FETCH_SEASON_PASS,
     FETCH_BOUNTIES,
     SET_WEEKLY_ACTIVITY_VISIBILITY,
-    CHECK_FOR_NEW_MANIFEST_VERSION
+    CHECK_FOR_NEW_MANIFEST_VERSION,
+    FETCH_VENDOR_MODS_ADA,
+    FETCH_VENDOR_MODS_BANSHEE
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -90,4 +92,14 @@ export const setCompletedWeeklyActivityVisibility = (id) => async dispatch => {
 export const checkForNewManifestVersion = () => async dispatch => {
     const res = await axios.get('/api/checkForManifestUpdate');
     dispatch({ type: CHECK_FOR_NEW_MANIFEST_VERSION, payload: res.data});
+}
+
+export const fetchVendorModsAda = (vendor) => async dispatch => {
+    const res = await axios.get('/api/fetch_vendor_mods', {params: {vendor: vendor}});
+    dispatch({type: FETCH_VENDOR_MODS_ADA, payload: res.data});
+}
+
+export const fetchVendorModsBanshee = (vendor) => async dispatch => {
+    const res = await axios.get('/api/fetch_vendor_mods', {params: {vendor: vendor}});
+    dispatch({type: FETCH_VENDOR_MODS_BANSHEE, payload: res.data});
 }

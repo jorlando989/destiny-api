@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Countdown from 'react-countdown';
 import LostSectorRotation from "./LostSectorRotation";
+import ModsRotation from "./ModsRotation";
 
 class DailyActivities extends Component {
     renderCountdown() {
@@ -31,7 +32,11 @@ class DailyActivities extends Component {
                 <LostSectorRotation />
                 
                 <h4>Ada-1 Mods</h4>
+                <ModsRotation vendor={'Ada-1'}/>
+
                 <h4>Banshee Mods</h4>
+                <ModsRotation vendor={'Banshee'}/>
+
                 <h4>Altar of Sorrows Reward</h4>
                 <h4>Wellspring</h4>
                 <h4>Strike Modifiers</h4>

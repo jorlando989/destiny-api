@@ -16,6 +16,10 @@ body {
 
 /* 85ffc7, 297373, ff8552, e6e6e6, 39393a */
 
+.bg-teal {
+    background-color: #297373;
+}
+
 .header {
     background-color: #ff8552;
 }
@@ -306,4 +310,10 @@ Button, .card-body a {
 hr {
     margin-top: 5px !important;
     margin-bottom: 5px !important;
+}
+
+.mods {
+    justify-content: flex-start;
+    border-radius: 5px;
+    width: min-content;
 }
