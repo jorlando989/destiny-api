@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 var LocalStorage = require('node-localstorage').LocalStorage;
 const keys = require('./config/keys');
+const checkForNewManifestVersion = require('./services/manifestChecker');
 
 require('./models/User');
 require('./models/lostSector');
@@ -13,14 +14,15 @@ const app = express();
 
 localStorage = new LocalStorage('./scratch');
 
-app.use(express.json());
-
-require('./routes/authRoutes')(app);
-require('./routes/manifestRoutes')(app);
-require('./routes/characterRoutes')(app);
-require('./routes/vendorRoutes')(app);
-require('./routes/activityRoutes')(app);
-require('./routes/recordsRoutes')(app);
+checkForNewManifestVersion().then(() => {
+  app.use(express.json());
+  require('./routes/authRoutes')(app);
+  require('./routes/manifestRoutes')(app);
+  require('./routes/characterRoutes')(app);
+  require('./routes/vendorRoutes')(app);
+  require('./routes/activityRoutes')(app);
+  require('./routes/recordsRoutes')(app);
+});
 
 if (process.env.NODE_ENV === 'production') {
   //ensure Express serves up production assets

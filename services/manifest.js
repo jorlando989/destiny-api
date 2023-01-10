@@ -1,5 +1,3 @@
-const keys = require('../config/keys');
-
 const classDefinitions = require('../data/manifestData/classDefinitions.json');
 const raceDefinitions = require('../data/manifestData/raceDefinitions.json');
 const recordDefinitions = require('../data/manifestData/recordDefinitions.json');
@@ -18,13 +16,7 @@ const activityModifierDefinitions = require('../data/manifestData/activityModifi
 const activityModeDefinitions = require('../data/manifestData/activityModeDefinitions.json');
 
 class Manifest {
-    constructor(access_token) {
-        this.headers = {
-            'X-API-Key': keys.apiKey,
-            'Authorization': "Bearer " + access_token
-        };
-        this.base = 'https://www.bungie.net/Platform/Destiny2/Manifest';
-    }
+    constructor() {}
 
     getClassInfo(classHash) {
         return classDefinitions[classHash];

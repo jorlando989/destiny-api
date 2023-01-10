@@ -5,7 +5,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import reduxThunk from 'redux-thunk';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import App from './components/App';
+import App from './components/App.js';
 import reducers from './reducers';
 
 

@@ -1,12 +1,14 @@
 const keys = require('../config/keys');
 const mongoose = require('mongoose');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 const User = mongoose.model('users');
 
 module.exports = app => {    
     app.get('/auth/bungie', (req, res) => {
         //request access token from bungie
         res.redirect(`https://www.bungie.net/en/OAuth/Authorize?client_id=${keys.clientID}&response_type=code`);
+        return;
     });
     
     app.get('/auth/bungie/callback',  async (req, res) => {
@@ -73,6 +75,7 @@ module.exports = app => {
         //save user in local storage
         localStorage.setItem('currentUser', JSON.stringify(accessTokenObj));
         res.redirect(keys.loginRedirectURL);
+        return;
     });
 
     app.get('/api/current_user', (req, res) => {
@@ -83,5 +86,6 @@ module.exports = app => {
     app.get('/api/logout', (req, res) => {
         localStorage.clear();
         res.redirect('/');
+        return;
     });
 };

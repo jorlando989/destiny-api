@@ -17,197 +17,190 @@ const LostSectors = mongoose.model("lostSector");
 const LostSectorRewards = mongoose.model("lostSectorReward");
 
 module.exports = app => {
-	app.get("/api/challenges", requireLogin, checkAccessToken,
-		async (req, res) => {
-			const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-			const userInfo = await User.findOne({
-				membershipID: currentUser.accessToken.membership_id,
-			});
+	app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
+		const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+		const userInfo = await User.findOne({
+			membershipID: currentUser.accessToken.membership_id,
+		});
 
-			const response = await fetch(
-				"https://www.bungie.net/Platform/Destiny2/Milestones/",
-				{
-					headers: {
-						"X-API-Key": keys.apiKey,
-						Authorization: currentUser.accessToken.access_token,
-					},
-				}
-			);
-			if (response.status === 400 || response.status === 401) {
-				return res
-					.status(401)
-					.send({ error: "error retrieving weekly activities" });
-			}
-			const milestones = await response.json();
-
-			const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/?components=202,200`;
-			const response2 = await fetch(query, {
+		const response = await fetch(
+			"https://www.bungie.net/Platform/Destiny2/Milestones/",
+			{
 				headers: {
 					"X-API-Key": keys.apiKey,
-					Authorization:
-						"Bearer " + currentUser.accessToken.access_token,
+					Authorization: currentUser.accessToken.access_token,
 				},
-			});
-			if (response2.status === 400 || response2.status === 401) {
-				return res
-					.status(401)
-					.send({ error: "error retrieving character progressions" });
 			}
-			const resp = await response2.json();
-			const characterProgressions =
-				resp.Response.characterProgressions.data;
-			const characters = resp.Response.characters.data;
+		);
+		if (response.status === 400 || response.status === 401) {
+			return res
+				.status(401)
+				.send({ error: "error retrieving weekly activities" });
+		}
+		const milestones = await response.json();
 
-			const manifest = new Manifest(currentUser.accessToken.access_token);
+		const query = `https://www.bungie.net/Platform/Destiny2/${userInfo.profiles[0].membershipType}/Profile/${userInfo.profiles[0].membershipId}/?components=202,200`;
+		const response2 = await fetch(query, {
+			headers: {
+				"X-API-Key": keys.apiKey,
+				Authorization:
+					"Bearer " + currentUser.accessToken.access_token,
+			},
+		});
+		if (response2.status === 400 || response2.status === 401) {
+			return res
+				.status(401)
+				.send({ error: "error retrieving character progressions" });
+		}
+		const resp = await response2.json();
+		const characterProgressions = resp.Response.characterProgressions.data;
+		const characters = resp.Response.characters.data;
 
-			//get class name for each character
-			const charProgressAndClass = Object.entries(characterProgressions).map(entry => {
-				return {
-					class: Classes[characters[entry[0]].classType],
-					progression: entry[1].milestones,
-				};
-			});
+		const manifest = new Manifest();
 
-			const activityInfo = Object.values(milestones.Response).map(milestone => {
-				const milestoneInfo = manifest.getMilestoneInfo(
-					milestone.milestoneHash
-				);
+		//get class name for each character
+		const charProgressAndClass = Object.entries(characterProgressions).map(entry => {
+			return {
+				class: Classes[characters[entry[0]].classType],
+				progression: entry[1].milestones,
+			};
+		});
 
-				//only include weekly milestones
-				if (milestoneInfo.milestoneType != 3) {
-					return null;
-				}
+		const activityInfo = Object.values(milestones.Response).map(milestone => {
+			const milestoneInfo = manifest.getMilestoneInfo(
+				milestone.milestoneHash
+			);
 
-				let activitiesInfo = null;
-				if (milestone.hasOwnProperty("activities")) {
-					activitiesInfo = milestone.activities.map(activity => {
-						const activityInfo = manifest.getActivityInfo(activity.activityHash);
-						return activityInfo;
-					});
-				}
+			//only include weekly milestones
+			if (milestoneInfo.milestoneType != 3) {
+				return null;
+			}
 
-				//get rewards info from various sources
-				let questRewardsInfo = null;
-				let activityRewardsInfo = null;
-				let challengeRewardInfo = null;
-				let milestoneRewards = null;
-				if (milestoneInfo.rewards) {
-					milestoneRewards = Object.values(milestoneInfo.rewards).map(reward => {
-						const rewardEntriesInfo = Object.values(reward.rewardEntries).map(entry => {
-							const entryInfo = entry.items.map(item => {
-								const itemInfo = manifest.getItemInfo(item.itemHash);
-								return itemInfo;
-							});
-							return {
-								entry,
-								entryInfo,
-							};
+			let activitiesInfo = null;
+			if (milestone.hasOwnProperty("activities")) {
+				activitiesInfo = milestone.activities.map(activity => {
+					const activityInfo = manifest.getActivityInfo(activity.activityHash);
+					return activityInfo;
+				});
+			}
+
+			//get rewards info from various sources
+			let questRewardsInfo = null;
+			let activityRewardsInfo = null;
+			let challengeRewardInfo = null;
+			let milestoneRewards = null;
+			if (milestoneInfo.rewards) {
+				milestoneRewards = Object.values(milestoneInfo.rewards).map(reward => {
+					const rewardEntriesInfo = Object.values(reward.rewardEntries).map(entry => {
+						const entryInfo = entry.items.map(item => {
+							const itemInfo = manifest.getItemInfo(item.itemHash);
+							return itemInfo;
 						});
 						return {
-							rewardEntriesInfo,
-							reward,
+							entry,
+							entryInfo,
 						};
 					});
-				}
-				if (activitiesInfo) {
-					activityRewardsInfo = activitiesInfo.map(activityInfo => {
-						//check rewards
-						if (activityInfo.rewards.length === 0) {
-							return null;
-						}
-						//go through rewards list for each activity
-						const activityRewards = activityInfo.rewards.map(rewardItems => {
-							//go through each reward in reward list and get the items info
-							const rewardsListInfo = rewardItems.rewardItems.map(item => {
-								const rewardData = manifest.getItemInfo(item.itemHash);
-								return { rewardData };
-							});
-							return { rewardsListInfo };
-						});
-						return { activityInfo, activityRewards };
-					});
-					activityRewardsInfo = activityRewardsInfo.filter(
-						activity => activity !== null
-					);
-
-					//check challenges
-					let challengeRewardInfo = activitiesInfo.map(activityInfo => {
-						if (activityInfo.challenges.length === 0) {
-							return null;
-						}
-						const challengesInfo = activityInfo.challenges.map(challenge => {
-							const objectiveInfo = manifest.getObjectiveInfo(challenge.objectiveHash);
-
-							//get info for objective's dummy rewards
-							const dummyRewardsInfo = challenge.dummyRewards.map(dummyReward => {
-								const dummyInfo = manifest.getItemInfo(dummyReward.itemHash);
-								return { dummyInfo };
-							});
-							return {
-								objectiveInfo,
-								dummyRewardsInfo,
-							};
-						});
-						return { challengesInfo };
-					});
-					challengeRewardInfo = challengeRewardInfo.filter(activity => activity !== null);
-					//remove duplicates
-					challengeRewardInfo = Array.from(
-						new Set(challengeRewardInfo.map(a => a.id))
-					).map(id => {
-						return challengeRewardInfo.find(a => a.id === id);
-					});
-				}
-				if (milestoneInfo.quests) {
-					//get data for each reward of each associated quest
-					let questRewardsInfo = Object.values(milestoneInfo.quests).map(quest => {
-						if (!quest.questRewards) {
-							return null;
-						}
-						const rewardInfo = quest.questRewards.items.map(item => {
-							const itemInfo = manifest.getItemInfo(item.itemHash);
-							return { itemInfo };
-						});
-						return { rewardInfo };
-					});
-					questRewardsInfo = questRewardsInfo.filter(
-						reward => reward !== null
-					);
-				}
-
-				return {
-					milestoneInfo,
-					milestoneRewards,
-					activitiesInfo,
-					questRewardsInfo,
-					activityRewardsInfo,
-					challengeRewardInfo,
-					startDate: milestone.startDate, //might not exist
-					endDate: milestone.endDate, //might not exist
-				};
-			});
-
-			const filteredActivityInfo = activityInfo
-				.filter(activity => activity !== null)
-				.sort((a, b) => {
-					const x = a.milestoneInfo.displayProperties.name.toLowerCase();
-					const y = b.milestoneInfo.displayProperties.name.toLowerCase();
-					if (x < y) {
-						return -1;
-					}
-					if (x > y) {
-						return 1;
-					}
-					return 0;
+					return {
+						rewardEntriesInfo,
+						reward,
+					};
 				});
+			}
+			if (activitiesInfo) {
+				activityRewardsInfo = activitiesInfo.map(activityInfo => {
+					//check rewards
+					if (activityInfo.rewards.length === 0) {
+						return null;
+					}
+					//go through rewards list for each activity
+					const activityRewards = activityInfo.rewards.map(rewardItems => {
+						//go through each reward in reward list and get the items info
+						const rewardsListInfo = rewardItems.rewardItems.map(item => {
+							const rewardData = manifest.getItemInfo(item.itemHash);
+							return { rewardData };
+						});
+						return { rewardsListInfo };
+					});
+					return { activityInfo, activityRewards };
+				});
+				activityRewardsInfo = activityRewardsInfo.filter(
+					activity => activity !== null
+				);
 
-			res.send({
-				activities: filteredActivityInfo,
-				charProgressAndClass,
-				WeeklyClanEngramRewards,
+				//check challenges
+				let challengeRewardInfo = activitiesInfo.map(activityInfo => {
+					if (activityInfo.challenges.length === 0) {
+						return null;
+					}
+					const challengesInfo = activityInfo.challenges.map(challenge => {
+						const objectiveInfo = manifest.getObjectiveInfo(challenge.objectiveHash);
+
+						//get info for objective's dummy rewards
+						const dummyRewardsInfo = challenge.dummyRewards.map(dummyReward => {
+							const dummyInfo = manifest.getItemInfo(dummyReward.itemHash);
+							return { dummyInfo };
+						});
+						return {
+							objectiveInfo,
+							dummyRewardsInfo,
+						};
+					});
+					return { challengesInfo };
+				});
+				challengeRewardInfo = challengeRewardInfo.filter(activity => activity !== null);
+				//remove duplicates
+				challengeRewardInfo = Array.from(
+					new Set(challengeRewardInfo.map(a => a.id))
+				).map(id => {
+					return challengeRewardInfo.find(a => a.id === id);
+				});
+			}
+			if (milestoneInfo.quests) {
+				//get data for each reward of each associated quest
+				let questRewardsInfo = Object.values(milestoneInfo.quests).map(quest => {
+					if (!quest.questRewards) {
+						return null;
+					}
+					const rewardInfo = quest.questRewards.items.map(item => {
+						const itemInfo = manifest.getItemInfo(item.itemHash);
+						return { itemInfo };
+					});
+					return { rewardInfo };
+				});
+				questRewardsInfo = questRewardsInfo.filter(
+					reward => reward !== null
+				);
+			}
+
+			return {
+				milestoneInfo,
+				milestoneRewards,
+				activitiesInfo,
+				questRewardsInfo,
+				activityRewardsInfo,
+				challengeRewardInfo,
+				startDate: milestone.startDate, //might not exist
+				endDate: milestone.endDate, //might not exist
+			};
+		});
+
+		const filteredActivityInfo = activityInfo
+			.filter(activity => activity !== null)
+			.sort((a, b) => {
+				const x = a.milestoneInfo.displayProperties.name.toLowerCase();
+				const y = b.milestoneInfo.displayProperties.name.toLowerCase();
+				if (x < y) return -1;
+				if (x > y) return 1;
+				return 0;
 			});
-		}
-	);
+
+		res.send({
+			activities: filteredActivityInfo,
+			charProgressAndClass,
+			WeeklyClanEngramRewards,
+		});
+	});
 
 	app.get("/api/hide_weekly_activities", (req, res) => {
 		if (!localStorage.getItem("hide_weekly_activities")) {
@@ -224,9 +217,7 @@ module.exports = app => {
 			const currLostSector = await LostSectors.findOne({isActive: true});
 			const currReward = await LostSectorRewards.findOne({isActive: true});
 
-			const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-			const manifest = new Manifest(currentUser.accessToken.access_token);
+			const manifest = new Manifest();
 
 			//get info for lost sector
 			const currLostSectorHashes = s18LostSectorRotation[currLostSector.name];
