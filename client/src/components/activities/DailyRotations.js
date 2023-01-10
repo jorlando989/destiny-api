@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { selectChar, fetchVendorModsAda, fetchVendorModsBanshee } from '../../actions';
 
 import Countdown from 'react-countdown';
 import LostSectorRotation from "./LostSectorRotation";
 import ModsRotation from "./ModsRotation";
 import CharacterSelector from '../CharacterSelector';
-import { selectChar } from '../../actions';
 
 class DailyActivities extends Component {
     componentDidMount() {
         this.props.selectChar();
+        this.props.fetchVendorModsAda('Ada-1');
+        this.props.fetchVendorModsBanshee('Banshee');
     }
+    
     renderCountdown() {
         const now = new Date();
         //reset time is either next day at 1pm or same day at 1 pm
@@ -54,4 +57,4 @@ class DailyActivities extends Component {
     }
 }
 
-export default connect(null, {selectChar})(DailyActivities);
+export default connect(null, {selectChar, fetchVendorModsAda, fetchVendorModsBanshee})(DailyActivities);

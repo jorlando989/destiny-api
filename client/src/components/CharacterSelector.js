@@ -6,7 +6,9 @@ import {
     fetchVendors, 
     fetchVendorRanks, 
     fetchSeasonalChallenges,
-    fetchBounties 
+    fetchBounties,
+    fetchVendorModsAda,
+    fetchVendorModsBanshee
 } from '../actions';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -48,6 +50,8 @@ class CharacterSelector extends Component {
         this.props.fetchVendorRanks();
         this.props.fetchSeasonalChallenges();
         this.props.fetchBounties();
+        this.props.fetchVendorModsAda('Ada-1');
+        this.props.fetchVendorModsBanshee('Banshee');
     }
 
     renderCharEmblem(selectedChar) {
@@ -112,5 +116,7 @@ export default connect(mapStateToProps, {
     fetchVendors, 
     fetchVendorRanks, 
     fetchSeasonalChallenges,
-    fetchBounties
+    fetchBounties,
+    fetchVendorModsAda,
+    fetchVendorModsBanshee
 })(CharacterSelector);

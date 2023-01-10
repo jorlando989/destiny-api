@@ -205,7 +205,7 @@ module.exports = app => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         const userInfo = await User.findOne({membershipID: currentUser.accessToken.membership_id});
         const selectedChar = JSON.parse(localStorage.getItem("selectedChar"));
-        
+
         if(selectedChar === null) {
             res.send(null);
             return;
