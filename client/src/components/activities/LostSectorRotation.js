@@ -78,7 +78,7 @@ class LostSectorRotation extends Component {
     renderRewards(rewards, currReward) {
         return rewards.map(reward => {
             if (reward.displayProperties.name.includes("Exotic") && !reward.displayProperties.name.includes(currReward.type)) {
-                return;
+                return '';
             }
             return (
                 <div key={reward.hash}>

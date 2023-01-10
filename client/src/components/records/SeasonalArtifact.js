@@ -47,7 +47,7 @@ class SeasonalArtifact extends Component {
             return (
                 <div className='seasonPassGrid'>
                     <div className='img-item'>
-                        <img className='artifactIcon' src={`https://www.bungie.net${artifactInfo.displayProperties.icon}`}/>
+                        <img className='artifactIcon' src={`https://www.bungie.net${artifactInfo.displayProperties.icon}`} alt='seasonal artifact icon'/>
                     </div>
                     <div className="row-item right-border">
                         <h5>{artifactInfo.displayProperties.name}</h5>

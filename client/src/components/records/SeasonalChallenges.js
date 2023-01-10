@@ -58,7 +58,7 @@ class SeasonalChallenges extends Component {
         return rewardData.map(({rewardInfo}) => {
             return (
                 <div className="vendorRankInfo" key={rewardInfo.hash}>
-                    <img src={`https://www.bungie.net${rewardInfo.displayProperties.icon}`} className='rewardIcon'/>
+                    <img src={`https://www.bungie.net${rewardInfo.displayProperties.icon}`} className='rewardIcon' alt='reward icon'/>
                     {rewardInfo.displayProperties.name} 
                 </div>
             );
@@ -78,7 +78,7 @@ class SeasonalChallenges extends Component {
                             return (
                                 <div className='seasonalChallengeInfo' key={recordInfo.hash}>
                                     <div className="vendorRankInfo">
-                                        <img src={`https://www.bungie.net${recordInfo.displayProperties.icon}`} className='vendorIcon'/>
+                                        <img src={`https://www.bungie.net${recordInfo.displayProperties.icon}`} className='vendorIcon' alt='vendor icon'/>
                                         <h4>{recordInfo.displayProperties.name}</h4>
                                     </div>
                                     {recordInfo.displayProperties.description}
@@ -91,7 +91,7 @@ class SeasonalChallenges extends Component {
                             return (
                                 <div className='seasonalChallengeInfo' key={recordInfo.hash}>
                                     <div className="vendorRankInfo">
-                                        <img src={`https://www.bungie.net${recordInfo.displayProperties.icon}`} className='vendorIcon'/>
+                                        <img src={`https://www.bungie.net${recordInfo.displayProperties.icon}`} className='vendorIcon' alt='vendor rank icon'/>
                                         <h4>{recordInfo.displayProperties.name}</h4>
                                     </div>
                                     {recordInfo.displayProperties.description}
@@ -133,7 +133,7 @@ class SeasonalChallenges extends Component {
             return (
                 <div>
                     <div className="vendorRankInfo">
-                        <img src={`https://www.bungie.net${this.props.seasonalChallenges.seasonInfo.displayProperties.icon}`} className="headerIcon"/>
+                        <img src={`https://www.bungie.net${this.props.seasonalChallenges.seasonInfo.displayProperties.icon}`} className="headerIcon" alt='seasonal icon'/>
                         <h2>{this.props.seasonalChallenges.seasonInfo.displayProperties.name}</h2>
                         <div className="checkboxAndLabel">
                             <label>
