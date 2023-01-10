@@ -8,7 +8,7 @@
     "npm": "8.11.0"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node --max_old_space_size=2560 node_modules/.bin/react-scripts index.js",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
