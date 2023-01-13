@@ -5,9 +5,9 @@ const keys = require('./config/keys');
 const checkForNewManifestVersion = require('./services/manifestChecker');
 
 require('./models/User');
-require('./models/lostSector');
-require('./models/lostSectorReward');
 require('./models/lostSectorIndex');
+require('./models/altarsOfSorrowRewards');
+require('./models/wellspringIndex');
 
 mongoose.connect(keys.mongoURI);
 

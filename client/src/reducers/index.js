@@ -16,6 +16,8 @@ import weeklyActivityVisibilityReducer from './weeklyActivityVisibilityReducer';
 import checkManifestReducer from './checkManifestReducer';
 import vendorModsReducerAda from './vendorModsReducerAda';
 import vendorModsReducerBanshee from './vendorModsBansheeReducer';
+import altarsOfSorrowReducer from './altarsOfSorrowReducer';
+import wellspringReducer from './wellspringReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -33,5 +35,7 @@ export default combineReducers({
     weeklyActivityVisibility: weeklyActivityVisibilityReducer,
     checkManifestVersion: checkManifestReducer,
     vendorModsAda: vendorModsReducerAda,
-    vendorModsBanshee: vendorModsReducerBanshee
+    vendorModsBanshee: vendorModsReducerBanshee,
+    altarsOfSorrowReward: altarsOfSorrowReducer,
+    wellspringReward: wellspringReducer
 });

@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { selectChar, fetchVendorModsAda, fetchVendorModsBanshee } from '../../actions';
-
 import Countdown from 'react-countdown';
+
 import LostSectorRotation from "./LostSectorRotation";
 import ModsRotation from "./ModsRotation";
 import CharacterSelector from '../CharacterSelector';
+import AltarsOfSorrow from "./AltarsOfSorrow";
+import Wellspring from "./Wellspring";
 
 class DailyActivities extends Component {
     componentDidMount() {
@@ -43,14 +45,27 @@ class DailyActivities extends Component {
                 <h4>Lost Sector</h4>
                 <LostSectorRotation />
                 
-                <h4>Ada-1 Mods</h4>
-                <ModsRotation vendor={'Ada-1'}/>
+                <div className='display-in-row rowSpacing'>
+                    <div>
+                        <h4>Ada-1 Mods</h4>
+                        <ModsRotation vendor={'Ada-1'}/>
+                    </div>
+                    
+                    <div>
+                        <h4>Banshee Mods</h4>
+                        <ModsRotation vendor={'Banshee'}/>
+                    </div>
+                </div>
 
-                <h4>Banshee Mods</h4>
-                <ModsRotation vendor={'Banshee'}/>
-
-                <h4>Altar of Sorrows Reward</h4>
-                <h4>Wellspring</h4>
+                <div>
+                    <h4>Altars of Sorrow Reward</h4>
+                    <AltarsOfSorrow />
+                </div>
+                <div>
+                    <h4>Wellspring</h4>
+                    <Wellspring />
+                </div>
+                
                 <h4>Strike Modifiers</h4>
             </div>
         );

@@ -9,13 +9,18 @@ const DamageTypes = require("../data/damageTypes");
 const BreakerTypes = require("../data/breakerTypes");
 const Classes = require("../data/classTypes");
 const WeeklyClanEngramRewards = require("../data/weeklyClanEngramRewards");
+
 const lostSectorRotation = require("../data/lostSectorRotation.json");
 const lostSectorRewardRotation = require("../data/lostSectorRewardRotation.json");
 const allLostSectorHashes = require("../data/allLostSectorHashes.json");
+const altarsOfSorrowRewardHashes = require("../data/altarsOfSorrowRotation.json");
+const wellspringRotationHashes = require('../data/wellspringRotation.json');
 
 const Manifest = require("../services/manifest");
 const User = mongoose.model("users");
 const LostSectorIndexes = mongoose.model("lostSectorIndex");
+const AltarsOfSorrowRotation = mongoose.model("altarsOfSorrowRotation");
+const WellspringRotation = mongoose.model('wellspringRotation');
 
 module.exports = app => {
 	app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
@@ -247,7 +252,6 @@ module.exports = app => {
 
 			//set curr reward name
 			const currReward = lostSectorRewardRotation.rotation[currLostSector.currLostSectorRewardIndex];
-			console.log(currReward);
 
 			//get reward info
 			const masterRewards = masterInfo.rewards.map(({rewardItems}) => {
@@ -274,4 +278,44 @@ module.exports = app => {
 			});
 		}
 	);
+
+	app.get("/api/altarsOfSorrow", requireLogin, checkAccessToken, async (req, res) => {
+		const altarsOfSorrowDB = await AltarsOfSorrowRotation.findOne({altarRewardIndex: {$gte: 0}});
+
+		const currReward = altarsOfSorrowRewardHashes.rotation[altarsOfSorrowDB.altarRewardIndex];
+		const currRewardInfo = altarsOfSorrowRewardHashes[currReward];
+
+		const manifest = new Manifest();
+		const rewardInfo = manifest.getItemInfo(currRewardInfo.hash);
+
+		res.send({
+			rewardInfo
+		});
+	});
+
+	app.get("/api/wellspring", requireLogin, checkAccessToken, async (req, res) => {
+		const wellspringDB = await WellspringRotation.findOne({currRotationIndex: {$gte: 0}});
+
+		const currRotation = wellspringRotationHashes.rotation[wellspringDB.currRotationIndex];
+
+		const manifest = new Manifest();
+		const activityInfo = manifest.getActivityInfo(wellspringRotationHashes[currRotation].activityHash);
+		const rewardInfo = manifest.getItemInfo(wellspringRotationHashes[currRotation].weaponHash);
+
+		const activityRewards = activityInfo.rewards.map(({rewardItems}) => {
+			const rewards = rewardItems.map(reward => {
+				const rewardData = manifest.getItemInfo(reward.itemHash);
+				return rewardData;
+			});
+			return rewards;
+		});
+
+		console.log(activityRewards);
+
+		res.send({
+			activityInfo,
+			activityRewards,
+			rewardInfo
+		});
+	});
 };

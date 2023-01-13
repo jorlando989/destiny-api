@@ -24,6 +24,14 @@ body {
     background-color: #ff8552;
 }
 
+.whiteText {
+    color: white;
+}
+
+.center-vertical {
+    align-items: center;
+}
+
 .logoIcon {
     height: 20px;
     margin-right: 3px;
@@ -316,4 +324,32 @@ hr {
     justify-content: flex-start;
     border-radius: 5px;
     width: min-content;
+}
+
+.min-width {
+    width: min-content;
+}
+
+.rounded-corners {
+    border-radius: 5px;
+}
+
+.rowSpacing {
+    justify-content: flex-start;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.rowSpacing > * {
+    margin-right: 10px;
+}
+
+.iconImage {
+    padding: 5px;
+}
+
+.itemCard {
+    padding: 7px;
+    font-size: 20px;
+    width: max-content;
 }

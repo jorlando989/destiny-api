@@ -16,7 +16,9 @@ import {
     SET_WEEKLY_ACTIVITY_VISIBILITY,
     CHECK_FOR_NEW_MANIFEST_VERSION,
     FETCH_VENDOR_MODS_ADA,
-    FETCH_VENDOR_MODS_BANSHEE
+    FETCH_VENDOR_MODS_BANSHEE,
+    FETCH_ALTARS_OF_SORROW_REWARD,
+    FETCH_WELLSPRING_REWARD
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -102,4 +104,14 @@ export const fetchVendorModsAda = (vendor) => async dispatch => {
 export const fetchVendorModsBanshee = (vendor) => async dispatch => {
     const res = await axios.get('/api/fetch_vendor_mods', {params: {vendor: vendor}});
     dispatch({type: FETCH_VENDOR_MODS_BANSHEE, payload: res.data});
+}
+
+export const fetchAltarsOfSorrowReward = () => async dispatch => {
+    const res = await axios.get('/api/altarsOfSorrow');
+    dispatch({ type: FETCH_ALTARS_OF_SORROW_REWARD, payload: res.data});
+}
+
+export const fetchWellspringReward = () => async dispatch => {
+    const res = await axios.get('/api/wellspring');
+    dispatch({ type: FETCH_WELLSPRING_REWARD, payload: res.data});
 }
