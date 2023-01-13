@@ -9,12 +9,13 @@ const DamageTypes = require("../data/damageTypes");
 const BreakerTypes = require("../data/breakerTypes");
 const Classes = require("../data/classTypes");
 const WeeklyClanEngramRewards = require("../data/weeklyClanEngramRewards");
-const s18LostSectorRotation = require("../data/lostSectorRotations");
+const lostSectorRotation = require("../data/lostSectorRotation.json");
+const lostSectorRewardRotation = require("../data/lostSectorRewardRotation.json");
+const allLostSectorHashes = require("../data/allLostSectorHashes.json");
 
 const Manifest = require("../services/manifest");
 const User = mongoose.model("users");
-const LostSectors = mongoose.model("lostSector");
-const LostSectorRewards = mongoose.model("lostSectorReward");
+const LostSectorIndexes = mongoose.model("lostSectorIndex");
 
 module.exports = app => {
 	app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
@@ -214,13 +215,14 @@ module.exports = app => {
 	app.get("/api/lost_sector", requireLogin, checkAccessToken,
 		async (req, res) => {
 			//get todays lost sector name
-			const currLostSector = await LostSectors.findOne({isActive: true});
-			const currReward = await LostSectorRewards.findOne({isActive: true});
-
+			const currLostSector = await LostSectorIndexes.findOne({numLostSectors: 11});
+			
 			const manifest = new Manifest();
 
 			//get info for lost sector
-			const currLostSectorHashes = s18LostSectorRotation[currLostSector.name];
+			const currLostSectorName = lostSectorRotation.rotation[currLostSector.currLostSectorIndex];
+			const currLostSectorHashes = allLostSectorHashes[currLostSectorName];
+
 			const masterInfo = manifest.getActivityInfo(currLostSectorHashes.master);
 			const legendInfo = manifest.getActivityInfo(currLostSectorHashes.legend);
 
@@ -243,6 +245,10 @@ module.exports = app => {
 				return (mod.displayInNavMode && mod.displayProperties.name !== "");
 			});
 
+			//set curr reward name
+			const currReward = lostSectorRewardRotation.rotation[currLostSector.currLostSectorRewardIndex];
+			console.log(currReward);
+
 			//get reward info
 			const masterRewards = masterInfo.rewards.map(({rewardItems}) => {
 				const rewardInfo = manifest.getItemInfo(rewardItems[0].itemHash);
@@ -255,7 +261,7 @@ module.exports = app => {
 			});
 
 			res.send({
-				currLostSector,
+				currLostSector: currLostSectorName,
 				currReward,
 				masterInfo,
 				masterModifiers: filteredMasterModifiers,

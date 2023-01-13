@@ -77,7 +77,7 @@ class LostSectorRotation extends Component {
 
     renderRewards(rewards, currReward) {
         return rewards.map(reward => {
-            if (reward.displayProperties.name.includes("Exotic") && !reward.displayProperties.name.includes(currReward.type)) {
+            if (reward.displayProperties.name.includes("Exotic") && !reward.displayProperties.name.includes(currReward)) {
                 return '';
             }
             return (
@@ -97,7 +97,7 @@ class LostSectorRotation extends Component {
                     <Card style={{ width: '25rem' }}>
                         <Card.Img variant="top" src={`https://www.bungie.net${lostSector.legendInfo.pgcrImage}`} />
                         <Card.Body>
-                            <Card.Title>{lostSector.currLostSector.name} - Legend</Card.Title>
+                            <Card.Title>{lostSector.currLostSector} - Legend</Card.Title>
                             <div className='display-in-row-wrap'>
                                 {this.renderModifiers(lostSector.legendModifiers)}
                             </div>
@@ -111,7 +111,7 @@ class LostSectorRotation extends Component {
                     <Card style={{ width: '25rem' }}>
                         <Card.Img variant="top" src={`https://www.bungie.net${lostSector.masterInfo.pgcrImage}`} />
                         <Card.Body>
-                            <Card.Title>{lostSector.currLostSector.name} - Master</Card.Title>
+                            <Card.Title>{lostSector.currLostSector} - Master</Card.Title>
                             <div className='display-in-row-wrap'>
                                 {this.renderModifiers(lostSector.masterModifiers)}
                             </div>

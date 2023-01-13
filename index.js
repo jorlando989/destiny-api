@@ -7,6 +7,7 @@ const checkForNewManifestVersion = require('./services/manifestChecker');
 require('./models/User');
 require('./models/lostSector');
 require('./models/lostSectorReward');
+require('./models/lostSectorIndex');
 
 mongoose.connect(keys.mongoURI);
 

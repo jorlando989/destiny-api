@@ -1,21 +1,11 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { fetchVendorModsAda, fetchVendorModsBanshee } from "../../actions";
 
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Spinner from 'react-bootstrap/Spinner';
 
 class ModsRotation extends Component {
-    componentDidMount() {
-        console.log('test');
-        // if (this.props.vendor === 'Ada-1') {
-        //     this.props.fetchVendorModsAda(this.props.vendor);
-        // } else if (this.props.vendor === 'Banshee') {
-        //     this.props.fetchVendorModsBanshee(this.props.vendor);
-        // }
-    }
-
     renderMods(currVendorMods) {
         if (this.props.currChar && currVendorMods) {
             return currVendorMods.map(mod => {
@@ -71,4 +61,4 @@ function mapStateToProps({ vendorModsAda, vendorModsBanshee, currChar }) {
     return { vendorModsAda, vendorModsBanshee, currChar };
 }
 
-export default connect(mapStateToProps, {fetchVendorModsAda, fetchVendorModsBanshee})(ModsRotation);
+export default connect(mapStateToProps)(ModsRotation);
