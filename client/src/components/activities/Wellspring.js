@@ -22,7 +22,6 @@ class Wellspring extends Component {
     
     render() {
         if (this.props.wellspringReward.hasOwnProperty("activityInfo")) {
-            const reward = this.props.wellspringReward.rewardInfo;
             const activity = this.props.wellspringReward.activityInfo;
             return (
                 <div className="bg-teal itemCard rounded-corners whiteText">

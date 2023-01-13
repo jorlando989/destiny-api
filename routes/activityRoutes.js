@@ -281,6 +281,8 @@ module.exports = app => {
 
 	app.get("/api/altarsOfSorrow", requireLogin, checkAccessToken, async (req, res) => {
 		const altarsOfSorrowDB = await AltarsOfSorrowRotation.findOne({altarRewardIndex: {$gte: 0}});
+		
+		console.log(altarsOfSorrowDB);
 
 		const currReward = altarsOfSorrowRewardHashes.rotation[altarsOfSorrowDB.altarRewardIndex];
 		const currRewardInfo = altarsOfSorrowRewardHashes[currReward];
@@ -310,7 +312,7 @@ module.exports = app => {
 			return rewards;
 		});
 
-		console.log(activityRewards);
+		// console.log(activityRewards);
 
 		res.send({
 			activityInfo,
