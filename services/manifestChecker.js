@@ -18,15 +18,15 @@ module.exports = async function checkForNewManifestVersion() {
 
     console.log('checking for new manifest');
     console.log(newVersion, currVersion);
-    if (currVersion == null || newVersion !== currVersion) {
-    // if(true){
+    // if (currVersion == null || newVersion !== currVersion) {
+    if(true){
         console.log('new version found');
         localStorage.setItem('currManifestVersion', newVersion);
 
         //download needed manifest files
         currManifest = newManifest.Response.jsonWorldComponentContentPaths.en;
-        var fs = require('fs');
-        
+        const fs = require('fs');
+        console.log(process.cwd());
         Object.values(neededDefs).forEach(async def => {
             const resp2 = await fetch(`https://www.bungie.net${currManifest[def.name]}`);
             if (resp2.status === 400 || resp2.status === 401) {
