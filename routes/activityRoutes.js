@@ -316,4 +316,44 @@ module.exports = app => {
 			rewardInfo
 		});
 	});
+
+	app.get("/api/strike_modifiers", requireLogin, checkAccessToken, async (req, res) => {
+		const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+		const userInfo = await User.findOne({
+			membershipID: currentUser.accessToken.membership_id,
+		});
+
+		const response = await fetch(
+			"https://www.bungie.net/Platform/Destiny2/Milestones/",
+			{
+				headers: {
+					"X-API-Key": keys.apiKey,
+					Authorization: currentUser.accessToken.access_token,
+				},
+			}
+		);
+		if (response.status === 400 || response.status === 401) {
+			return res
+				.status(401)
+				.send({ error: "error retrieving weekly activities" });
+		}
+		const resp = await response.json();
+		const milestones = resp.Response;
+		const vanguardOpsMilestone = milestones['1437935813'];
+
+		const manifest = new Manifest();
+		const milestoneInfo = manifest.getMilestoneInfo(vanguardOpsMilestone.milestoneHash);
+		console.log(vanguardOpsMilestone);
+
+		const modifiers = vanguardOpsMilestone.activities[0
+		].modifierHashes.map(modifierHash => {
+			const modifierInfo = manifest.getActivityModifierInfo(modifierHash);
+			return modifierInfo;
+		});
+		
+		res.send({
+			milestoneInfo,
+			modifiers
+		});
+	});
 };

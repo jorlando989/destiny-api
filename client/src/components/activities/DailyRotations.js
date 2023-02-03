@@ -8,6 +8,7 @@ import ModsRotation from "./ModsRotation";
 import CharacterSelector from '../CharacterSelector';
 import AltarsOfSorrow from "./AltarsOfSorrow";
 import Wellspring from "./Wellspring";
+import StrikeModifiers from "./StrikeModifiers";
 
 class DailyActivities extends Component {
     componentDidMount() {
@@ -66,7 +67,11 @@ class DailyActivities extends Component {
                     <Wellspring />
                 </div>
                 
-                <h4>Strike Modifiers</h4>
+                <div>
+                    <h4>Strike Modifiers</h4>
+                    <StrikeModifiers />
+                </div>
+                
             </div>
         );
     }

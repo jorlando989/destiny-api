@@ -18,6 +18,7 @@ import vendorModsReducerAda from './vendorModsReducerAda';
 import vendorModsReducerBanshee from './vendorModsBansheeReducer';
 import altarsOfSorrowReducer from './altarsOfSorrowReducer';
 import wellspringReducer from './wellspringReducer';
+import strikeModifiersReducer from './strikeModifiersReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -37,5 +38,6 @@ export default combineReducers({
     vendorModsAda: vendorModsReducerAda,
     vendorModsBanshee: vendorModsReducerBanshee,
     altarsOfSorrowReward: altarsOfSorrowReducer,
-    wellspringReward: wellspringReducer
+    wellspringReward: wellspringReducer,
+    strikeModifiers: strikeModifiersReducer
 });

@@ -18,7 +18,8 @@ import {
     FETCH_VENDOR_MODS_ADA,
     FETCH_VENDOR_MODS_BANSHEE,
     FETCH_ALTARS_OF_SORROW_REWARD,
-    FETCH_WELLSPRING_REWARD
+    FETCH_WELLSPRING_REWARD,
+    FETCH_STRIKE_MODIFIERS
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -114,4 +115,9 @@ export const fetchAltarsOfSorrowReward = () => async dispatch => {
 export const fetchWellspringReward = () => async dispatch => {
     const res = await axios.get('/api/wellspring');
     dispatch({ type: FETCH_WELLSPRING_REWARD, payload: res.data});
+}
+
+export const fetchStrikeModifiers = () => async dispatch => {
+    const res = await axios.get('/api/strike_modifiers');
+    dispatch({ type: FETCH_STRIKE_MODIFIERS, payload: res.data});
 }

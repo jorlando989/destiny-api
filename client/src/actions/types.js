@@ -17,3 +17,4 @@ export const FETCH_VENDOR_MODS_ADA = 'fetch_vendor_mods_ada';
 export const FETCH_VENDOR_MODS_BANSHEE = 'fetch_vendor_mods_banshee';
 export const FETCH_ALTARS_OF_SORROW_REWARD = 'fetch_altars_of_sorrow_reward';
 export const FETCH_WELLSPRING_REWARD = 'fetch_wellspring_reward';
+export const FETCH_STRIKE_MODIFIERS = 'fetch_strike_modifiers';

@@ -199,7 +199,6 @@ module.exports = app => {
         //add competitive division rank
         const competitiveDivisionData = characterProgressionData['3696598664'];
         const rankInfo = manifest.getProgressionInfo(competitiveDivisionData.progressionHash);
-        console.log(competitiveDivisionData);
         progressionInfo.push({
             rankInfo,
             vendor: {progression: competitiveDivisionData}
