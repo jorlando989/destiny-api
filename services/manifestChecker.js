@@ -40,7 +40,7 @@ module.exports = async function checkForNewManifestVersion() {
             if (process.env.NODE_ENV !== 'production') {
                 fileName = '../server' + fileName;
             } else {
-                fileName = '..' + fileName; 
+                fileName = '../app' + fileName; 
             }
             console.log(fileName);
             
