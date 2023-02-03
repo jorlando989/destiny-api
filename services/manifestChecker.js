@@ -28,7 +28,7 @@ module.exports = async function checkForNewManifestVersion() {
         const fs = require('fs');
         
         console.log(process.cwd());
-        let directory_name = '../server';
+        let directory_name = '../app';
         let filenames = fs.readdirSync(directory_name);
         console.log("\nFilenames in directory:");
         filenames.forEach((file) => {
