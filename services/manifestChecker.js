@@ -26,7 +26,15 @@ module.exports = async function checkForNewManifestVersion() {
         //download needed manifest files
         currManifest = newManifest.Response.jsonWorldComponentContentPaths.en;
         const fs = require('fs');
+        
         console.log(process.cwd());
+        let directory_name = '../server';
+        let filenames = fs.readdirSync(directory_name);
+        console.log("\nFilenames in directory:");
+        filenames.forEach((file) => {
+                console.log("File:", file);
+        });
+
         Object.values(neededDefs).forEach(async def => {
             const resp2 = await fetch(`https://www.bungie.net${currManifest[def.name]}`);
             if (resp2.status === 400 || resp2.status === 401) {
