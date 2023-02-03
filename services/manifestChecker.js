@@ -27,13 +27,13 @@ module.exports = async function checkForNewManifestVersion() {
         currManifest = newManifest.Response.jsonWorldComponentContentPaths.en;
         const fs = require('fs');
         
-        console.log(process.cwd());
-        let directory_name = '../server';
-        let filenames = fs.readdirSync(directory_name);
-        console.log("\nFilenames in directory:");
-        filenames.forEach((file) => {
-                console.log("File:", file);
-        });
+        // console.log(process.cwd());
+        // let directory_name = '../app';
+        // let filenames = fs.readdirSync(directory_name);
+        // console.log("\nFilenames in directory:");
+        // filenames.forEach((file) => {
+        //         console.log("File:", file);
+        // });
 
         Object.values(neededDefs).forEach(async def => {
             let fileName = def.filePath;
