@@ -18,8 +18,8 @@ module.exports = async function checkForNewManifestVersion() {
 
     console.log('checking for new manifest');
     console.log(newVersion, currVersion);
-    // if (currVersion == null || newVersion !== currVersion) {
-    if(true){
+    if (currVersion == null || newVersion !== currVersion) {
+    // if(true){
         console.log('new version found');
         localStorage.setItem('currManifestVersion', newVersion);
 
@@ -36,20 +36,12 @@ module.exports = async function checkForNewManifestVersion() {
         // });
 
         Object.values(neededDefs).forEach(async def => {
-            let fileName = def.filePath;
-            if (process.env.NODE_ENV !== 'production') {
-                fileName = '../server' + fileName;
-            } else {
-                fileName = '../app' + fileName; 
-            }
-            console.log(fileName);
-            
             const resp2 = await fetch(`https://www.bungie.net${currManifest[def.name]}`);
             if (resp2.status === 400 || resp2.status === 401) {
                 return { error: 'error retrieving class data' };
             }
             const responseData = await resp2.json();
-            fs.writeFileSync(fileName, JSON.stringify(responseData), (err) => {
+            fs.writeFileSync(def.filePath, JSON.stringify(responseData), (err) => {
                 if (err) console.log('error writing file:', err)
             });
         });
