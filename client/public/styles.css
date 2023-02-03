@@ -81,6 +81,7 @@ Button, .card-body a {
     width: 500px;
     height: 100px;
     position: relative;
+    background-size: cover;
 }
 
 .emblemText {

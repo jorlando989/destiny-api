@@ -11,8 +11,6 @@ const vendorModsHashes = require('../data/vendorModsHashes.json');
 
 const rankProgressionToStreakProgression = {
     2083746873: '2203850209',     //crucible
-    1647151960: '2572719399',     //glory
-    3696598664: '',     //competitive
     3008065600: '2939151659',     //gambit
     457612306: '600547406',       //vanguard
     2755675426: '70699614',       //trials
@@ -196,6 +194,15 @@ module.exports = app => {
                 vendor,
                 progressInfo
             };
+        });
+
+        //add competitive division rank
+        const competitiveDivisionData = characterProgressionData['3696598664'];
+        const rankInfo = manifest.getProgressionInfo(competitiveDivisionData.progressionHash);
+        console.log(competitiveDivisionData);
+        progressionInfo.push({
+            rankInfo,
+            vendor: {progression: competitiveDivisionData}
         });
 
         res.send(progressionInfo);
