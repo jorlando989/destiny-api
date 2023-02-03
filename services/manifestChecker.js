@@ -28,7 +28,7 @@ module.exports = async function checkForNewManifestVersion() {
         const fs = require('fs');
         
         console.log(process.cwd());
-        let directory_name = '../app';
+        let directory_name = '../server';
         let filenames = fs.readdirSync(directory_name);
         console.log("\nFilenames in directory:");
         filenames.forEach((file) => {
@@ -36,12 +36,20 @@ module.exports = async function checkForNewManifestVersion() {
         });
 
         Object.values(neededDefs).forEach(async def => {
+            let fileName = def.filePath;
+            if (process.env.NODE_ENV !== 'production') {
+                fileName = '../server' + fileName;
+            } else {
+                fileName = '..' + fileName; 
+            }
+            console.log(fileName);
+            
             const resp2 = await fetch(`https://www.bungie.net${currManifest[def.name]}`);
             if (resp2.status === 400 || resp2.status === 401) {
                 return { error: 'error retrieving class data' };
             }
             const responseData = await resp2.json();
-            fs.writeFileSync(def.filePath, JSON.stringify(responseData), (err) => {
+            fs.writeFileSync(fileName, JSON.stringify(responseData), (err) => {
                 if (err) console.log('error writing file:', err)
             });
         });

@@ -1,66 +1,66 @@
 {
 	"DestinyClassDefinition": {
 		"name": "DestinyClassDefinition",
-		"filePath": "../server/data/manifestData/classDefinitions.json"
+		"filePath": "/data/manifestData/classDefinitions.json"
 	},
 	"DestinyRaceDefinition": {
 		"name": "DestinyRaceDefinition",
-		"filePath": "../server/data/manifestData/raceDefinitions.json"
+		"filePath": "/data/manifestData/raceDefinitions.json"
 	},
 	"DestinyRecordDefinition": {
 		"name": "DestinyRecordDefinition",
-		"filePath": "../server/data/manifestData/recordDefinitions.json"
+		"filePath": "/data/manifestData/recordDefinitions.json"
 	},
 	"DestinyInventoryItemDefinition": {
 		"name": "DestinyInventoryItemDefinition",
-		"filePath": "../server/data/manifestData/inventoryItemDefinitions.json"
+		"filePath": "/data/manifestData/inventoryItemDefinitions.json"
 	},
 	"DestinyObjectiveDefinition": {
 		"name": "DestinyObjectiveDefinition",
-		"filePath": "../server/data/manifestData/objectiveDefinitions.json"
+		"filePath": "/data/manifestData/objectiveDefinitions.json"
 	},
 	"DestinyPresentationNodeDefinition": {
 		"name": "DestinyPresentationNodeDefinition",
-		"filePath": "../server/data/manifestData/presentationNodeDefinitions.json"
+		"filePath": "/data/manifestData/presentationNodeDefinitions.json"
 	},
 	"DestinySeasonDefinition": {
 		"name": "DestinySeasonDefinition",
-		"filePath": "../server/data/manifestData/seasonDefinitions.json"
+		"filePath": "/data/manifestData/seasonDefinitions.json"
 	},
 	"DestinySeasonPassDefinition": {
 		"name": "DestinySeasonPassDefinition",
-		"filePath": "../server/data/manifestData/seasonPassDefinitions.json"
+		"filePath": "/data/manifestData/seasonPassDefinitions.json"
 	},
 	"DestinyVendorGroupDefinition": {
 		"name": "DestinyVendorGroupDefinition",
-		"filePath": "../server/data/manifestData/vendorGroupDefinitions.json"
+		"filePath": "/data/manifestData/vendorGroupDefinitions.json"
 	},
 	"DestinyVendorDefinition": {
 		"name": "DestinyVendorDefinition",
-		"filePath": "../server/data/manifestData/vendorDefinitions.json"
+		"filePath": "/data/manifestData/vendorDefinitions.json"
 	},
 	"DestinyDestinationDefinition": {
 		"name": "DestinyDestinationDefinition",
-		"filePath": "../server/data/manifestData/destinationDefinitions.json"
+		"filePath": "/data/manifestData/destinationDefinitions.json"
 	},
 	"DestinyProgressionDefinition": {
 		"name": "DestinyProgressionDefinition",
-		"filePath": "../server/data/manifestData/progressionDefinitions.json"
+		"filePath": "/data/manifestData/progressionDefinitions.json"
 	},
 	"DestinyMilestoneDefinition": {
 		"name": "DestinyMilestoneDefinition",
-		"filePath": "../server/data/manifestData/milestoneDefinitions.json"
+		"filePath": "/data/manifestData/milestoneDefinitions.json"
 	},
 	"DestinyActivityDefinition": {
 		"name": "DestinyActivityDefinition",
-		"filePath": "../server/data/manifestData/activityDefinitions.json"
+		"filePath": "/data/manifestData/activityDefinitions.json"
 	},
 	"DestinyActivityModifierDefinition": {
 		"name": "DestinyActivityModifierDefinition",
-		"filePath": "../server/data/manifestData/activityModifierDefinitions.json"
+		"filePath": "/data/manifestData/activityModifierDefinitions.json"
 	},
 	"DestinyActivityModeDefinition": {
 		"name": "DestinyActivityModeDefinition",
-		"filePath": "../server/data/manifestData/activityModeDefinitions.json"
+		"filePath": "/data/manifestData/activityModeDefinitions.json"
 	}
 }
