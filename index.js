@@ -11,6 +11,7 @@ require('./models/wellspringIndex');
 require('./models/nightfallWeaponRotation');
 require('./models/nightmareHuntsRotation');
 require('./models/empireHuntRotation');
+require('./models/dreamingCityRotations');
 
 mongoose.connect(keys.mongoURI);
 

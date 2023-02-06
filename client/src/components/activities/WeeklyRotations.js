@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Countdown from 'react-countdown';
 
 import ActivitiesList from "./ActivitiesList";
+import DreamingCityRotations from "./DreamingCityRotations";
 import EmpireHunt from "./EmpireHunt";
 import WeeklyNightfall from "./WeeklyNightfall";
 
@@ -72,7 +73,10 @@ class WeeklyActivities extends Component {
                     <EmpireHunt />
                 </div>
                 
-                <h4>Dreaming City - Curse Week and Ascendant Challenge</h4>
+                <div>
+                    <h4>Dreaming City - Curse Week and Ascendant Challenge</h4>
+                    <DreamingCityRotations />
+                </div>
             </div>
         );
     }

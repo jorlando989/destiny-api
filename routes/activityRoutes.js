@@ -18,6 +18,7 @@ const wellspringRotationHashes = require('../data/wellspringRotation.json');
 const nightfallWeaponsHashes = require('../data/nightfallWeaponsRotation.json');
 const nightmareHuntsHashes = require('../data/nightmareHuntsRotation.json');
 const empireHuntHashes = require('../data/empireHuntRotation.json');
+const dreamingCityHashes = require('../data/dreamingCityRotations.json');
 
 const Manifest = require("../services/manifest");
 const User = mongoose.model("users");
@@ -27,6 +28,7 @@ const WellspringRotation = mongoose.model('wellspringRotation');
 const NightfallWeaponRotation = mongoose.model('nightfallWeaponRotation');
 const NightmareHuntsRotation = mongoose.model('nightmareHuntsRotation');
 const EmpireHuntRotation = mongoose.model('empireHuntRotation');
+const DreamingCityRotations = mongoose.model('dreamingCityRotations');
 
 module.exports = app => {
 	app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
@@ -492,6 +494,19 @@ module.exports = app => {
 	});
 
 	app.get("/api/ascendant_challenge", requireLogin, checkAccessToken, async (req, res) => {
+		const dreamingCityRotationsDB = await DreamingCityRotations.findOne({curseRotationIndex: {$gte: 0}});
 
+		const curseWeek = dreamingCityHashes.curseRotation[dreamingCityRotationsDB.curseRotationIndex];
+		const currAscendantChallenge = dreamingCityHashes.ascendantChallengeRotation[dreamingCityRotationsDB.ascendantChallengeIndex];
+
+		const currAscendantChallengeInfo = dreamingCityHashes[currAscendantChallenge];
+
+		res.send({
+			curseWeek,
+			ascendantChallenge: {
+				currAscendantChallengeInfo,
+				currAscendantChallenge
+			}
+		});
 	});
 };

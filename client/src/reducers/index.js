@@ -24,6 +24,7 @@ import nightfallWeaponReducer from './nightfallWeaponReducer';
 import cruciblePlaylistReducer from './cruciblePlaylistReducer';
 import nightmareHuntsReducer from './nightmareHuntsReducer';
 import empireHuntReducer from './empireHuntReducer';
+import dreamingCityRotationsReducer from "./dreamingCityRotationsReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -49,5 +50,6 @@ export default combineReducers({
     nightfallWeapon: nightfallWeaponReducer,
     cruciblePlaylist: cruciblePlaylistReducer,
     nightmareHunts: nightmareHuntsReducer,
-    empireHunt: empireHuntReducer
+    empireHunt: empireHuntReducer,
+    dreamingCityRotations: dreamingCityRotationsReducer
 });

@@ -108,7 +108,7 @@ class WeeklyNightfall extends Component {
     }
     
     render() {
-        if (this.props.weeklyNightfall) {
+        if (this.props.weeklyNightfall && this.props.nightfallWeapon) {
             return (
                 <div className="display-in-row">
                     <div className="whiteText rounded-corners ml5 mr5 nightfallRow2 width60 bg-white">
