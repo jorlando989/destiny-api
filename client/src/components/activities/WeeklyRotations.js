@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Countdown from 'react-countdown';
 
 import ActivitiesList from "./ActivitiesList";
+import EmpireHunt from "./EmpireHunt";
 import WeeklyNightfall from "./WeeklyNightfall";
 
 class WeeklyActivities extends Component {
@@ -68,7 +69,7 @@ class WeeklyActivities extends Component {
                 </div>
                 <div>
                     <h4>Empire Hunt</h4>
-                    <ActivitiesList activityType="empireHunt" />
+                    <EmpireHunt />
                 </div>
                 
                 <h4>Dreaming City - Curse Week and Ascendant Challenge</h4>

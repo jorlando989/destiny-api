@@ -488,6 +488,10 @@ module.exports = app => {
 		const manifest = new Manifest();
 		const currHuntInfo = manifest.getActivityInfo(empireHuntHashes[currHunt]);
 
-		res.send([currHuntInfo]);
-	})
+		res.send(currHuntInfo);
+	});
+
+	app.get("/api/ascendant_challenge", requireLogin, checkAccessToken, async (req, res) => {
+
+	});
 };
