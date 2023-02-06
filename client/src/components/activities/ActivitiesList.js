@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { fetchCruciblePlaylist, fetchNightmareHunts } from "../../actions";
+import { fetchCruciblePlaylist, fetchNightmareHunts, fetchEmpireHunt } from "../../actions";
 
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -9,6 +9,7 @@ class ActivitiesList extends Component {
     componentDidMount() {
         this.props.fetchCruciblePlaylist();
         this.props.fetchNightmareHunts();
+        this.props.fetchEmpireHunt();
     }
 
     renderActivities(activities) {
@@ -42,6 +43,8 @@ class ActivitiesList extends Component {
             activityToRender = this.props.cruciblePlaylist;
         } else if (this.props.activityType == 'nightmareHunts' && this.props.nightmareHunts) {
             activityToRender = this.props.nightmareHunts;
+        } else if (this.props.activityType == 'empireHunt' && this.props.empireHunt) {
+            activityToRender = this.props.empireHunt;
         }
         return (
             <div className="display-in-row">
@@ -51,8 +54,8 @@ class ActivitiesList extends Component {
     }
 }
 
-function mapStateToProps({ cruciblePlaylist, nightmareHunts }) {
-    return { cruciblePlaylist, nightmareHunts };
+function mapStateToProps({ cruciblePlaylist, nightmareHunts, empireHunt }) {
+    return { cruciblePlaylist, nightmareHunts, empireHunt };
 }
 
-export default connect(mapStateToProps, { fetchCruciblePlaylist, fetchNightmareHunts })(ActivitiesList);
+export default connect(mapStateToProps, { fetchCruciblePlaylist, fetchNightmareHunts, fetchEmpireHunt })(ActivitiesList);

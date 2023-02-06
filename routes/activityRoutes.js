@@ -17,6 +17,7 @@ const altarsOfSorrowRewardHashes = require("../data/altarsOfSorrowRotation.json"
 const wellspringRotationHashes = require('../data/wellspringRotation.json');
 const nightfallWeaponsHashes = require('../data/nightfallWeaponsRotation.json');
 const nightmareHuntsHashes = require('../data/nightmareHuntsRotation.json');
+const empireHuntHashes = require('../data/empireHuntRotation.json');
 
 const Manifest = require("../services/manifest");
 const User = mongoose.model("users");
@@ -25,6 +26,7 @@ const AltarsOfSorrowRotation = mongoose.model("altarsOfSorrowRotation");
 const WellspringRotation = mongoose.model('wellspringRotation');
 const NightfallWeaponRotation = mongoose.model('nightfallWeaponRotation');
 const NightmareHuntsRotation = mongoose.model('nightmareHuntsRotation');
+const EmpireHuntRotation = mongoose.model('empireHuntRotation');
 
 module.exports = app => {
 	app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
@@ -476,5 +478,16 @@ module.exports = app => {
 		});
 
 		res.send(currHuntsInfo);
+	});
+
+	app.get("/api/empire_hunt", requireLogin, checkAccessToken, async (req, res) => {
+		const empireHuntDB = await EmpireHuntRotation.findOne({empireHuntIndex: {$gte: 0}});
+
+		const currHunt = empireHuntHashes.rotation[empireHuntDB.empireHuntIndex];
+
+		const manifest = new Manifest();
+		const currHuntInfo = manifest.getActivityInfo(empireHuntHashes[currHunt]);
+
+		res.send([currHuntInfo]);
 	})
 };

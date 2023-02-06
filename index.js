@@ -10,6 +10,7 @@ require('./models/altarsOfSorrowRewards');
 require('./models/wellspringIndex');
 require('./models/nightfallWeaponRotation');
 require('./models/nightmareHuntsRotation');
+require('./models/empireHuntRotation');
 
 mongoose.connect(keys.mongoURI);
 

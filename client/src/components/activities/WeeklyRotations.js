@@ -68,6 +68,7 @@ class WeeklyActivities extends Component {
                 </div>
                 <div>
                     <h4>Empire Hunt</h4>
+                    <ActivitiesList activityType="empireHunt" />
                 </div>
                 
                 <h4>Dreaming City - Curse Week and Ascendant Challenge</h4>

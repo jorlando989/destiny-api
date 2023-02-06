@@ -23,6 +23,7 @@ import weeklyNightfallReducer from './weeklyNightfallReducer';
 import nightfallWeaponReducer from './nightfallWeaponReducer';
 import cruciblePlaylistReducer from './cruciblePlaylistReducer';
 import nightmareHuntsReducer from './nightmareHuntsReducer';
+import empireHuntReducer from './empireHuntReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -47,5 +48,6 @@ export default combineReducers({
     weeklyNightfall: weeklyNightfallReducer,
     nightfallWeapon: nightfallWeaponReducer,
     cruciblePlaylist: cruciblePlaylistReducer,
-    nightmareHunts: nightmareHuntsReducer
+    nightmareHunts: nightmareHuntsReducer,
+    empireHunt: empireHuntReducer
 });
