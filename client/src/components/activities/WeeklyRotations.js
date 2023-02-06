@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Countdown from 'react-countdown';
 
-import CruciblePlaylist from "./CruciblePlaylist";
+import ActivitiesList from "./ActivitiesList";
 import WeeklyNightfall from "./WeeklyNightfall";
 
 class WeeklyActivities extends Component {
@@ -60,9 +60,16 @@ class WeeklyActivities extends Component {
                 
                 <div>
                     <h4>Crucible Playlist</h4>
-                    <CruciblePlaylist />
+                    <ActivitiesList activityType="cruciblePlaylist"/>
                 </div>
-                <h4>Nightmare Hunts</h4>
+                <div>
+                    <h4>Nightmare Hunts</h4>
+                    <ActivitiesList activityType="nightmareHunts"/>
+                </div>
+                <div>
+                    <h4>Empire Hunt</h4>
+                </div>
+                
                 <h4>Dreaming City - Curse Week and Ascendant Challenge</h4>
             </div>
         );

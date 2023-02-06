@@ -16,6 +16,7 @@ const allLostSectorHashes = require("../data/allLostSectorHashes.json");
 const altarsOfSorrowRewardHashes = require("../data/altarsOfSorrowRotation.json");
 const wellspringRotationHashes = require('../data/wellspringRotation.json');
 const nightfallWeaponsHashes = require('../data/nightfallWeaponsRotation.json');
+const nightmareHuntsHashes = require('../data/nightmareHuntsRotation.json');
 
 const Manifest = require("../services/manifest");
 const User = mongoose.model("users");
@@ -23,6 +24,7 @@ const LostSectorIndexes = mongoose.model("lostSectorIndex");
 const AltarsOfSorrowRotation = mongoose.model("altarsOfSorrowRotation");
 const WellspringRotation = mongoose.model('wellspringRotation');
 const NightfallWeaponRotation = mongoose.model('nightfallWeaponRotation');
+const NightmareHuntsRotation = mongoose.model('nightmareHuntsRotation');
 
 module.exports = app => {
 	app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
@@ -460,5 +462,19 @@ module.exports = app => {
 		});
 
 		res.send(cruciblePlaylistInfo);
+	});
+
+	app.get("/api/nightmare_hunts", requireLogin, checkAccessToken, async (req, res) => {
+		const nightmareHuntsDB = await NightmareHuntsRotation.findOne({nightmareHuntsIndex: {$gte: 0}});
+
+		const currHunts = nightmareHuntsHashes.rotation[nightmareHuntsDB.nightmareHuntsIndex];
+
+		const manifest = new Manifest();
+		const currHuntsInfo = currHunts.map(hunt => {
+			const huntInfo = manifest.getActivityInfo(nightmareHuntsHashes[hunt].activityHash);
+			return huntInfo;
+		});
+
+		res.send(currHuntsInfo);
 	})
 };

@@ -22,6 +22,7 @@ import strikeModifiersReducer from './strikeModifiersReducer';
 import weeklyNightfallReducer from './weeklyNightfallReducer';
 import nightfallWeaponReducer from './nightfallWeaponReducer';
 import cruciblePlaylistReducer from './cruciblePlaylistReducer';
+import nightmareHuntsReducer from './nightmareHuntsReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -45,5 +46,6 @@ export default combineReducers({
     strikeModifiers: strikeModifiersReducer,
     weeklyNightfall: weeklyNightfallReducer,
     nightfallWeapon: nightfallWeaponReducer,
-    cruciblePlaylist: cruciblePlaylistReducer
+    cruciblePlaylist: cruciblePlaylistReducer,
+    nightmareHunts: nightmareHuntsReducer
 });

@@ -9,6 +9,7 @@ require('./models/lostSectorIndex');
 require('./models/altarsOfSorrowRewards');
 require('./models/wellspringIndex');
 require('./models/nightfallWeaponRotation');
+require('./models/nightmareHuntsRotation');
 
 mongoose.connect(keys.mongoURI);
 

@@ -22,7 +22,8 @@ import {
     FETCH_STRIKE_MODIFIERS,
     FETCH_WEEKLY_NIGHTFALL,
     FETCH_NIGHTFALL_WEAPON,
-    FETCH_CRUCIBLE_PLAYLIST
+    FETCH_CRUCIBLE_PLAYLIST,
+    FETCH_NIGHTMARE_HUNTS
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -138,4 +139,9 @@ export const fetchNightfallWeapon = () => async dispatch => {
 export const fetchCruciblePlaylist = () => async dispatch => {
     const res = await axios.get('/api/crucible_playlist');
     dispatch({ type: FETCH_CRUCIBLE_PLAYLIST, payload: res.data});
+}
+
+export const fetchNightmareHunts = () => async dispatch => {
+    const res = await axios.get('/api/nightmare_hunts');
+    dispatch({ type: FETCH_NIGHTMARE_HUNTS, payload: res.data});
 }
