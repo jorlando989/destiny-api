@@ -21,6 +21,7 @@ import wellspringReducer from './wellspringReducer';
 import strikeModifiersReducer from './strikeModifiersReducer';
 import weeklyNightfallReducer from './weeklyNightfallReducer';
 import nightfallWeaponReducer from './nightfallWeaponReducer';
+import cruciblePlaylistReducer from './cruciblePlaylistReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -43,5 +44,6 @@ export default combineReducers({
     wellspringReward: wellspringReducer,
     strikeModifiers: strikeModifiersReducer,
     weeklyNightfall: weeklyNightfallReducer,
-    nightfallWeapon: nightfallWeaponReducer
+    nightfallWeapon: nightfallWeaponReducer,
+    cruciblePlaylist: cruciblePlaylistReducer
 });

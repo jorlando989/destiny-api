@@ -21,7 +21,8 @@ import {
     FETCH_WELLSPRING_REWARD,
     FETCH_STRIKE_MODIFIERS,
     FETCH_WEEKLY_NIGHTFALL,
-    FETCH_NIGHTFALL_WEAPON
+    FETCH_NIGHTFALL_WEAPON,
+    FETCH_CRUCIBLE_PLAYLIST
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -132,4 +133,9 @@ export const fetchWeeklyNightfall = () => async dispatch => {
 export const fetchNightfallWeapon = () => async dispatch => {
     const res = await axios.get('/api/nightfall_weapon');
     dispatch({ type: FETCH_NIGHTFALL_WEAPON, payload: res.data});
+}
+
+export const fetchCruciblePlaylist = () => async dispatch => {
+    const res = await axios.get('/api/crucible_playlist');
+    dispatch({ type: FETCH_CRUCIBLE_PLAYLIST, payload: res.data});
 }

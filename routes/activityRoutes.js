@@ -372,10 +372,9 @@ module.exports = app => {
 		}
 		const resp = await response.json();
 		const milestones = resp.Response;
+
 		//1942283261 = completions, 2029743966 = score
 		const nightfallMilestoneInfo = milestones['2029743966'];
-
-		// console.log(nightfallMilestoneInfo);
 
 		const manifest = new Manifest();
 		const nightfallLevels = nightfallMilestoneInfo.activities.map(activity => {
@@ -427,5 +426,39 @@ module.exports = app => {
 			weaponsInfo,
 			currWeapon
 		});
+	});
+
+	app.get("/api/crucible_playlist", requireLogin, checkAccessToken, async (req, res) => {
+		const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+		const response = await fetch(
+			"https://www.bungie.net/Platform/Destiny2/Milestones/",
+			{
+				headers: {
+					"X-API-Key": keys.apiKey,
+					Authorization: currentUser.accessToken.access_token,
+				},
+			}
+		);
+		if (response.status === 400 || response.status === 401) {
+			return res
+				.status(401)
+				.send({ error: "error retrieving milestones" });
+		}
+		const resp = await response.json();
+		const milestones = resp.Response;
+
+		const cruciblePlaylistMilestoneInfo = milestones['3312774044'];
+		//2259621230 = rumble, 2754695317 = competitive, 2607135461 = freelance: competitive
+		const activitiesToExclude = [2259621230, 2754695317, 2607135461]
+
+		const manifest = new Manifest();
+		const cruciblePlaylistInfo = cruciblePlaylistMilestoneInfo.activities.map(activity => {
+			const activityInfo = manifest.getActivityInfo(activity.activityHash);
+			return activityInfo;
+		}).filter(activity => {
+			return !activitiesToExclude.includes(activity.hash);
+		});
+
+		res.send(cruciblePlaylistInfo);
 	})
 };
