@@ -8,6 +8,7 @@ require('./models/User');
 require('./models/lostSectorIndex');
 require('./models/altarsOfSorrowRewards');
 require('./models/wellspringIndex');
+require('./models/nightfallWeaponRotation');
 
 mongoose.connect(keys.mongoURI);
 
@@ -39,5 +40,5 @@ checkForNewManifestVersion().then(() => {
   app.listen(PORT);
 });
 
-//check manifest version every 5 minutes
-var manifestInterval = setInterval(() => checkForNewManifestVersion(), 60*5000);
+//check manifest version every 10 minutes
+var manifestInterval = setInterval(() => checkForNewManifestVersion(), 60*10000);

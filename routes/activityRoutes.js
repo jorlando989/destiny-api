@@ -15,12 +15,14 @@ const lostSectorRewardRotation = require("../data/lostSectorRewardRotation.json"
 const allLostSectorHashes = require("../data/allLostSectorHashes.json");
 const altarsOfSorrowRewardHashes = require("../data/altarsOfSorrowRotation.json");
 const wellspringRotationHashes = require('../data/wellspringRotation.json');
+const nightfallWeaponsHashes = require('../data/nightfallWeaponsRotation.json');
 
 const Manifest = require("../services/manifest");
 const User = mongoose.model("users");
 const LostSectorIndexes = mongoose.model("lostSectorIndex");
 const AltarsOfSorrowRotation = mongoose.model("altarsOfSorrowRotation");
 const WellspringRotation = mongoose.model('wellspringRotation');
+const NightfallWeaponRotation = mongoose.model('nightfallWeaponRotation');
 
 module.exports = app => {
 	app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
@@ -319,10 +321,6 @@ module.exports = app => {
 
 	app.get("/api/strike_modifiers", requireLogin, checkAccessToken, async (req, res) => {
 		const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-		const userInfo = await User.findOne({
-			membershipID: currentUser.accessToken.membership_id,
-		});
-
 		const response = await fetch(
 			"https://www.bungie.net/Platform/Destiny2/Milestones/",
 			{
@@ -335,7 +333,7 @@ module.exports = app => {
 		if (response.status === 400 || response.status === 401) {
 			return res
 				.status(401)
-				.send({ error: "error retrieving weekly activities" });
+				.send({ error: "error retrieving milestones" });
 		}
 		const resp = await response.json();
 		const milestones = resp.Response;
@@ -343,7 +341,6 @@ module.exports = app => {
 
 		const manifest = new Manifest();
 		const milestoneInfo = manifest.getMilestoneInfo(vanguardOpsMilestone.milestoneHash);
-		console.log(vanguardOpsMilestone);
 
 		const modifiers = vanguardOpsMilestone.activities[0
 		].modifierHashes.map(modifierHash => {
@@ -356,4 +353,79 @@ module.exports = app => {
 			modifiers
 		});
 	});
+
+	app.get("/api/weekly_nightfall", requireLogin, checkAccessToken, async (req, res) => {
+		const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+		const response = await fetch(
+			"https://www.bungie.net/Platform/Destiny2/Milestones/",
+			{
+				headers: {
+					"X-API-Key": keys.apiKey,
+					Authorization: currentUser.accessToken.access_token,
+				},
+			}
+		);
+		if (response.status === 400 || response.status === 401) {
+			return res
+				.status(401)
+				.send({ error: "error retrieving milestones" });
+		}
+		const resp = await response.json();
+		const milestones = resp.Response;
+		//1942283261 = completions, 2029743966 = score
+		const nightfallMilestoneInfo = milestones['2029743966'];
+
+		// console.log(nightfallMilestoneInfo);
+
+		const manifest = new Manifest();
+		const nightfallLevels = nightfallMilestoneInfo.activities.map(activity => {
+			const activityInfo = manifest.getActivityInfo(activity.activityHash);
+
+			//get modifier info
+			const modifiersInfo = activity.modifierHashes.map(modifier => {
+				const modifierInfo = manifest.getActivityModifierInfo(modifier);
+				return modifierInfo;
+			})
+			const filteredModifierInfo = modifiersInfo.filter(mod => {
+				return mod.displayProperties.name != "";
+			});
+
+			//get rewards info
+			const rewardsInfo = activityInfo.rewards[0].rewardItems.map(reward => {
+				const rewardInfo = manifest.getItemInfo(reward.itemHash);
+				return rewardInfo;
+			});
+
+
+			return {
+				activityInfo,
+				modifiersInfo: filteredModifierInfo,
+				rewardsInfo
+			};
+		});
+
+		res.send(nightfallLevels);
+		
+	});
+
+	app.get("/api/nightfall_weapon", requireLogin, checkAccessToken, async (req, res) => {
+		const nightfallWeaponDB = await NightfallWeaponRotation.findOne({nightfallWeaponIndex: {$gte: 0}});
+
+		const currWeapon = nightfallWeaponsHashes.rotation[nightfallWeaponDB.nightfallWeaponIndex];
+
+		const manifest = new Manifest();
+		const weaponsInfo = nightfallWeaponsHashes.rotation.map(weapon => {
+			const itemInfo = manifest.getItemInfo(nightfallWeaponsHashes[weapon].itemHash);
+			const adeptItemInfo = manifest.getItemInfo(nightfallWeaponsHashes[weapon].adeptItemHash);
+			return {
+				itemInfo,
+				adeptItemInfo
+			}
+		});
+		
+		res.send({
+			weaponsInfo,
+			currWeapon
+		});
+	})
 };

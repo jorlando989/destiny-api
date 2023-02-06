@@ -18,3 +18,5 @@ export const FETCH_VENDOR_MODS_BANSHEE = 'fetch_vendor_mods_banshee';
 export const FETCH_ALTARS_OF_SORROW_REWARD = 'fetch_altars_of_sorrow_reward';
 export const FETCH_WELLSPRING_REWARD = 'fetch_wellspring_reward';
 export const FETCH_STRIKE_MODIFIERS = 'fetch_strike_modifiers';
+export const FETCH_WEEKLY_NIGHTFALL = 'fetch_weekly_nightfall';
+export const FETCH_NIGHTFALL_WEAPON = 'fetch_nightfall_weapon';

@@ -53,6 +53,4 @@ function mapStateToProps({ strikeModifiers }) {
 	return { strikeModifiers };
 }
 
-export default connect(mapStateToProps, { fetchStrikeModifiers })(
-	StrikeModifiers
-);
+export default connect(mapStateToProps, { fetchStrikeModifiers })(StrikeModifiers);

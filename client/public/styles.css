@@ -20,6 +20,10 @@ body {
     background-color: #297373;
 }
 
+.bg-white {
+    background-color: white;
+}
+
 .header {
     background-color: #ff8552;
 }
@@ -183,6 +187,14 @@ Button, .card-body a {
 
 .ml5 {
     margin-left: 5px;
+}
+
+.pb5{ 
+    padding-bottom: 5px;
+}
+
+.p10 {
+    padding: 10px;
 }
 
 .milestoneTable {
@@ -349,8 +361,35 @@ hr {
     padding: 5px;
 }
 
+.modifierIcon {
+    width: 40px;
+    padding-right: 5px;
+}
+
+.width60 {
+    width: 60%;
+}
+
 .itemCard {
     padding: 7px;
     font-size: 20px;
     width: max-content;
+}
+
+
+.nightfallRow1 {
+    flex-grow: 1;
+}
+
+.nightfallRow2 {
+    flex-grow: 2;
+}
+
+.weaponIcon {
+    width: 50px;
+    padding: 5px;
+}
+
+.currentWeapon {
+    background-color: #ff8552;
 }

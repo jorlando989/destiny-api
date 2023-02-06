@@ -19,7 +19,9 @@ import {
     FETCH_VENDOR_MODS_BANSHEE,
     FETCH_ALTARS_OF_SORROW_REWARD,
     FETCH_WELLSPRING_REWARD,
-    FETCH_STRIKE_MODIFIERS
+    FETCH_STRIKE_MODIFIERS,
+    FETCH_WEEKLY_NIGHTFALL,
+    FETCH_NIGHTFALL_WEAPON
 } from './types';
 
 export const fetchUser = () => async dispatch => {
@@ -120,4 +122,14 @@ export const fetchWellspringReward = () => async dispatch => {
 export const fetchStrikeModifiers = () => async dispatch => {
     const res = await axios.get('/api/strike_modifiers');
     dispatch({ type: FETCH_STRIKE_MODIFIERS, payload: res.data});
+}
+
+export const fetchWeeklyNightfall = () => async dispatch => {
+    const res = await axios.get('/api/weekly_nightfall');
+    dispatch({ type: FETCH_WEEKLY_NIGHTFALL, payload: res.data});
+}
+
+export const fetchNightfallWeapon = () => async dispatch => {
+    const res = await axios.get('/api/nightfall_weapon');
+    dispatch({ type: FETCH_NIGHTFALL_WEAPON, payload: res.data});
 }

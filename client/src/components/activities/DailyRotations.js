@@ -21,19 +21,34 @@ class DailyActivities extends Component {
         const now = new Date();
         //reset time is either next day at 1pm or same day at 1 pm
         let resetTime = null;
-        if (now.getHours() >= 13) {
-            //reset is tomorrow at 1pm
-            resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 13);
+        const daylight_savings = false;
+
+        if (daylight_savings) {
+            //DAYLIGHT SAVINGS
+            if (now.getHours() >= 13) {
+                //reset is tomorrow at 1pm
+                resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 13);
+            } else {
+                //reset is today at 1pm
+                resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13);
+            }
         } else {
-            //reset is today at 1pm
-            resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13);
+            //REGULAR
+            if (now.getHours() >= 12) {
+                //reset is tomorrow at 12pm
+                resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12);
+            } else {
+                //reset is today at 12pm
+                resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12);
+            }
         }
+        
         return (
             <Countdown date={resetTime} />
         );
     }
 
-    render () {
+    render() {
         return (
             <div>
                 <div className='display-in-row'>

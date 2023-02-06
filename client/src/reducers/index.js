@@ -19,6 +19,8 @@ import vendorModsReducerBanshee from './vendorModsBansheeReducer';
 import altarsOfSorrowReducer from './altarsOfSorrowReducer';
 import wellspringReducer from './wellspringReducer';
 import strikeModifiersReducer from './strikeModifiersReducer';
+import weeklyNightfallReducer from './weeklyNightfallReducer';
+import nightfallWeaponReducer from './nightfallWeaponReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -39,5 +41,7 @@ export default combineReducers({
     vendorModsBanshee: vendorModsReducerBanshee,
     altarsOfSorrowReward: altarsOfSorrowReducer,
     wellspringReward: wellspringReducer,
-    strikeModifiers: strikeModifiersReducer
+    strikeModifiers: strikeModifiersReducer,
+    weeklyNightfall: weeklyNightfallReducer,
+    nightfallWeapon: nightfallWeaponReducer
 });

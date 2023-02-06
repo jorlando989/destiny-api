@@ -445,7 +445,7 @@ class WeeklyActivities extends Component {
                                 <ListGroup.Item>
                                     <OverlayTrigger
                                         key={milestoneInfo.hash}
-                                        placement="top"
+                                        placement="right"
                                         overlay={
                                             <Tooltip id='milestone description'>
                                                 {milestoneInfo.displayProperties.description}
