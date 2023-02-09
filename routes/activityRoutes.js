@@ -412,7 +412,11 @@ module.exports = app => {
 			};
 		});
 
-		res.send(nightfallLevels);
+		res.send({
+			nightfallLevels,
+			DamageTypes,
+			BreakerTypes
+		});
 		
 	});
 
@@ -551,7 +555,9 @@ module.exports = app => {
 			masterInfo,
 			rotation,
 			challenges,
-			masterModifiers
+			masterModifiers,
+			DamageTypes,
+			BreakerTypes
 		});
 	});
 

@@ -15,8 +15,51 @@ class WeeklyNightfall extends Component {
         this.props.fetchNightfallWeapon();
     }
 
+    renderDamageIcons(description) {
+        const splitDesc = description.split(' ');
+        const damageTypes = this.props.weeklyNightfall.DamageTypes;
+        const renderedDesc = splitDesc.map(part => {
+            switch (part) {
+                case '[Solar]': 
+                    return (<img key='solarIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Solar'].transparentIcon}`} alt='solar element icon'/>);
+                case '[Void]':
+                    return (<img key='voidIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Void'].transparentIcon}`} alt='void element icon'/>);
+                case '[Arc]':
+                    return (<img key='arcIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Arc'].transparentIcon}`} alt='arc element icon'/>);
+                default:
+                    return ' ' + part + ' ';
+            }
+        });
+        return renderedDesc;
+    }
+
+    renderBreakerIcons(description) {
+        const splitDesc = description.split(' ');
+        const breakerTypes = this.props.weeklyNightfall.BreakerTypes;
+        const renderedDesc = splitDesc.map(part => {
+            switch (part) {
+                case '[Shield-Piercing]': 
+                    return (<img key='shieldPiercingIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Shield-Piercing'].icon}`} alt='anti-barrier icon'/>);
+                case '[Disruption]':
+                    return (<img key='disruptionIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Disruption'].icon}`} alt='overload icon'/>);
+                case '[Stagger]':
+                    return (<img key='staggerIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Stagger'].icon}`} alt='unstoppable icon'/>);
+                default:
+                    return ' ' + part + ' ';
+            }
+        });
+        return renderedDesc;
+    }
+
     renderModifiers(modifiersInfo) {
         return modifiersInfo.map(modifier => {
+            let renderedDescription = modifier.displayProperties.description;
+            if(modifier.displayProperties.name === "Champion Foes") {
+                renderedDescription = this.renderBreakerIcons(renderedDescription);
+            }
+            if (modifier.displayProperties.name === "Shielded Foes") {
+                renderedDescription = this.renderDamageIcons(renderedDescription);
+            }
             return (
                 <div key={modifier.hash}>
                     <OverlayTrigger
@@ -26,7 +69,7 @@ class WeeklyNightfall extends Component {
 							<Tooltip id='modifier description'>
 								<b>{modifier.displayProperties.name}</b>
                                 <hr />
-                                {modifier.displayProperties.description}
+                                {renderedDescription}
 							</Tooltip>
 						}
 					>
@@ -52,8 +95,8 @@ class WeeklyNightfall extends Component {
         })
     }
 
-    renderNightfallLevelsCategories() {
-        return this.props.weeklyNightfall.map(({activityInfo, modifiersInfo}) => {
+    renderNightfallLevelsCategories(nightfallLevels) {
+        return nightfallLevels.map(({activityInfo}) => {
             return (
                 <Nav.Item key={activityInfo.hash}>
                     <Nav.Link eventKey={activityInfo.displayProperties.name}>
@@ -65,8 +108,8 @@ class WeeklyNightfall extends Component {
         
     }
 
-    renderNightfallLevelsforCategory() {
-        return this.props.weeklyNightfall.map(({activityInfo, modifiersInfo, rewardsInfo}) => {
+    renderNightfallLevelsforCategory(nightfallLevels) {
+        return nightfallLevels.map(({activityInfo, modifiersInfo, rewardsInfo}) => {
             return (
                 <Tab.Pane eventKey={activityInfo.displayProperties.name} key={activityInfo.displayProperties.name}>
                     <div className="whiteText p10">
@@ -109,24 +152,24 @@ class WeeklyNightfall extends Component {
     }
     
     render() {
-        if (this.props.weeklyNightfall && this.props.nightfallWeapon) {
+        if (this.props.weeklyNightfall) {
             return (
                 <div className="display-in-row">
                     <div className="whiteText rounded-corners ml5 mr5 nightfallRow2 width60 bg-white">
                         <div className="ml5 bg-teal pb5">
-                            <h3>{this.props.weeklyNightfall[0].activityInfo.displayProperties.description}</h3>
+                            <h3>{this.props.weeklyNightfall.nightfallLevels[0].activityInfo.displayProperties.description}</h3>
                         </div>
                         <div className="bg-white">
                             <Tab.Container id="left-tabs-example" defaultActiveKey="Nightfall: Adept">
                                 <Row>
                                     <Col sm={3}>
                                         <Nav variant="pills" className="flex-column">
-                                            {this.renderNightfallLevelsCategories()}
+                                            {this.renderNightfallLevelsCategories(this.props.weeklyNightfall.nightfallLevels)}
                                         </Nav>
                                     </Col>
                                     <Col sm={9}>
                                         <Tab.Content>
-                                            {this.renderNightfallLevelsforCategory()}
+                                            {this.renderNightfallLevelsforCategory(this.props.weeklyNightfall.nightfallLevels)}
                                         </Tab.Content>
                                     </Col>
                                 </Row>

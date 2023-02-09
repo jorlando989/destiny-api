@@ -12,6 +12,42 @@ class RaidRotator extends Component {
         this.props.fetchDungeonRotator();
     }
 
+    renderDamageIcons(description) {
+        const splitDesc = description.split(' ');
+        const damageTypes = this.props.raidRotator.DamageTypes;
+        const renderedDesc = splitDesc.map(part => {
+            switch (part) {
+                case '[Solar]': 
+                    return (<img key='solarIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Solar'].transparentIcon}`} alt='solar element icon'/>);
+                case '[Void]':
+                    return (<img key='voidIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Void'].transparentIcon}`} alt='void element icon'/>);
+                case '[Arc]':
+                    return (<img key='arcIcon' className='smallIcon' src={`https://www.bungie.net${damageTypes['Arc'].transparentIcon}`} alt='arc element icon'/>);
+                default:
+                    return ' ' + part + ' ';
+            }
+        });
+        return renderedDesc;
+    }
+
+    renderBreakerIcons(description) {
+        const splitDesc = description.split(' ');
+        const breakerTypes = this.props.raidRotator.BreakerTypes;
+        const renderedDesc = splitDesc.map(part => {
+            switch (part) {
+                case '[Shield-Piercing]': 
+                    return (<img key='shieldPiercingIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Shield-Piercing'].icon}`} alt='anti-barrier icon'/>);
+                case '[Disruption]':
+                    return (<img key='disruptionIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Disruption'].icon}`} alt='overload icon'/>);
+                case '[Stagger]':
+                    return (<img key='staggerIcon' className='smallIcon' src={`https://www.bungie.net${breakerTypes['Stagger'].icon}`} alt='unstoppable icon'/>);
+                default:
+                    return ' ' + part + ' ';
+            }
+        });
+        return renderedDesc;
+    }
+
     renderRotation(rotation, current, type) {
         if (rotation) {
             let iconImage = null;
@@ -59,6 +95,13 @@ class RaidRotator extends Component {
                     <span className="subTitle"><u>Modifiers:</u></span>
                     <div className='display-in-row-wrap'>
                         {modifiers.map(modifier => {
+                            let renderedDescription = modifier.displayProperties.description;
+                            if(modifier.displayProperties.name === "Champion Foes") {
+                                renderedDescription = this.renderBreakerIcons(renderedDescription);
+                            }
+                            if (modifier.displayProperties.name === "Shielded Foes") {
+                                renderedDescription = this.renderDamageIcons(renderedDescription);
+                            }
                             return (
                                 <div key={modifier.hash}>
                                     <OverlayTrigger
@@ -68,7 +111,7 @@ class RaidRotator extends Component {
                                             <Tooltip id='modifier description'>
                                                 <b>{modifier.displayProperties.name}</b>
                                                 <hr />
-                                                {modifier.displayProperties.description}
+                                                {renderedDescription}
                                             </Tooltip>
                                         }
                                     >
