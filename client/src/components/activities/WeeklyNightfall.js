@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { fetchWeeklyNightfall, fetchNightfallWeapon } from "../../actions";
+
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
@@ -91,7 +92,7 @@ class WeeklyNightfall extends Component {
     renderWeaponRotation() {
         if (this.props.nightfallWeapon) {
             return this.props.nightfallWeapon.weaponsInfo.map(({itemInfo, adeptItemInfo}) => {
-                let classes = "display-in-row";
+                let classes = "display-in-row center-vertical";
                 if (itemInfo.displayProperties.name == this.props.nightfallWeapon.currWeapon) {
                     classes = classes.concat(" currentWeapon");
                 }

@@ -393,3 +393,13 @@ hr {
 .currentWeapon {
     background-color: #ff8552;
 }
+
+.darkBgIcon {
+    background-color: #297373;
+    margin: 3px;
+    border-radius: 30px;
+}
+
+.subTitle {
+    font-size: 20px;
+}

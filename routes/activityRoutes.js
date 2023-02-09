@@ -19,6 +19,8 @@ const nightfallWeaponsHashes = require('../data/nightfallWeaponsRotation.json');
 const nightmareHuntsHashes = require('../data/nightmareHuntsRotation.json');
 const empireHuntHashes = require('../data/empireHuntRotation.json');
 const dreamingCityHashes = require('../data/dreamingCityRotations.json');
+const raidRotationHashes = require('../data/raidRotationHashes.json');
+const dungeonRotationHashes = require('../data/dungeonRotationHashes.json');
 
 const Manifest = require("../services/manifest");
 const User = mongoose.model("users");
@@ -29,6 +31,7 @@ const NightfallWeaponRotation = mongoose.model('nightfallWeaponRotation');
 const NightmareHuntsRotation = mongoose.model('nightmareHuntsRotation');
 const EmpireHuntRotation = mongoose.model('empireHuntRotation');
 const DreamingCityRotations = mongoose.model('dreamingCityRotations');
+const RaidAndDungeonRotations = mongoose.model('raidRotation');
 
 module.exports = app => {
 	app.get("/api/challenges", requireLogin, checkAccessToken, async (req, res) => {
@@ -508,6 +511,80 @@ module.exports = app => {
 				currAscendantChallengeInfo,
 				currAscendantChallenge
 			}
+		});
+	});
+
+	app.get("/api/raid_rotation", requireLogin, checkAccessToken, async (req, res) => {
+		const raidRotationDB = await RaidAndDungeonRotations.findOne({featuredRaidIndex: {$gte: 0}});
+
+		const featuredRaid = raidRotationHashes.rotation[raidRotationDB.featuredRaidIndex];
+
+		const manifest = new Manifest();
+		const raidInfo = manifest.getActivityInfo(raidRotationHashes[featuredRaid].activityHash);
+
+		let masterInfo = null;
+		let masterModifiers = null;
+		if (raidRotationHashes[featuredRaid].masterActivityHash) {
+			masterInfo = manifest.getActivityInfo(raidRotationHashes[featuredRaid].masterActivityHash);
+			masterModifiers = masterInfo.modifiers.map(modifier => {
+				const modInfo = manifest.getActivityModifierInfo(modifier.activityModifierHash);
+				return modInfo;
+			}).filter(mod => {
+				return mod.displayProperties.name !== '';
+			});
+		}
+
+		const rotation = raidRotationHashes.rotation.map(raid => {
+			const raidData = manifest.getActivityInfo(raidRotationHashes[raid].activityHash);
+			return raidData;
+		});
+
+		const challenges = raidInfo.modifiers.map(modifier => {
+			const modifierInfo = manifest.getActivityModifierInfo(modifier.activityModifierHash);
+			return modifierInfo;
+		}).filter(mod => {
+			return mod.displayProperties.name !== "Contest Mode" && mod.displayProperties.name !== '';
+		});
+
+		res.send({
+			rotatorInfo: raidInfo,
+			masterInfo,
+			rotation,
+			challenges,
+			masterModifiers
+		});
+	});
+
+	app.get("/api/dungeon_rotation", requireLogin, checkAccessToken, async (req, res) => {
+		const raidRotationDB = await RaidAndDungeonRotations.findOne({featuredDungeonIndex: {$gte: 0}});
+
+		const featuredDungeon = dungeonRotationHashes.rotation[raidRotationDB.featuredDungeonIndex];
+
+		const manifest = new Manifest();
+		const dungeonInfo = manifest.getActivityInfo(dungeonRotationHashes[featuredDungeon].activityHash);
+
+		let masterInfo = null;
+		let masterModifiers = null;
+		if (dungeonRotationHashes[featuredDungeon].masterActivityHash) {
+			masterInfo = manifest.getActivityInfo(dungeonRotationHashes[featuredDungeon].masterActivityHash);
+			masterModifiers = masterInfo.modifiers.map(modifier => {
+				const modInfo = manifest.getActivityModifierInfo(modifier.activityModifierHash);
+				return modInfo;
+			}).filter(mod => {
+				return mod.displayProperties.name !== '';
+			});
+		}
+
+		const rotation = dungeonRotationHashes.rotation.map(dungeon => {
+			const dungeonData = manifest.getActivityInfo(dungeonRotationHashes[dungeon].activityHash);
+			return dungeonData;
+		});
+
+		res.send({
+			rotatorInfo: dungeonInfo,
+			masterInfo,
+			rotation,
+			masterModifiers
 		});
 	});
 };

@@ -4,6 +4,7 @@ import Countdown from 'react-countdown';
 import ActivitiesList from "./ActivitiesList";
 import DreamingCityRotations from "./DreamingCityRotations";
 import EmpireHunt from "./EmpireHunt";
+import RaidRotator from "./RaidRotator";
 import WeeklyNightfall from "./WeeklyNightfall";
 
 class WeeklyActivities extends Component {
@@ -51,13 +52,7 @@ class WeeklyActivities extends Component {
                 <WeeklyNightfall />
                 
                 <div className="display-in-row">
-                    <div>
-                        <h4>Weekly Raid</h4>
-                        <h4>Raid Challenges</h4>
-                    </div>
-                    <div>
-                        <h4>Weekly Dungeon</h4>
-                    </div>
+                    <RaidRotator />
                 </div>
                 
                 <div>

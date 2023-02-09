@@ -25,7 +25,9 @@ import {
 	FETCH_CRUCIBLE_PLAYLIST,
 	FETCH_NIGHTMARE_HUNTS,
 	FETCH_EMPIRE_HUNT,
-	FETCH_DREAMING_CITY_ROTATIONS
+	FETCH_DREAMING_CITY_ROTATIONS,
+	FETCH_RAID_ROTATOR,
+	FETCH_DUNGEON_ROTATOR
 } from "./types";
 
 export const fetchUser = () => async dispatch => {
@@ -162,4 +164,14 @@ export const fetchEmpireHunt = () => async dispatch => {
 export const fetchDreamingCityRotations = () => async dispatch => {
 	const res = await axios.get("/api/ascendant_challenge");
 	dispatch({ type: FETCH_DREAMING_CITY_ROTATIONS, payload: res.data });
+};
+
+export const fetchRaidRotator = () => async dispatch => {
+	const res = await axios.get("/api/raid_rotation");
+	dispatch({ type: FETCH_RAID_ROTATOR, payload: res.data });
+};
+
+export const fetchDungeonRotator = () => async dispatch => {
+	const res = await axios.get("/api/dungeon_rotation");
+	dispatch({ type: FETCH_DUNGEON_ROTATOR, payload: res.data });
 };

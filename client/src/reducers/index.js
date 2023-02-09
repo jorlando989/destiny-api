@@ -25,6 +25,8 @@ import cruciblePlaylistReducer from './cruciblePlaylistReducer';
 import nightmareHuntsReducer from './nightmareHuntsReducer';
 import empireHuntReducer from './empireHuntReducer';
 import dreamingCityRotationsReducer from "./dreamingCityRotationsReducer";
+import raidRotatorReducer from "./raidRotatorReducer";
+import dungeonRotatorReducer from "./dungeonRotatorReducer";
 
 export default combineReducers({
     auth: authReducer,
@@ -51,5 +53,7 @@ export default combineReducers({
     cruciblePlaylist: cruciblePlaylistReducer,
     nightmareHunts: nightmareHuntsReducer,
     empireHunt: empireHuntReducer,
-    dreamingCityRotations: dreamingCityRotationsReducer
+    dreamingCityRotations: dreamingCityRotationsReducer,
+    raidRotator: raidRotatorReducer,
+    dungeonRotator: dungeonRotatorReducer
 });

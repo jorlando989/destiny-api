@@ -360,7 +360,7 @@ class WeeklyActivities extends Component {
     }
 
     checkIfDungeonIsPinnacle(milestoneHash) {
-        //grasp currently broken
+        //grasp and duality currently broken
         const characters = this.props.weeklyActivities.charProgressAndClass;
         for(let i=0; i<characters.length; i++) {
             if (characters[i].progression[milestoneHash]) {
@@ -429,7 +429,7 @@ class WeeklyActivities extends Component {
                     || milestoneInfo.displayProperties.name === 'Master Class') {
                     return null;
                 }
-                if (milestoneInfo.displayProperties.description === 'Rotating Weekly Dungeon Challenge.' 
+                if (milestoneInfo.displayProperties.description === 'Rotating Weekly Dungeon Challenge.'     
                     && !this.checkIfDungeonIsPinnacle(milestoneInfo.hash)) {
                     return null;
                 }

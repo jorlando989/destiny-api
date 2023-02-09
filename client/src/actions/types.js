@@ -24,3 +24,5 @@ export const FETCH_CRUCIBLE_PLAYLIST = 'fetch_crucible_playlist';
 export const FETCH_NIGHTMARE_HUNTS = 'fetch_nightmare_hunts';
 export const FETCH_EMPIRE_HUNT = 'fetch_empire_hunt';
 export const FETCH_DREAMING_CITY_ROTATIONS = 'fetch_dreaming_city_rotations';
+export const FETCH_RAID_ROTATOR = 'fetch_raid_rotator';
+export const FETCH_DUNGEON_ROTATOR = 'fetch_dungeon_rotator';

@@ -12,6 +12,7 @@ require('./models/nightfallWeaponRotation');
 require('./models/nightmareHuntsRotation');
 require('./models/empireHuntRotation');
 require('./models/dreamingCityRotations');
+require('./models/raidAndDungeonRotations');
 
 mongoose.connect(keys.mongoURI);
 
