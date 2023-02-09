@@ -230,7 +230,12 @@ module.exports = app => {
             return res.status(401).send({ error: 'error retrieving vendors' });
         }
         const respData = await response.json();
-        const vendorSales = respData.Response.sales.data;
+        let vendorSales = null;
+        if (respData.Response.sales.data) {
+            vendorSales = respData.Response.sales.data;
+        } else {
+            res.send();
+        }
 
         const manifest = new Manifest();
 
