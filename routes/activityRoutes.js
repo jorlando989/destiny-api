@@ -454,12 +454,13 @@ module.exports = app => {
 		const milestones = resp.Response;
 
 		const cruciblePlaylistMilestoneInfo = milestones['3312774044'];
-		//2259621230 = rumble, 2754695317 = competitive, 2607135461 = freelance: competitive
-		const activitiesToExclude = [2259621230, 2754695317, 2607135461]
+		//2259621230 = rumble, 2754695317 = competitive, 2607135461 = freelance: competitive, team quickplay = 2696116787
+		const activitiesToExclude = [2259621230, 2754695317, 2607135461,2696116787]
 
 		const manifest = new Manifest();
 		const cruciblePlaylistInfo = cruciblePlaylistMilestoneInfo.activities.map(activity => {
 			const activityInfo = manifest.getActivityInfo(activity.activityHash);
+			// console.log(activity.activityHash, activityInfo.displayProperties.name);
 			return activityInfo;
 		}).filter(activity => {
 			return !activitiesToExclude.includes(activity.hash);
