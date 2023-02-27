@@ -45,6 +45,9 @@ module.exports = app => {
             return res.status(401).send({ error: 'error retrieving characters' });
         }
         const characterRecords = await response.json();
+        if (!characterRecords.Response.hasOwnProperty("records")) {
+            res.send(null);
+        }
         const recordsData = characterRecords.Response.records.data.records;
 
         const allSeasonalChallengesInfo = weeklyInfo.children.presentationNodes.map(node => {
